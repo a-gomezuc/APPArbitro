@@ -1,0 +1,118 @@
+<head>
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
+</head>
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Inicio</ion-title>
+  </ion-navbar>
+</ion-header>
+
+
+<ion-content padding class="item-background">
+  <ion-grid>
+    <ion-row justify-content-center>
+      <ion-icon class="cronometroIcono" name="timer"></ion-icon>
+    </ion-row>
+    <ion-row justify-content-center>
+      <h2>Cronómetro</h2>
+    </ion-row>
+    <div class="crono">
+      <ion-row justify-content-center>
+        <ion-col col-3>
+          <h1 class="datosCrono">
+            <span class="numCrono">{{this.timer?.hora}}</span> h</h1>
+        </ion-col>
+        <ion-col col-3>
+          <h1 class="datosCrono">
+            <span class="numCrono">{{this.timer?.minuto}}</span> m</h1>
+        </ion-col>
+        <ion-col col-3>
+          <h1 class="datosCrono">
+            <span class="numCrono">{{this.timer?.segundos}}</span> s</h1>
+        </ion-col>
+      </ion-row>
+      <ion-row justify-content-center>
+        <ion-col>
+          <button ion-button color="secondary" (click)="this.comienzaCuenta()">Comenzar &nbsp;
+            <ion-icon name="play"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button color="danger" (click)="this.timer?.reinicia()">Reiniciar &nbsp;
+            <ion-icon name="repeat"></ion-icon>
+          </button>
+        </ion-col>
+        <ion-col>
+          <button class="btnParar" *ngIf="this.timer?.contador!=undefined" ion-button (click)="this.timer.stop()">Parar &nbsp;
+            <ion-icon name="pause"></ion-icon>
+          </button>
+        </ion-col>
+      </ion-row>
+    </div>
+  </ion-grid>
+  <button class="cargaArbitros" ion-button (click)="this.marcaGol()">GOL</button>
+  <ion-list>
+    <ion-item *ngFor="let gol of goles">
+      <p>{{gol?.goleador}}, &nbsp; {{gol?.minuto}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item class="jugador" *ngFor="let partido of partidos">
+      <ion-avatar>
+        <img src="https://images.vexels.com/media/users/3/137466/isolated/preview/8689961068cfb4864f99ee54ad6ef920-cinta-de-escudo-etiqueta-insignia-by-vexels.png">{{partido?.equipoLocal.nombre}}
+        <span class="nGoles"> {{partido?.golesLocal}} </span>
+      </ion-avatar>
+      <ion-avatar>
+        <img src="https://vignette2.wikia.nocookie.net/hieloyfuego/images/3/32/Casa_Stark_escudo.png/revision/latest?cb=20150129151112">{{partido?.equipoVisitante.nombre}}
+        <span class="nGoles"> {{partido?.golesVisitante}} </span>
+      </ion-avatar>
+      <p>{{partido?.arbitro?.nombre}}</p>
+      <p>{{partido?.fechaPartido}} {{partido?.horaPartido}}</p>
+      <p>{{partido?.liga}} Jornada {{partido.jornada}}</p>
+      <p>Equipación local: {{partido?.equipacionLocal}} Equipación visitante: {{partido?.equipacionVisitante}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-list>
+    <ion-item class="jugador" *ngFor="let player of players">
+      <ion-avatar>
+        <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+      </ion-avatar>
+      <h1>{{player?.nombre }},{{ player?.apellidos }}</h1>
+      <p class="entrada">Dorsal {{ player?.dorsal }}</p>
+      <button ion-button (click)="this.cambiaAPlayerPage(player?.nombre,player?.apellidos)">Ver</button>
+      <button ion-button (click)="this.modificaJugador(player?.id,player)">Modificar</button>
+      <button class="borrar" ion-button (click)="this.alertaSimple(player?.nombre,player?.apellidos)">Eliminar</button>
+      
+    </ion-item>
+    <ion-grid>
+      <ion-row justify-content-center>
+        <h1>Listado de Árbitros en BBDD</h1>
+      </ion-row>
+    </ion-grid>
+  </ion-list>
+  <ion-list>
+    <ion-item *ngFor="let refree of arbitros">
+      <h1>Nombre: {{ refree?.nombre }} </h1>
+      <p class="comite"> Comité: {{ refree?.comite }}</p>
+      <p class="edad"> Edad: {{ refree?.edad}}</p>
+    </ion-item>
+  </ion-list>
+  <ion-row justify-content-center>
+    <ion-col col-3>
+      <button ion-button class="cargaJugadores" (click)="this.cargarUsuarios()">Jugadores</button>
+    </ion-col>
+    <ion-col col-3>
+      <button class="cargaArbitros" ion-button (click)="this.cargarArbitros()">Árbitros</button>
+    </ion-col>
+    <ion-col col-3>
+      <button class="cargaArbitros" ion-button (click)="this.cargarPartidosArbitro()">Partidos</button>
+    </ion-col>
+
+  </ion-row>
+  <button class="cargaArbitros" ion-button (click)="this.guardaUsuariosLocal()">CargaLocal</button>
+  <button class="cargaArbitros" ion-button (click)="this.escribeUsuariosLocal()">EscribeLocal</button>
+</ion-content>

@@ -1,0 +1,25 @@
+
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Logueo</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+    <ion-item> 
+        <ion-label color="primary" >Usuario</ion-label>
+        <ion-input type="text"  [(ngModel)]="user" placeholder="Escriba su usuario"></ion-input>   
+        </ion-item>
+  <ion-item> 
+    <ion-label color="primary" >Contraseña</ion-label>
+    <ion-input [(ngModel)]="pass" type="password" placeholder="Escriba su contraseña"></ion-input>
+  </ion-item>
+  <ion-row justify-content-center>
+    <ion-col col-3>
+  <button ion-button full (click) = "this.cambiaAHomePage()">Enviar</button>
+      </ion-col>
+</ion-row>
+</ion-content>

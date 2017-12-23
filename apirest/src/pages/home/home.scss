@@ -1,0 +1,72 @@
+page-home {
+
+}
+.item-background{
+    background-image:url(https://i.pinimg.com/736x/d6/e2/69/d6e26985d39876896e757f61e70482f9--wallpaper-for-iphone-wallpaper-free.jpg);
+    color: white;
+}
+p.entrada{
+    color:red;
+}
+button{
+    max-width: 100px;
+}
+button.borrar{
+    background-color:red;
+}
+button.botonAlerta{
+    background-color:green;
+    max-width: 800px;
+    height: 12%;
+}
+p.edad{
+    font-size: 15px;
+
+}
+p.comite{
+    font-size: 20px;
+}
+button.cargaArbitros{
+    background-color: #b8b50c;
+    width: 80px;
+}
+button.cargaJugadores{
+    background-color: #b8b50c;
+    width: 80px;
+}
+button.cargaArbitros:hover{
+    background-color: rgb(223, 173, 11);
+}
+button.cargaJugadores:hover{
+    background-color: rgb(223, 173, 11);
+}
+h1{
+    font-size: 16px;
+}
+.cronometroIcono{
+    font-size: 30px;
+}
+h1.datosCrono{
+    font-family: 'Press Start 2P', cursive;
+    font-size: 14px;
+    
+}
+span.numCrono{
+    font-size: 22px;
+}
+span.nGoles{
+    font-size: 32px;
+}
+button.btnParar{
+    width:80px;
+}
+div.crono{
+    border-style: outset;
+    border-width: 1px;
+
+}
+.jugador{
+    background: transparent;
+    color:white;
+}
+
