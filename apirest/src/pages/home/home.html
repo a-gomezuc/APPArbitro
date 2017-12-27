@@ -76,18 +76,24 @@
       <p>Equipación local: {{partido?.equipacionLocal}} Equipación visitante: {{partido?.equipacionVisitante}}</p>
     </ion-item>
   </ion-list>
-  <ion-list>
+  <ion-list radio-group >
     <ion-item class="jugador" *ngFor="let player of players">
       <ion-avatar>
         <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
       </ion-avatar>
       <h1>{{player?.nombre }},{{ player?.apellidos }}</h1>
       <p class="entrada">Dorsal {{ player?.dorsal }}</p>
-      <button ion-button (click)="this.cambiaAPlayerPage(player?.nombre,player?.apellidos)">Ver</button>
+      <button ion-button (click)="this.cambiaAPlayerPage(player?.dni)">Ver</button>
       <button ion-button (click)="this.modificaJugador(player?.id,player)">Modificar</button>
       <button class="borrar" ion-button (click)="this.alertaSimple(player?.nombre,player?.apellidos)">Eliminar</button>
+      <button class="convocar" *ngIf="this.isNotConvocado(player) && !this.isSancionado(player)" ion-button (click)="convocar(player)">Convocar</button>
+      <p class="sancionado" *ngIf="this.isSancionado(player)" >Sancionado</p>
       
     </ion-item>
+    <ion-list *ngFor="let convocado of convocados">
+      <p>{{convocado?.nombre}}</p>
+    </ion-list>
+
     <ion-grid>
       <ion-row justify-content-center>
         <h1>Listado de Árbitros en BBDD</h1>

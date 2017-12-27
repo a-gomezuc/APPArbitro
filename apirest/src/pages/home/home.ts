@@ -9,6 +9,7 @@ import { Storage } from '@ionic/storage';
   templateUrl: 'home.html'
 })
 export class HomePage {
+  convocados: any[];
   connectedUser: String;
   alertaBotonBorrar: boolean = null;
   playerPage = PlayerPage;
@@ -27,6 +28,50 @@ export class HomePage {
       error => {
         console.log(error);
       });
+  }
+  //Opcion mediante botón
+  convocar(jugador){
+    // Comprueba si no existe ya
+    if(this.convocados.indexOf(jugador)==-1)
+    this.convocados.push(jugador);
+  }
+  isNotConvocado(jugador){
+    if (jugador==undefined){
+      return true;
+    }
+    else{
+      return(this.convocados.indexOf(jugador)==-1);
+  }
+}
+//Opcion con radio buttons 
+  seleccionarConvocados(){
+      let alert = this.alerta.create();
+      alert.setTitle('Qué jugadores desea convocar?');
+    this.players.forEach(element => {
+      alert.addInput({
+        type: 'checkbox',
+        label: element.nombre+' '+element.apellidos,
+        value: element,
+        checked: false
+    });
+    });
+      alert.addButton('Cancelar');
+      alert.addButton({
+        text: 'Aceptar',
+        handler: (data: any) => {
+            console.log('Checkbox data:', data);
+        }
+      });
+  
+      alert.present();
+  }
+  isSancionado(jugador){
+    if (jugador.fechaSancion==undefined || jugador.fechaSancion=="" || jugador.fechaSancion==null){
+      return false
+    }
+    else{ 
+      return true;
+    }
   }
   modificaJugador(id, jugador) {
     this.userService.modifyPlayer(id, jugador);
@@ -57,6 +102,12 @@ export class HomePage {
       error => {
         console.log(error);
       });
+      this.partidos.forEach(partido => {
+       this.userService.getArbitroById(partido.idArbitro).then(res=>{
+         console.log(res)
+      partido.arbitro=res},
+    error=>{console.log(error)});
+      });
   }
   cargarPartidosArbitro() {
     let usuario;
@@ -68,6 +119,13 @@ export class HomePage {
         this.userService.getMatchesByRefree(usuario.id).then(
           res => {
             this.partidos = res;
+            //Por cada partido guarda su arbitro (ya que solo contiene el id)
+            this.partidos.forEach(partido => {
+              this.userService.getArbitroById(partido.idArbitro).then(arb=>{
+                console.log(arb)
+             partido.arbitro=arb},
+           error=>{console.log(error)});
+             });
           },
           err => {
             console.log(err)
@@ -118,8 +176,8 @@ export class HomePage {
     confirm.present();
   }
 
-  cambiaAPlayerPage(nombre: String, apellidos: String) {
-    this.navCtrl.push(this.playerPage, { nombre, apellidos });
+  cambiaAPlayerPage(dni:String) {
+    this.navCtrl.push(this.playerPage, {dni});
   }
 
   refrescaUsuarios() {
@@ -139,6 +197,7 @@ export class HomePage {
   ) {
     this.menu.enable(true);
     this.obtenerArbitro();
+    this.convocados=[];
   }
   marcaGol() {
     this.goles.push({ goleador: "Diego Costa", minuto: this.timer.minuto + "' " + this.timer.segundos + "''" })

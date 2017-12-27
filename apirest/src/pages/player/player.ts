@@ -33,6 +33,14 @@ export class PlayerPage {
       console.log(error);
     });
   }
+  obtenerJugadorDni(){
+    this.userService.getPlayerDni(this.navParams.get("dni")).then( res => {
+      this.player = res;
+    },
+    error =>{
+      console.log(error);
+    });
+  }
   escribeUsuariosLocal() {
     this.storage.get("Jugadores").then((jugadores) => {
       this.jugadores = (JSON.parse(jugadores));

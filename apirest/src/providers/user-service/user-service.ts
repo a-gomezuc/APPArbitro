@@ -77,9 +77,13 @@ export class UserServiceProvider {
       return this.http.get(this.url+"/arbitros/nombreUsuario/"+username)
       .map(res=>res.json(),error=>{console.log(error)}).toPromise();
     }
-    getUser(nombre:String, apellidos:String){
+    getArbitroById(id:String){
+      return this.http.get(this.url+"/arbitros/"+id)
+      .map(res=>res.json(),error=>{console.log(error)}).toPromise();
+    }
+    getPlayerDni(dni:String){
       return this.http
-      .get(this.url+'/jugadores/'+nombre+'/'+apellidos)
+      .get(this.url+'/jugadores/dni/'+dni)
       .map(res => res.json(),
           err => {
             console.log(err);
@@ -87,7 +91,16 @@ export class UserServiceProvider {
         )
       .toPromise();
       }
-
+      getUser(nombre:String, apellidos:String){
+        return this.http
+        .get(this.url+'/jugadores/'+nombre+'/'+apellidos)
+        .map(res => res.json(),
+            err => {
+              console.log(err);
+            }
+          )
+        .toPromise();
+        }
     deleteUser(nombre:String, apellidos:String){
       return this.http
       .delete(this.url+'/jugadores/'+nombre+'/'+apellidos)

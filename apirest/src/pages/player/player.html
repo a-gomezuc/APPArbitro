@@ -17,7 +17,7 @@
 <ion-content padding>
     <h1>{{player?.nombre}}</h1>
     <ion-item> <div *ngIf="this.isSpanish()"><ion-avatar item-start> <img class="Prueba" src="http://www.banderas-mundo.es/data/flags/ultra/es.png"></ion-avatar></div></ion-item>
-    <button ion-button full (click) = "this.obtenerJugador()">Saca parámetros</button>
+    <button ion-button full (click) = "this.obtenerJugadorDni()">Saca parámetros</button>
     <button ion-button full (click) = "this.sacaPorPantalla()">Saca por Pantalla</button>
     <button ion-button (click)="this.escribeUsuariosLocal()">Escribe local</button>
     <button ion-button (click)="this.cambiaNombre()">Cambia {{player?.nombre}} </button>

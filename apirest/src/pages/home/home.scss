@@ -8,6 +8,10 @@ page-home {
 p.entrada{
     color:red;
 }
+p.sancionado{
+    color:red;
+    size:10px;
+}
 button{
     max-width: 100px;
 }
@@ -33,6 +37,9 @@ button.cargaArbitros{
 button.cargaJugadores{
     background-color: #b8b50c;
     width: 80px;
+}
+button.convocar{
+    background-color: green;
 }
 button.cargaArbitros:hover{
     background-color: rgb(223, 173, 11);
