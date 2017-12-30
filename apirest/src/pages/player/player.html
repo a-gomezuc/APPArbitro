@@ -1,9 +1,4 @@
-<!--
-  Generated template for the PlayerPage page.
 
-  See http://ionicframework.com/docs/components/#navigation for more info on
-  Ionic pages and navigation.
--->
 <ion-header>
     <ion-navbar>
       <button ion-button menuToggle>
@@ -14,11 +9,20 @@
   </ion-header>
 
 
-<ion-content padding>
-    <h1>{{player?.nombre}}</h1>
-    <ion-item> <div *ngIf="this.isSpanish()"><ion-avatar item-start> <img class="Prueba" src="http://www.banderas-mundo.es/data/flags/ultra/es.png"></ion-avatar></div></ion-item>
-    <button ion-button full (click) = "this.obtenerJugadorDni()">Saca parámetros</button>
-    <button ion-button full (click) = "this.sacaPorPantalla()">Saca por Pantalla</button>
-    <button ion-button (click)="this.escribeUsuariosLocal()">Escribe local</button>
-    <button ion-button (click)="this.cambiaNombre()">Cambia {{player?.nombre}} </button>
+<ion-content padding class="item-background2">
+    <ion-avatar class="avatarJugador"  item-center> 
+        <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+      </ion-avatar>
+    <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete">
+    <h1 *ngIf="this.isSancionado(player)" class="sancionado">Este jugador está sancionado actualmente.</h1>
+    <h1 *ngIf="this.isSancionado(player)" class="sancionado"><span class="">Fecha fin de sanción: </span>{{player?.fechaSancion}}</h1>
+    <h1><span class="valorJugador">Equipo: </span>{{player?.equipo?.nombre}}</h1>
+    <h1><span class="valorJugador">Nombre: </span>{{player?.nombre}}</h1>
+    <h1><span class="valorJugador">Apellidos: </span>{{player?.apellidos}}</h1>
+    <h1><span class="valorJugador">DNI: </span>{{player?.dni}}</h1>
+    <h1><span class="valorJugador">Dorsal: </span>{{player?.dorsal}}</h1>
+    <h1><span class="valorJugador">Fecha de nacimiento: </span>{{player?.fechaNacimiento}}</h1>
+    <h1><span class="valorJugador">Edad: </span>{{player?.edad}}</h1>
+    <h1><span class="valorJugador">Lugar de nacimiento: </span>{{player?.lugarNacimiento}}</h1>
+    <h1><span class="valorJugador">Nacionalidad: </span>{{player?.nacionalidad}}</h1>
 </ion-content>

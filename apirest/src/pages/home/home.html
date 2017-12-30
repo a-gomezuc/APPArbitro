@@ -37,18 +37,18 @@
       </ion-row>
       <ion-row justify-content-center>
         <ion-col>
-          <button ion-button color="secondary" (click)="this.comienzaCuenta()">Comenzar &nbsp;
-            <ion-icon name="play"></ion-icon>
+          <button class="btnCrono" ion-button color="secondary" (click)="this.comienzaCuenta()">Comenzar &nbsp;
+            <!-- <ion-icon name="play"></ion-icon> -->
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button color="danger" (click)="this.timer?.reinicia()">Reiniciar &nbsp;
-            <ion-icon name="repeat"></ion-icon>
+          <button class="btnCrono" ion-button color="danger" (click)="this.timer?.reinicia()">Reiniciar &nbsp;
+            <!-- <ion-icon name="repeat"></ion-icon> -->
           </button>
         </ion-col>
         <ion-col>
-          <button class="btnParar" *ngIf="this.timer?.contador!=undefined" ion-button (click)="this.timer.stop()">Parar &nbsp;
-            <ion-icon name="pause"></ion-icon>
+          <button class="btnCrono" *ngIf="this.timer?.contador!=undefined" ion-button (click)="this.timer.stop()">Parar &nbsp;
+            <!-- <ion-icon name="pause"></ion-icon> -->
           </button>
         </ion-col>
       </ion-row>
@@ -81,13 +81,12 @@
       <ion-avatar>
         <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
       </ion-avatar>
-      <h1>{{player?.nombre }},{{ player?.apellidos }}</h1>
-      <p class="entrada">Dorsal {{ player?.dorsal }}</p>
+      <h1>{{player?.nombre }} {{ player?.apellidos }}</h1>
+      <p class="dorsal">Dorsal {{ player?.dorsal }}</p>
       <button ion-button (click)="this.cambiaAPlayerPage(player?.dni)">Ver</button>
-      <button ion-button (click)="this.modificaJugador(player?.id,player)">Modificar</button>
-      <button class="borrar" ion-button (click)="this.alertaSimple(player?.nombre,player?.apellidos)">Eliminar</button>
       <button class="convocar" *ngIf="this.isNotConvocado(player) && !this.isSancionado(player)" ion-button (click)="convocar(player)">Convocar</button>
-      <p class="sancionado" *ngIf="this.isSancionado(player)" >Sancionado</p>
+      <button class="desconvocar" *ngIf="!this.isSancionado(player) && !this.isNotConvocado(player)" ion-button (click)="desconvocar(player)">Desconvocar</button>
+      <h1><span class="sancionado" *ngIf="this.isSancionado(player)" >Sancionado</span></h1>
       
     </ion-item>
     <ion-list *ngFor="let convocado of convocados">

@@ -73,6 +73,10 @@ export class UserServiceProvider {
         )
       .toPromise();
     }
+    getEquipoByID(id:String){
+      return this.http.get(this.url+'/equipos/id/'+id).map(res=>res.json(),
+       error=>console.log(error)).toPromise();
+    }
     getArbitroByUserName(username:String){
       return this.http.get(this.url+"/arbitros/nombreUsuario/"+username)
       .map(res=>res.json(),error=>{console.log(error)}).toPromise();

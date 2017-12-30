@@ -32,8 +32,33 @@ export class HomePage {
   //Opcion mediante botón
   convocar(jugador){
     // Comprueba si no existe ya
-    if(this.convocados.indexOf(jugador)==-1)
+    if(this.convocados.indexOf(jugador)==-1){
     this.convocados.push(jugador);
+    this.alertaConvocado(jugador.nombre, jugador.apellidos);
+    }
+  }
+  alertaConvocado(nombre:String, apellidos:String){
+      let alertaConvocado = this.alerta.create({
+        title: 'Convocado',
+        subTitle: 'El jugador '+nombre+' '+apellidos+' ha sido convocado para disputar el partido.',
+      });
+      alertaConvocado.present();
+      setTimeout(()=>alertaConvocado.dismiss(),3000);
+  }
+  alertaDesconvocado(nombre:String, apellidos:String){
+    let alertaDesconvocado = this.alerta.create({
+      title: 'Desconvocado',
+      subTitle: 'El jugador '+nombre+' '+apellidos+' ha sido desconvocado, no disputará el partido.',
+    });
+    alertaDesconvocado.present()
+    setTimeout(()=>alertaDesconvocado.dismiss(),3000);
+}
+  desconvocar(jugador){
+    let posicion= this.convocados.indexOf(jugador)
+    if(posicion>-1){
+    this.convocados.splice(posicion,1);
+    this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
+    }
   }
   isNotConvocado(jugador){
     if (jugador==undefined){

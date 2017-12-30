@@ -19,6 +19,7 @@ export class PlayerPage {
   jugadores:any;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public userService:UserServiceProvider, public storage:Storage) {
+    this.obtenerJugadorDni();
   }
 
   ionViewDidLoad() {
@@ -36,10 +37,16 @@ export class PlayerPage {
   obtenerJugadorDni(){
     this.userService.getPlayerDni(this.navParams.get("dni")).then( res => {
       this.player = res;
+      this.obtenerEquipoJugador(this.player.equipo);
     },
     error =>{
       console.log(error);
     });
+  }
+  obtenerEquipoJugador(id:String){
+    this.userService.getEquipoByID(id).then(
+      res=>{this.player.equipo=res},
+      error=>{console.log(error);});
   }
   escribeUsuariosLocal() {
     this.storage.get("Jugadores").then((jugadores) => {
@@ -54,6 +61,14 @@ export class PlayerPage {
     if(this.player!==undefined)
       return this.player.nacionalidadEspañola;
       else return false;
+    }
+    isSancionado(jugador){
+      if (jugador==undefined || jugador.fechaSancion==undefined || jugador.fechaSancion=="" || jugador.fechaSancion==null){
+        return false
+      }
+      else{ 
+        return true;
+      }
     }
   cambiaNombre(){
     for (var jugador of this.jugadores){

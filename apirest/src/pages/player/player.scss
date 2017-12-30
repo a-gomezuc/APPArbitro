@@ -1,6 +1,29 @@
-page-player {
+page-player{}
 
+.item-background2{
+    background-image:url(http://cfbufala.com/wp-content/uploads/2015/09/DSC6601.jpg);
+    background-size: 270%;
+    color:white;
 }
 img.Prueba{
     max-width: 400px;
+}
+ion-avatar.avatarJugador{
+    margin:auto;
+    width: 200px;
+    height:200px;
+}
+span.valorJugador{
+    font-style: solid;
+    font-size: 20px;
+}
+img.brazalete{
+    height: 50px;
+    width: 50px;
+}
+h1.sancionado{
+    color: rgb(170, 30, 30);
+    font-style: solid;
+    font-size: 15px;
+    background-color: yellow;
 }

@@ -5,12 +5,13 @@ page-home {
     background-image:url(https://i.pinimg.com/736x/d6/e2/69/d6e26985d39876896e757f61e70482f9--wallpaper-for-iphone-wallpaper-free.jpg);
     color: white;
 }
-p.entrada{
-    color:red;
+p.dorsal{
+    color:rgb(139, 243, 172);
 }
-p.sancionado{
-    color:red;
-    size:10px;
+span.sancionado{
+    color: rgb(170, 30, 30);
+    font-size:16px;
+    background-color: yellow;
 }
 button{
     max-width: 100px;
@@ -22,6 +23,10 @@ button.botonAlerta{
     background-color:green;
     max-width: 800px;
     height: 12%;
+}
+button.btnCrono{
+    height:30px;
+    width:80px;
 }
 p.edad{
     font-size: 15px;
@@ -41,6 +46,9 @@ button.cargaJugadores{
 button.convocar{
     background-color: green;
 }
+button.desconvocar{
+    background-color: orange;
+}
 button.cargaArbitros:hover{
     background-color: rgb(223, 173, 11);
 }
@@ -59,7 +67,7 @@ h1.datosCrono{
     
 }
 span.numCrono{
-    font-size: 22px;
+    font-size: 18px;
 }
 span.nGoles{
     font-size: 32px;
