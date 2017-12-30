@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { PlayerPage} from '../pages/player/player';
 import { InicioPage} from '../pages/inicio/inicio';
+import { MatchPage} from '../pages/match/match';
 import { TimerComponent} from '../components/timer/timer';
 
 import {HttpModule} from '@angular/http'
@@ -19,6 +20,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     HomePage,
     PlayerPage,
     InicioPage,
+    MatchPage,
     TimerComponent
   ],
   imports: [
@@ -34,6 +36,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     HomePage,
     PlayerPage,
     InicioPage,
+    MatchPage,
     TimerComponent
   ],
   providers: [

@@ -73,6 +73,16 @@ export class UserServiceProvider {
         )
       .toPromise();
     }
+    getMatchById(id:String){
+      return this.http
+      .get(this.url+'/partidos/'+id)
+      .map(res => res.json(),
+          err => {
+            console.log(err);
+          }
+        )
+      .toPromise();
+    }
     getEquipoByID(id:String){
       return this.http.get(this.url+'/equipos/id/'+id).map(res=>res.json(),
        error=>console.log(error)).toPromise();

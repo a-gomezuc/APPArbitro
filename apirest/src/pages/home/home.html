@@ -74,6 +74,7 @@
       <p>{{partido?.fechaPartido}} {{partido?.horaPartido}}</p>
       <p>{{partido?.liga}} Jornada {{partido.jornada}}</p>
       <p>Equipación local: {{partido?.equipacionLocal}} Equipación visitante: {{partido?.equipacionVisitante}}</p>
+      <button ion-button (click)="this.cambiaAMatchPage(partido?.id)">Ver partido</button>
     </ion-item>
   </ion-list>
   <ion-list radio-group >
@@ -100,10 +101,10 @@
     </ion-grid>
   </ion-list>
   <ion-list>
-    <ion-item *ngFor="let refree of arbitros">
-      <h1>Nombre: {{ refree?.nombre }} </h1>
-      <p class="comite"> Comité: {{ refree?.comite }}</p>
-      <p class="edad"> Edad: {{ refree?.edad}}</p>
+    <ion-item *ngFor="let referee of arbitros">
+      <h1>Nombre: {{ referee?.nombre }} </h1>
+      <p class="comite"> Comité: {{ referee?.comite }}</p>
+      <p class="edad"> Edad: {{ referee?.edad}}</p>
     </ion-item>
   </ion-list>
   <ion-row justify-content-center>

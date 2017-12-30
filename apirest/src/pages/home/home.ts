@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavController, AlertController, MenuController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
+import { MatchPage } from '../match/match'
 import { TimerComponent } from '../../components/timer/timer'
 import { Storage } from '@ionic/storage';
 @Component({
@@ -14,6 +15,7 @@ export class HomePage {
   alertaBotonBorrar: boolean = null;
   playerPage = PlayerPage;
   homePage = HomePage;
+  matchPage =MatchPage;
   players: any[];
   arbitros: any[];
   partidos: any[]
@@ -203,6 +205,9 @@ export class HomePage {
 
   cambiaAPlayerPage(dni:String) {
     this.navCtrl.push(this.playerPage, {dni});
+  }
+  cambiaAMatchPage(idPartido:String){
+    this.navCtrl.push(this.matchPage,{idPartido})
   }
 
   refrescaUsuarios() {
