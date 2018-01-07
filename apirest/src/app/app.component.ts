@@ -5,6 +5,7 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { InicioPage } from '../pages/inicio/inicio';
+import { CerrarSesionPage } from '../pages/cerrar-sesion/cerrar-sesion';
 @Component({
   templateUrl: 'app.html'
 })
@@ -22,7 +23,8 @@ export class MyApp {
     });
 
     this.pages = [
-      { title: "Inicio", icon: "home", component: HomePage  }
+      { title: "Mis Partidos", icon: "home", component: HomePage  },
+      { title: "Cerrar Sesión", icon: "log-out", component: CerrarSesionPage  },
     ];
   }
   openPage(page) {

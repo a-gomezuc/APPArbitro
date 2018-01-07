@@ -1,3 +1,62 @@
 page-match {
+    #map_canvas{
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+
 
 }
+ion-label.vs{
+    margin-left:90px;
+     }
+h1.liga{
+    position:relative;
+    margin:auto;
+    text-align: center;
+}
+p.liga{
+    position:relative;
+    margin:auto;
+    text-align: center;
+}
+img.visitante{
+   //position: static;
+   float:left;
+   //margin-left:50px;
+}
+img.local{
+    float:left;
+}
+span.goles{
+    font-size: 26px;
+}
+ion-app._gmaps_cdv_ .nav-decor {
+    background-color: rgba(0,0,0,0);
+}
+ion-nav.has-views {
+    background-color: transparent !important;
+    }
+    
+    ion-app.gmapscdv_ .nav-decor{
+    background-color: transparent !important;
+    }
+    .jugadorLocal{
+        background: rgba(21, 70, 230, 0.137);
+        color:rgb(0, 0, 0);
+        font-size: 14px;
+    }
+    .jugadorVisitante{
+        background: rgba(45, 230, 21, 0.137);
+        color:rgb(0, 0, 0);
+        font-size: 14px;
+    }
+    .equipoLocal{
+        background: rgba(21, 70, 230, 0.137);
+    }
+    .equipoVisitante{
+        background: rgba(45, 230, 21, 0.137);
+    }
+    p.dorsal{
+        color:grey;
+    }

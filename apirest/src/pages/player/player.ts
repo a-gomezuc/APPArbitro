@@ -35,7 +35,7 @@ export class PlayerPage {
     });
   }
   obtenerJugadorDni(){
-    this.userService.getPlayerDni(this.navParams.get("dni")).then( res => {
+    this.userService.getPlayerId(this.navParams.get("id")).then( res => {
       this.player = res;
       this.obtenerEquipoJugador(this.player.equipo);
     },

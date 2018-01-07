@@ -95,9 +95,9 @@ export class UserServiceProvider {
       return this.http.get(this.url+"/arbitros/"+id)
       .map(res=>res.json(),error=>{console.log(error)}).toPromise();
     }
-    getPlayerDni(dni:String){
+    getPlayerId(id:String){
       return this.http
-      .get(this.url+'/jugadores/dni/'+dni)
+      .get(this.url+'/jugadores/id/'+id)
       .map(res => res.json(),
           err => {
             console.log(err);
@@ -130,7 +130,7 @@ export class UserServiceProvider {
           let headers = new Headers();//Creación de la cabecera que le tenemos que pasar al método para que nos loguee correctamente.
           this.credentials = btoa(username + ':' + password);//Encriptación de las credenciales del usuario.
           headers.append('Authorization', 'Basic ' + this.credentials);//Añadimos  a la cabecera las credenciales.
-          return this.http.get(this.url+"/iniciarSesion", { headers: headers })
+          return this.http.get(this.url+"/iniciarSesion/ROLE_ARBITRO", { headers: headers })
               .map(response => {
                   this.handleLogIn(response);
                   //localStorage.setItem("user", response.json());
@@ -140,6 +140,16 @@ export class UserServiceProvider {
       } else {
           //return Observable.throw("Server error (401): Introduzca correctamente sus datos de usuario.");
       }
+  }
+  logout(){
+    return this.http
+      .get(this.url+'/cerrarSesion')
+      .map(res => res.json(),
+          err => {
+            console.log(err);
+          }
+        )
+      .toPromise();
   }
   private handleLogIn(response) {
     this.isLogged = true;

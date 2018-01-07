@@ -14,5 +14,53 @@
 
 
 <ion-content padding>
-
+  <h1 class="liga">Liga {{partido?.liga}}. Jornada {{partido?.jornada}}</h1>
+  <h1 class="liga">Día: {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
+  <h1 class="liga">{{partido?.estadio?.nombre}}</h1>
+  <p class="liga">{{partido?.estadio?.poblacion}} ({{partido?.estadio?.provincia}})</p>
+  <div id="map_canvas"></div>
+  <ion-list>
+    <ion-item class="equipoLocal">
+  <ion-avatar item-start>
+    <img class="local"src="https://upload.wikimedia.org/wikipedia/an/4/4d/Atletico_Madrid.png">
+    <ion-label>{{partido?.equipoLocal?.nombre}} <span class="goles">{{partido?.golesLocal}}</span></ion-label>
+    <p>Color Equipación: {{partido?.equipacionLocal}}</p>
+  </ion-avatar>
+    </ion-item>
+    <ion-item class="equipoVisitante">
+    <ion-avatar class="visitanteAvatar" item-start>
+        <img class="visitante" src="https://upload.wikimedia.org/wikipedia/an/4/4d/Atletico_Madrid.png">
+        <ion-label>{{partido?.equipoVisitante?.nombre}} <span class="goles">{{partido?.golesVisitante}}</span></ion-label>
+        <p>Color Equipación: {{partido?.equipacionVisitante}}</p>
+    </ion-avatar>
+  </ion-item>
+    </ion-list>
+    <ion-list>
+    <h1 class="liga">Jugadores equipo local ({{partido?.equipoLocal?.nombre}})</h1>
+    <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.convocadosLocal">
+      <ion-avatar>
+        <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+      </ion-avatar>
+      <h1>{{jugadorLocal?.nombre }} {{ jugadorLocal?.apellidos }}</h1>
+      <p class="dorsal">Dorsal {{ jugadorLocal?.dorsal }}</p>
+      <button ion-button (click)="this.cambiaAPlayerPage(jugadorLocal?.id)">Ver</button>
+      <button class="convocar" *ngIf="this.isNotConvocado(jugadorLocal) && !this.isSancionado(jugadorLocal)" ion-button (click)="convocar(jugadorLocal)">Convocar</button>
+      <button class="desconvocar" *ngIf="!this.isSancionado(jugadorLocal) && !this.isNotConvocado(jugadorLocal)" ion-button (click)="desconvocar(jugadorLocal)">Desconvocar</button>
+      <h1><span class="sancionado" *ngIf="this.isSancionado(jugadorLocal)" >Sancionado</span></h1>  
+      </ion-item>
+    </ion-list>
+      <ion-list>
+      <h1 class="liga">Jugadores equipo visitante ({{partido?.equipoVisitante?.nombre}})</h1>
+      <ion-item class="jugadorVisitante" *ngFor="let player of this.partido?.convocadosVisitante">
+        <ion-avatar>
+          <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+        </ion-avatar>
+        <h1>{{player?.nombre }} {{ player?.apellidos }}</h1>
+        <p class="dorsal">Dorsal {{ player?.dorsal }}</p>
+        <button ion-button (click)="this.cambiaAPlayerPage(player?.id)">Ver</button>
+        <button class="convocar" *ngIf="this.isNotConvocado(player) && !this.isSancionado(player)" ion-button (click)="convocar(player)">Convocar</button>
+        <button class="desconvocar" *ngIf="!this.isSancionado(player) && !this.isNotConvocado(player)" ion-button (click)="desconvocar(player)">Desconvocar</button>
+        <h1><span class="sancionado" *ngIf="this.isSancionado(player)" >Sancionado</span></h1> 
+        </ion-item>
+      </ion-list>
 </ion-content>

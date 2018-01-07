@@ -9,7 +9,9 @@ import { HomePage } from '../pages/home/home';
 import { PlayerPage} from '../pages/player/player';
 import { InicioPage} from '../pages/inicio/inicio';
 import { MatchPage} from '../pages/match/match';
+import { CerrarSesionPage} from '../pages/cerrar-sesion/cerrar-sesion';
 import { TimerComponent} from '../components/timer/timer';
+import { GoogleMaps } from '@ionic-native/google-maps';
 
 import {HttpModule} from '@angular/http'
 import { UserServiceProvider } from '../providers/user-service/user-service';
@@ -21,6 +23,7 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     PlayerPage,
     InicioPage,
     MatchPage,
+    CerrarSesionPage,
     TimerComponent
   ],
   imports: [
@@ -37,11 +40,13 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     PlayerPage,
     InicioPage,
     MatchPage,
+    CerrarSesionPage,
     TimerComponent
   ],
   providers: [
     StatusBar,
     SplashScreen,
+    GoogleMaps,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     UserServiceProvider
   ]

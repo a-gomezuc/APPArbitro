@@ -7,7 +7,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Inicio</ion-title>
+    <ion-title>Mis partidos</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -54,14 +54,8 @@
       </ion-row>
     </div>
   </ion-grid>
-  <button class="cargaArbitros" ion-button (click)="this.marcaGol()">GOL</button>
   <ion-list>
-    <ion-item *ngFor="let gol of goles">
-      <p>{{gol?.goleador}}, &nbsp; {{gol?.minuto}}</p>
-    </ion-item>
-  </ion-list>
-  <ion-list>
-    <ion-item class="jugador" *ngFor="let partido of partidos">
+    <ion-item class="partido" *ngFor="let partido of partidos">
       <ion-avatar>
         <img src="https://images.vexels.com/media/users/3/137466/isolated/preview/8689961068cfb4864f99ee54ad6ef920-cinta-de-escudo-etiqueta-insignia-by-vexels.png">{{partido?.equipoLocal.nombre}}
         <span class="nGoles"> {{partido?.golesLocal}} </span>
@@ -70,55 +64,9 @@
         <img src="https://vignette2.wikia.nocookie.net/hieloyfuego/images/3/32/Casa_Stark_escudo.png/revision/latest?cb=20150129151112">{{partido?.equipoVisitante.nombre}}
         <span class="nGoles"> {{partido?.golesVisitante}} </span>
       </ion-avatar>
-      <p>{{partido?.arbitro?.nombre}}</p>
-      <p>{{partido?.fechaPartido}} {{partido?.horaPartido}}</p>
-      <p>{{partido?.liga}} Jornada {{partido.jornada}}</p>
-      <p>Equipación local: {{partido?.equipacionLocal}} Equipación visitante: {{partido?.equipacionVisitante}}</p>
+      <p class="subtituloPartido">{{partido?.liga}} Jornada {{partido.jornada}}</p>
+      <p class="subtituloPartido">{{partido?.fechaPartido}} {{partido?.horaPartido}}</p>
       <button ion-button (click)="this.cambiaAMatchPage(partido?.id)">Ver partido</button>
     </ion-item>
   </ion-list>
-  <ion-list radio-group >
-    <ion-item class="jugador" *ngFor="let player of players">
-      <ion-avatar>
-        <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
-      </ion-avatar>
-      <h1>{{player?.nombre }} {{ player?.apellidos }}</h1>
-      <p class="dorsal">Dorsal {{ player?.dorsal }}</p>
-      <button ion-button (click)="this.cambiaAPlayerPage(player?.dni)">Ver</button>
-      <button class="convocar" *ngIf="this.isNotConvocado(player) && !this.isSancionado(player)" ion-button (click)="convocar(player)">Convocar</button>
-      <button class="desconvocar" *ngIf="!this.isSancionado(player) && !this.isNotConvocado(player)" ion-button (click)="desconvocar(player)">Desconvocar</button>
-      <h1><span class="sancionado" *ngIf="this.isSancionado(player)" >Sancionado</span></h1>
-      
-    </ion-item>
-    <ion-list *ngFor="let convocado of convocados">
-      <p>{{convocado?.nombre}}</p>
-    </ion-list>
-
-    <ion-grid>
-      <ion-row justify-content-center>
-        <h1>Listado de Árbitros en BBDD</h1>
-      </ion-row>
-    </ion-grid>
-  </ion-list>
-  <ion-list>
-    <ion-item *ngFor="let referee of arbitros">
-      <h1>Nombre: {{ referee?.nombre }} </h1>
-      <p class="comite"> Comité: {{ referee?.comite }}</p>
-      <p class="edad"> Edad: {{ referee?.edad}}</p>
-    </ion-item>
-  </ion-list>
-  <ion-row justify-content-center>
-    <ion-col col-3>
-      <button ion-button class="cargaJugadores" (click)="this.cargarUsuarios()">Jugadores</button>
-    </ion-col>
-    <ion-col col-3>
-      <button class="cargaArbitros" ion-button (click)="this.cargarArbitros()">Árbitros</button>
-    </ion-col>
-    <ion-col col-3>
-      <button class="cargaArbitros" ion-button (click)="this.cargarPartidosArbitro()">Partidos</button>
-    </ion-col>
-
-  </ion-row>
-  <button class="cargaArbitros" ion-button (click)="this.guardaUsuariosLocal()">CargaLocal</button>
-  <button class="cargaArbitros" ion-button (click)="this.escribeUsuariosLocal()">EscribeLocal</button>
 </ion-content>

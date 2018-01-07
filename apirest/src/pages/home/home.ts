@@ -31,45 +31,7 @@ export class HomePage {
         console.log(error);
       });
   }
-  //Opcion mediante botón
-  convocar(jugador){
-    // Comprueba si no existe ya
-    if(this.convocados.indexOf(jugador)==-1){
-    this.convocados.push(jugador);
-    this.alertaConvocado(jugador.nombre, jugador.apellidos);
-    }
-  }
-  alertaConvocado(nombre:String, apellidos:String){
-      let alertaConvocado = this.alerta.create({
-        title: 'Convocado',
-        subTitle: 'El jugador '+nombre+' '+apellidos+' ha sido convocado para disputar el partido.',
-      });
-      alertaConvocado.present();
-      setTimeout(()=>alertaConvocado.dismiss(),3000);
-  }
-  alertaDesconvocado(nombre:String, apellidos:String){
-    let alertaDesconvocado = this.alerta.create({
-      title: 'Desconvocado',
-      subTitle: 'El jugador '+nombre+' '+apellidos+' ha sido desconvocado, no disputará el partido.',
-    });
-    alertaDesconvocado.present()
-    setTimeout(()=>alertaDesconvocado.dismiss(),3000);
-}
-  desconvocar(jugador){
-    let posicion= this.convocados.indexOf(jugador)
-    if(posicion>-1){
-    this.convocados.splice(posicion,1);
-    this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
-    }
-  }
-  isNotConvocado(jugador){
-    if (jugador==undefined){
-      return true;
-    }
-    else{
-      return(this.convocados.indexOf(jugador)==-1);
-  }
-}
+  
 //Opcion con radio buttons 
   seleccionarConvocados(){
       let alert = this.alerta.create();
@@ -91,14 +53,6 @@ export class HomePage {
       });
   
       alert.present();
-  }
-  isSancionado(jugador){
-    if (jugador.fechaSancion==undefined || jugador.fechaSancion=="" || jugador.fechaSancion==null){
-      return false
-    }
-    else{ 
-      return true;
-    }
   }
   modificaJugador(id, jugador) {
     this.userService.modifyPlayer(id, jugador);
@@ -203,9 +157,6 @@ export class HomePage {
     confirm.present();
   }
 
-  cambiaAPlayerPage(dni:String) {
-    this.navCtrl.push(this.playerPage, {dni});
-  }
   cambiaAMatchPage(idPartido:String){
     this.navCtrl.push(this.matchPage,{idPartido})
   }
@@ -227,7 +178,7 @@ export class HomePage {
   ) {
     this.menu.enable(true);
     this.obtenerArbitro();
-    this.convocados=[];
+    this.cargarPartidosArbitro();
   }
   marcaGol() {
     this.goles.push({ goleador: "Diego Costa", minuto: this.timer.minuto + "' " + this.timer.segundos + "''" })
