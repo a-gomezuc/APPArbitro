@@ -20,6 +20,29 @@ p.liga{
     margin:auto;
     text-align: center;
 }
+p.convocado{
+    color:darkblue;
+    font-weight: 700;
+}
+p.jugadorTarjetaAmarilla{
+    color:yellow;
+    text-shadow: -1px 0 grey, 0 1px grey, 1px 0 grey, 0 -1px grey;
+    font-weight: 700;
+}
+p.jugadorTarjetaRoja{
+    color:red;    
+    font-weight: 700;
+}
+button.arbitrar{
+    background: rgb(136, 255, 0);
+    color:black;
+    font-size: 16px;
+    font-weight: 700;
+    width:280px;
+    height:60px;
+    border-radius: 14px;
+    box-shadow: 1px 3px rgba(0, 0, 0, 0.52);
+}
 img.visitante{
    //position: static;
    float:left;
@@ -59,4 +82,19 @@ ion-nav.has-views {
     }
     p.dorsal{
         color:grey;
+    }
+    .btnGol{
+        background: black;
+        color: white;
+    }
+    .btnTAmarilla{
+        background: yellow;
+        color: black;
+    }
+    .btnTRoja{
+        background: red;
+        color: black;
+    }
+    h1.nombreYApellidos{
+        font-size: 22px;
     }

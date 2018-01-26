@@ -26,7 +26,12 @@ export class MatchPage {
   playerPage = PlayerPage;
   partido: any;
   map: any;
-  convocados: any[];
+  convocadosPartidoLocal: any[];
+  convocadosPartidoVisitante: any[];
+  arbitrando: Boolean;
+  incidenciasPartido: any[];
+  jugadoresConTarjetaAmarilla: any[];
+  jugadoresConTarjetaRoja: any[];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -35,7 +40,12 @@ export class MatchPage {
     public menu: MenuController,
     public storage: Storage, public googleMaps: GoogleMaps) {
     this.obtenerPartido();
-    this.convocados = [];
+    this.convocadosPartidoLocal = [];
+    this.convocadosPartidoVisitante = [];
+    this.arbitrando = false;
+    this.incidenciasPartido = [];
+    this.jugadoresConTarjetaAmarilla = [];
+    this.jugadoresConTarjetaRoja = [];
   }
 
   ionViewDidLoad() {
@@ -61,8 +71,10 @@ export class MatchPage {
   //Obtiene el partido
   obtenerPartido() {
     this.userService.getMatchById(this.navParams.get("idPartido")).then(
-      res => {this.partido = res;
-        console.log(res);},
+      res => {
+        this.partido = res;
+        console.log(res);
+      },
       error => console.log(error));
   }
   //Para conocer si un jugador está sancionado.
@@ -75,11 +87,19 @@ export class MatchPage {
     }
   }
 
-  //Añade al array de convocados a un jugador.
-  convocar(jugador) {
+  //Añade al array de convocadosPartidoLocal un jugador.
+  convocarLocal(jugador) {
     // Comprueba si no existe ya
-    if (this.convocados.indexOf(jugador) == -1) {
-      this.convocados.push(jugador);
+    if (this.convocadosPartidoLocal.indexOf(jugador) == -1) {
+      this.convocadosPartidoLocal.push(jugador);
+      this.alertaConvocado(jugador.nombre, jugador.apellidos);
+    }
+  }
+  //Añade al array de convocadosPartidoVisitante un jugador.
+  convocarVisitante(jugador) {
+    // Comprueba si no existe ya
+    if (this.convocadosPartidoVisitante.indexOf(jugador) == -1) {
+      this.convocadosPartidoVisitante.push(jugador);
       this.alertaConvocado(jugador.nombre, jugador.apellidos);
     }
   }
@@ -91,7 +111,7 @@ export class MatchPage {
       subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' ha sido convocado para disputar el partido.',
     });
     alertaConvocado.present();
-    setTimeout(() => alertaConvocado.dismiss(), 3000);
+    setTimeout(() => alertaConvocado.dismiss(), 2000);
   }
   //Muestra un aviso al desconvocar a un jugador.
   alertaDesconvocado(nombre: String, apellidos: String) {
@@ -100,29 +120,168 @@ export class MatchPage {
       subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' ha sido desconvocado, no disputará el partido.',
     });
     alertaDesconvocado.present()
-    setTimeout(() => alertaDesconvocado.dismiss(), 3000);
+    setTimeout(() => alertaDesconvocado.dismiss(), 2000);
   }
 
   //Elimina a un jugador del array de convocados.
-  desconvocar(jugador) {
-    let posicion = this.convocados.indexOf(jugador)
+  desconvocarLocal(jugador) {
+    let posicion = this.convocadosPartidoLocal.indexOf(jugador)
     if (posicion > -1) {
-      this.convocados.splice(posicion, 1);
+      this.convocadosPartidoLocal.splice(posicion, 1);
       this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
     }
   }
-  cambiaAPlayerPage(id: String) {
-    this.navCtrl.push(this.playerPage, {id});
+  //Elimina a un jugador del array de convocados.
+  desconvocarVisitante(jugador) {
+    let posicion = this.convocadosPartidoVisitante.indexOf(jugador)
+    if (posicion > -1) {
+      this.convocadosPartidoVisitante.splice(posicion, 1);
+      this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
+    }
   }
+
+  //Método que activa el arbitraje en el partido.
+  arbitrar() {
+    this.arbitrando = true;
+  }
+  //Método que da paso al arbitraje de un partido.
+  alertaArbitrar() {
+    let confirm = this.alerta.create({
+      title: '¡Atención!',
+      message: 'Una vez pulse sí no podrá realizar cambios. Compruebe los jugadores convocados.\n Ha convocado ' + this.convocadosPartidoLocal.length + ' jugadores locales y ' + this.convocadosPartidoVisitante.length + ' jugadores visitantes.',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.arbitrar();
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  //Método que cambia a la página de jugador.
+  cambiaAPlayerPage(id: String) {
+    this.navCtrl.push(this.playerPage, { id });
+  }
+  //Método que comienza la cuenta del croonómetro
   comienzaCuenta() {
     this.timer.start();
   }
+
+  //Método que devuelve si un jugador no está convocado
   isNotConvocado(jugador) {
     if (jugador == undefined) {
       return true;
     }
     else {
-      return (this.convocados.indexOf(jugador) == -1);
+      return ((this.convocadosPartidoLocal.indexOf(jugador) == -1) && (this.convocadosPartidoVisitante.indexOf(jugador) == -1));
     }
   }
+
+  //Método que añade un gol al equipo local
+  nuevoGolLocal(idJugador, idPartido, minuto) {
+    var incidencia: any = {};
+    incidencia.id = null;
+    incidencia.tipo = "GOL";
+    incidencia.idJugador = idJugador;
+    incidencia.idPartido = idPartido;
+    incidencia.minuto = minuto;
+    incidencia.observaciones = "";
+    this.incidenciasPartido.push(incidencia);
+    this.partido.golesLocal = this.partido.golesLocal + 1;
+    console.log(this.incidenciasPartido);
+  }
+  //Método que añade un gol al equipo visitante
+  nuevoGolVisitante(idJugador, idPartido, minuto) {
+    var incidencia: any = {};
+    incidencia.id = null;
+    incidencia.tipo = "GOL";
+    incidencia.idJugador = idJugador;
+    incidencia.idPartido = idPartido;
+    incidencia.minuto = minuto;
+    incidencia.observaciones = "";
+    this.incidenciasPartido.push(incidencia);
+    this.partido.golesVisitante = this.partido.golesVisitante + 1;
+    console.log(this.incidenciasPartido);
+  }
+  //Muestra una tarjeta amarilla al jugador, si ya tiene una, le muestra una amarilla y una roja. Añade todo a incidencias.
+  mostrarTarjetaAmarilla(jugador, idPartido, minuto) {
+    let posicion = this.jugadoresConTarjetaAmarilla.indexOf(jugador)
+    var incidencia: any = {};
+    if (posicion <= -1) {
+      this.jugadoresConTarjetaAmarilla.push(jugador);
+      incidencia.id = null;
+      incidencia.tipo = "AMARILLA";
+      incidencia.idJugador = jugador.id;
+      incidencia.idPartido = idPartido;
+      incidencia.minuto = minuto;
+      incidencia.observaciones = "";
+      this.incidenciasPartido.push(incidencia);
+      console.log(this.jugadoresConTarjetaAmarilla);
+      console.log(this.incidenciasPartido);
+    }
+    if (posicion > -1) {
+      incidencia.id = null;
+      incidencia.tipo = "AMARILLA";
+      incidencia.idJugador = jugador.id;
+      incidencia.idPartido = idPartido;
+      incidencia.minuto = minuto;
+      incidencia.observaciones = "Segunda tarjeta amarilla";
+      this.incidenciasPartido.push(incidencia);
+      this.mostrarTarjetaRoja(jugador, idPartido, minuto);
+    }
+  }
+  //Muestra una tarjeta roja al jugador.
+  mostrarTarjetaRoja(jugador, idPartido, minuto) {
+    this.jugadoresConTarjetaRoja.push(jugador);
+    var incidencia: any = {};
+    incidencia.id = null;
+    incidencia.tipo = "ROJA";
+    incidencia.idJugador = jugador.id;
+    incidencia.idPartido = idPartido;
+    incidencia.minuto = minuto;
+    incidencia.observaciones = "";
+    this.incidenciasPartido.push(incidencia);
+    console.log(this.jugadoresConTarjetaAmarilla);
+    console.log(this.incidenciasPartido);
+  }
+
+  //Devuelve si un jugador tiene tarjeta amarilla.
+  tieneTarjetaAmarilla(jugador) {
+    if (jugador == undefined) {
+      return false;
+    }
+    else {
+      let posicion = this.jugadoresConTarjetaAmarilla.indexOf(jugador)
+      if (posicion <= -1) {
+        return false
+      }
+      else {
+        return true;
+      }
+    }
+  }
+  //Devuelve si un jugador tiene tarjeta roja.
+  tieneTarjetaRoja(jugador) {
+    if (jugador == undefined) {
+      return false;
+    }
+    else {
+      let posicion = this.jugadoresConTarjetaRoja.indexOf(jugador)
+      if (posicion <= -1) {
+        return false
+      }
+      else {
+        return true;
+      }
+    }
+  }
+
 }

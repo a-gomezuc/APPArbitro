@@ -13,47 +13,6 @@
 
 
 <ion-content padding class="item-background">
-  <ion-grid>
-    <ion-row justify-content-center>
-      <ion-icon class="cronometroIcono" name="timer"></ion-icon>
-    </ion-row>
-    <ion-row justify-content-center>
-      <h2>Cronómetro</h2>
-    </ion-row>
-    <div class="crono">
-      <ion-row justify-content-center>
-        <ion-col col-3>
-          <h1 class="datosCrono">
-            <span class="numCrono">{{this.timer?.hora}}</span> h</h1>
-        </ion-col>
-        <ion-col col-3>
-          <h1 class="datosCrono">
-            <span class="numCrono">{{this.timer?.minuto}}</span> m</h1>
-        </ion-col>
-        <ion-col col-3>
-          <h1 class="datosCrono">
-            <span class="numCrono">{{this.timer?.segundos}}</span> s</h1>
-        </ion-col>
-      </ion-row>
-      <ion-row justify-content-center>
-        <ion-col>
-          <button class="btnCrono" ion-button color="secondary" (click)="this.comienzaCuenta()">Comenzar &nbsp;
-            <!-- <ion-icon name="play"></ion-icon> -->
-          </button>
-        </ion-col>
-        <ion-col>
-          <button class="btnCrono" ion-button color="danger" (click)="this.timer?.reinicia()">Reiniciar &nbsp;
-            <!-- <ion-icon name="repeat"></ion-icon> -->
-          </button>
-        </ion-col>
-        <ion-col>
-          <button class="btnCrono" *ngIf="this.timer?.contador!=undefined" ion-button (click)="this.timer.stop()">Parar &nbsp;
-            <!-- <ion-icon name="pause"></ion-icon> -->
-          </button>
-        </ion-col>
-      </ion-row>
-    </div>
-  </ion-grid>
   <ion-list>
     <ion-item class="partido" *ngFor="let partido of partidos">
       <ion-avatar>

@@ -18,18 +18,11 @@ export class TimerComponent {
 
   start(){
     if (this.contador==undefined){
-    console.log("HOLAAAAA");
     this.contador=setInterval(()=>{
       this.segundos+=1;
       if(this.segundos==60){
         this.segundos=0;
         this.minuto+=1;
-        if(this.minuto==60){
-          this.minuto=0;
-          this.hora+=1;
-          if (this.hora==24)
-            this.hora=0;
-        }
       }
 
 

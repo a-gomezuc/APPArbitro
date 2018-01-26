@@ -36,7 +36,7 @@ export class CerrarSesionPage {
   alertaCerrarSesion(nombre: String, apellidos: String) {
     let confirm = this.alerta.create({
       title: '¡Atención!',
-      message: '¿Seguro quieres cerrar sesión?',
+      message: '¿Seguro que quieres cerrar sesión?',
       buttons: [
         {
           text: 'No',
