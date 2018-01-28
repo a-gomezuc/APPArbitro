@@ -43,6 +43,16 @@ button.arbitrar{
     border-radius: 14px;
     box-shadow: 1px 3px rgba(0, 0, 0, 0.52);
 }
+button.finalizarPartido{
+    background: rgb(172, 2, 2);
+    color:rgb(248, 230, 230);
+    font-size: 16px;
+    font-weight: 700;
+    width:280px;
+    height:60px;
+    border-radius: 14px;
+    box-shadow: 1px 3px rgba(0, 0, 0, 0.52);
+}
 img.visitante{
    //position: static;
    float:left;
@@ -97,4 +107,8 @@ ion-nav.has-views {
     }
     h1.nombreYApellidos{
         font-size: 22px;
+    }
+    .btnEnviarActa{
+        background: rgb(55, 132, 248);
+        color:white;
     }

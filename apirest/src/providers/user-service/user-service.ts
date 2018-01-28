@@ -125,6 +125,15 @@ export class UserServiceProvider {
         )
       .toPromise();
     }
+
+    createActa(acta){
+      return this.http
+      .post(this.url+'/actas',acta)
+      .map(
+        res=> res.json(),
+        err=> console.log(err)
+      ).toPromise();
+    }
    login(username: String, password: String) {
       if (username !== "") {
           let headers = new Headers();//Creación de la cabecera que le tenemos que pasar al método para que nos loguee correctamente.

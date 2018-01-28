@@ -25,13 +25,17 @@ export class MatchPage {
   timer = new TimerComponent();
   playerPage = PlayerPage;
   partido: any;
+  arbitro: any;
   map: any;
   convocadosPartidoLocal: any[];
   convocadosPartidoVisitante: any[];
   arbitrando: Boolean;
+  rellenaActa: Boolean;
   incidenciasPartido: any[];
   jugadoresConTarjetaAmarilla: any[];
   jugadoresConTarjetaRoja: any[];
+  observaciones: String;
+  acta: any;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -39,13 +43,16 @@ export class MatchPage {
     public alerta: AlertController,
     public menu: MenuController,
     public storage: Storage, public googleMaps: GoogleMaps) {
-    this.obtenerPartido();
+    this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
     this.arbitrando = false;
+    this.rellenaActa = false;
     this.incidenciasPartido = [];
     this.jugadoresConTarjetaAmarilla = [];
     this.jugadoresConTarjetaRoja = [];
+    this.observaciones = '';
+    this.acta = {};
   }
 
   ionViewDidLoad() {
@@ -69,13 +76,25 @@ export class MatchPage {
   }
 
   //Obtiene el partido
-  obtenerPartido() {
+  obtenerPartidoyArbitro() {
     this.userService.getMatchById(this.navParams.get("idPartido")).then(
       res => {
         this.partido = res;
+        this.obtenerArbitro();
+        console.log(res);
+        this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
+        this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
         console.log(res);
       },
       error => console.log(error));
+  }
+
+  obtenerArbitro() {
+    this.userService.getArbitroById(this.partido.idArbitro).then(
+      res => {this.arbitro = res,
+        console.log(this.arbitro)},
+      err => console.log(err)
+    );
   }
   //Para conocer si un jugador está sancionado.
   isSancionado(jugador) {
@@ -92,7 +111,8 @@ export class MatchPage {
     // Comprueba si no existe ya
     if (this.convocadosPartidoLocal.indexOf(jugador) == -1) {
       this.convocadosPartidoLocal.push(jugador);
-      this.alertaConvocado(jugador.nombre, jugador.apellidos);
+      this.convocadosPartidoLocal.sort(this.compararPorDorsal);
+      this.alertaConvocado(jugador.nombre, jugador.apellidos, jugador.dorsal);
     }
   }
   //Añade al array de convocadosPartidoVisitante un jugador.
@@ -100,24 +120,25 @@ export class MatchPage {
     // Comprueba si no existe ya
     if (this.convocadosPartidoVisitante.indexOf(jugador) == -1) {
       this.convocadosPartidoVisitante.push(jugador);
-      this.alertaConvocado(jugador.nombre, jugador.apellidos);
+      this.convocadosPartidoVisitante.sort(this.compararPorDorsal);
+      this.alertaConvocado(jugador.nombre, jugador.apellidos, jugador.dorsal);
     }
   }
 
   //Muestra un aviso al convocar a un jugador.
-  alertaConvocado(nombre: String, apellidos: String) {
+  alertaConvocado(nombre: String, apellidos: String, dorsal: Number) {
     let alertaConvocado = this.alerta.create({
       title: 'Convocado',
-      subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' ha sido convocado para disputar el partido.',
+      subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' con dorsal ' + dorsal + ' ha sido convocado para disputar el partido.',
     });
     alertaConvocado.present();
     setTimeout(() => alertaConvocado.dismiss(), 2000);
   }
   //Muestra un aviso al desconvocar a un jugador.
-  alertaDesconvocado(nombre: String, apellidos: String) {
+  alertaDesconvocado(nombre: String, apellidos: String, dorsal: Number) {
     let alertaDesconvocado = this.alerta.create({
       title: 'Desconvocado',
-      subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' ha sido desconvocado, no disputará el partido.',
+      subTitle: 'El jugador ' + nombre + ' ' + apellidos + ' con dorsal ' + dorsal + ' ha sido desconvocado, no disputará el partido.',
     });
     alertaDesconvocado.present()
     setTimeout(() => alertaDesconvocado.dismiss(), 2000);
@@ -128,7 +149,8 @@ export class MatchPage {
     let posicion = this.convocadosPartidoLocal.indexOf(jugador)
     if (posicion > -1) {
       this.convocadosPartidoLocal.splice(posicion, 1);
-      this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
+      this.convocadosPartidoLocal.sort(this.compararPorDorsal);
+      this.alertaDesconvocado(jugador.nombre, jugador.apellidos, jugador.dorsal);
     }
   }
   //Elimina a un jugador del array de convocados.
@@ -136,7 +158,8 @@ export class MatchPage {
     let posicion = this.convocadosPartidoVisitante.indexOf(jugador)
     if (posicion > -1) {
       this.convocadosPartidoVisitante.splice(posicion, 1);
-      this.alertaDesconvocado(jugador.nombre, jugador.apellidos);
+      this.convocadosPartidoVisitante.sort(this.compararPorDorsal);
+      this.alertaDesconvocado(jugador.nombre, jugador.apellidos, jugador.dorsal);
     }
   }
 
@@ -186,11 +209,11 @@ export class MatchPage {
   }
 
   //Método que añade un gol al equipo local
-  nuevoGolLocal(idJugador, idPartido, minuto) {
+  nuevoGolLocal(jugador, idPartido, minuto) {
     var incidencia: any = {};
     incidencia.id = null;
     incidencia.tipo = "GOL";
-    incidencia.idJugador = idJugador;
+    incidencia.idJugador = jugador.id;
     incidencia.idPartido = idPartido;
     incidencia.minuto = minuto;
     incidencia.observaciones = "";
@@ -199,11 +222,11 @@ export class MatchPage {
     console.log(this.incidenciasPartido);
   }
   //Método que añade un gol al equipo visitante
-  nuevoGolVisitante(idJugador, idPartido, minuto) {
+  nuevoGolVisitante(jugador, idPartido, minuto) {
     var incidencia: any = {};
     incidencia.id = null;
     incidencia.tipo = "GOL";
-    incidencia.idJugador = idJugador;
+    incidencia.idJugador = jugador.id;
     incidencia.idPartido = idPartido;
     incidencia.minuto = minuto;
     incidencia.observaciones = "";
@@ -283,5 +306,168 @@ export class MatchPage {
       }
     }
   }
+  //Muestra un aviso al mostrar una tarjeta amarilla al jugador.
+  alertaTarjetaAmarilla(jugador, idPartido, minuto) {
+    if (!this.tieneTarjetaAmarilla(jugador)) {
+      let confirm = this.alerta.create({
+        title: '¡Atención!',
+        message: '¿Desea mostrar tarjeta amarilla al jugador ' + jugador.nombre + ' ' + jugador.apellidos + ' con dorsal ' + jugador.dorsal + '?',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.mostrarTarjetaAmarilla(jugador, idPartido, minuto);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    } else {
+      let confirm = this.alerta.create({
+        title: '¡Atención!',
+        message: '¿Desea mostrar tarjeta amarilla al jugador ' + jugador.nombre + ' ' + jugador.apellidos + ' con dorsal ' + jugador.dorsal + '?. Este jugador ya tiene tarjeta amarilla.',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.mostrarTarjetaAmarilla(jugador, idPartido, minuto);
+            }
+          }
+        ]
+      });
+      confirm.present();
+    }
 
+  }
+  //Muestra un aviso al mostrar una tarjeta roja al jugador.
+  alertaTarjetaRoja(jugador, idPartido, minuto) {
+    let confirm = this.alerta.create({
+      title: '¡Atención!',
+      message: '¿Desea mostrar tarjeta roja al jugador ' + jugador.nombre + ' ' + jugador.apellidos + ' con dorsal ' + jugador.dorsal + '?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.mostrarTarjetaRoja(jugador, idPartido, minuto);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  //Aviso que se muestra al añadir un gol del equipo local al partido.
+  alertaGolLocal(jugador, idPartido, minuto, equipo) {
+    let confirm = this.alerta.create({
+      title: '¡Atención!',
+      message: '¿Desea añadir un gol a  ' + equipo.nombre + ' marcado por ' + jugador.nombre + ' ' + jugador.apellidos + ' con dorsal ' + jugador.dorsal + '?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.nuevoGolLocal(jugador, idPartido, minuto);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  //Aviso que se muestra al añadir un gol del equipo visitante al partido.
+  alertaGolVisitante(jugador, idPartido, minuto, equipo) {
+    let confirm = this.alerta.create({
+      title: '¡Atención!',
+      message: '¿Desea añadir un gol a  ' + equipo.nombre + ' marcado por ' + jugador.nombre + ' ' + jugador.apellidos + ' con dorsal ' + jugador.dorsal + '?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.nuevoGolVisitante(jugador, idPartido, minuto);
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+  //Comparar jugadores por dorsal.
+  compararPorDorsal(jugador1, jugador2) {
+    if (jugador1.dorsal < jugador2.dorsal) {
+      return -1;
+    }
+    if (jugador1.dorsal > jugador2.dorsal) {
+      return 1;
+    }
+    if (jugador1.dorsal == jugador2.dorsal) {
+      return 0;
+    }
+  }
+
+  //Rellenar observaciones del acta.
+  rellenarObservaciones() {
+    let confirm = this.alerta.create({
+      title: '¡Atención!',
+      message: '¿Desea finalizar el partido y rellenar las observaciones del acta?',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.rellenaActa = true;
+          }
+        }
+      ]
+    });
+    confirm.present();
+  }
+
+  //Se crea el nuevo acta y se guarda en la BBDD.
+  enviarActa() {
+    this.acta.id = null;
+    this.acta.idPartido = this.partido.id;
+    this.acta.fecha = this.partido.fechaPartido;
+    this.acta.hora = this.partido.horaPartido;
+    this.acta.equipoLocal = this.partido.equipoLocal;
+    this.acta.equipoVisitante = this.partido.equipoVisitante;
+    this.acta.arbitro = this.arbitro;
+    this.acta.convocadosLocal = this.convocadosPartidoLocal;
+    this.acta.convocadosVisitante = this.convocadosPartidoVisitante;
+    this.acta.golesLocal = this.partido.golesLocal;
+    this.acta.golesVisitante = this.partido.golesVisitante;
+    this.acta.incidencias = this.incidenciasPartido;
+    this.acta.observaciones = this.observaciones;
+    //this.partido.estado="Arbitrado";
+    console.log(this.acta);
+      this.userService.createActa(this.acta).then(
+        res => "Acta generada",
+        err => console.log(err)
+    );
+    console.log(this.observaciones);
+  }
 }
