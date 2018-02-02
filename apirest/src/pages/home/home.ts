@@ -4,6 +4,7 @@ import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { MatchPage } from '../match/match'
 import { TimerComponent } from '../../components/timer/timer'
+import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
 @Component({
   selector: 'page-home',
@@ -21,14 +22,28 @@ export class HomePage {
   partidos: any[]
   playerEliminado: any;
   timer = new TimerComponent();
+  manejadorErrores = new ManejadorErroresComponent(this.alerta);
   goles: Array<{ goleador: String, minuto: String }> = [];
+
+  constructor(
+    public navCtrl: NavController,
+    public userService: UserServiceProvider,
+    public alerta: AlertController,
+    public menu: MenuController,
+    public storage: Storage,
+    public navParams: NavParams,
+  ) {
+    this.menu.enable(true);
+    this.obtenerArbitro();
+    this.cargarPartidosArbitro();
+  }
 
   cargarUsuarios() {
     this.userService.getUsers().then(res => {
       this.players = res;
     },
       error => {
-        console.log(error);
+        this.manejadorErrores.manejarError(error);
       });
   }
   
@@ -73,7 +88,7 @@ export class HomePage {
       this.arbitros = res;
     },
       error => {
-        console.log(error);
+        this.manejadorErrores.manejarError(error);
       });
   }
   cargarPartidos() {
@@ -81,13 +96,13 @@ export class HomePage {
       this.partidos = res;
     },
       error => {
-        console.log(error);
+        this.manejadorErrores.manejarError(error);
       });
       this.partidos.forEach(partido => {
        this.userService.getArbitroById(partido.idArbitro).then(res=>{
          console.log(res)
       partido.arbitro=res},
-    error=>{console.log(error)});
+    error=>{this.manejadorErrores.manejarError(error)});
       });
   }
   cargarPartidosArbitro() {
@@ -100,16 +115,9 @@ export class HomePage {
         this.userService.getMatchesByRefree(usuario.id).then(
           res => {
             this.partidos = res;
-            //Por cada partido guarda su arbitro (ya que solo contiene el id)
-            this.partidos.forEach(partido => {
-              this.userService.getArbitroById(partido.idArbitro).then(arb=>{
-                console.log(arb)
-             partido.arbitro=arb},
-           error=>{console.log(error)});
-             });
           },
           err => {
-            console.log(err)
+            this.manejadorErrores.manejarError(err);
           }
         );
       });
@@ -122,7 +130,7 @@ export class HomePage {
       //Guardamos en memoria local para tener al usuario logueado
         this.storage.set('UsuarioConectado', JSON.stringify(res))
       },
-      err => { console.log(err) });
+      err => { this.manejadorErrores.manejarError(err) });
 
     //this.navCtrl.setRoot(this.homePage);
   }
@@ -132,7 +140,7 @@ export class HomePage {
       this.cargarUsuarios();
     },
       error => {
-        console.log(error);
+        this.manejadorErrores.manejarError(error);
       });
   }
 
@@ -166,19 +174,6 @@ export class HomePage {
   }
   comienzaCuenta() {
     this.timer.start();
-  }
-
-  constructor(
-    public navCtrl: NavController,
-    public userService: UserServiceProvider,
-    public alerta: AlertController,
-    public menu: MenuController,
-    public storage: Storage,
-    public navParams: NavParams,
-  ) {
-    this.menu.enable(true);
-    this.obtenerArbitro();
-    this.cargarPartidosArbitro();
   }
   marcaGol() {
     this.goles.push({ goleador: "Diego Costa", minuto: this.timer.minuto + "' " + this.timer.segundos + "''" })

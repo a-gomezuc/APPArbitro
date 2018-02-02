@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { AlertController, MenuController, IonicPage, NavController, NavParams } from 'ionic-angular';
+import { AlertController, MenuController, IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { GoogleMaps, GoogleMapOptions } from '@ionic-native/google-maps';
 import { PlayerPage } from '../player/player'
+import { HomePage } from '../home/home'
 import { TimerComponent } from '../../components/timer/timer'
+import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
 
 
@@ -23,7 +25,9 @@ import { Storage } from '@ionic/storage';
 export class MatchPage {
 
   timer = new TimerComponent();
+  manejadorErrores = new ManejadorErroresComponent(this.alerta);
   playerPage = PlayerPage;
+  homePage = HomePage;
   partido: any;
   arbitro: any;
   map: any;
@@ -41,6 +45,7 @@ export class MatchPage {
     public navParams: NavParams,
     public userService: UserServiceProvider,
     public alerta: AlertController,
+    public loadingCtrl: LoadingController,
     public menu: MenuController,
     public storage: Storage, public googleMaps: GoogleMaps) {
     this.obtenerPartidoyArbitro();
@@ -86,14 +91,14 @@ export class MatchPage {
         this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
         console.log(res);
       },
-      error => console.log(error));
+      error => this.manejadorErrores.manejarError(error));
   }
 
   obtenerArbitro() {
     this.userService.getArbitroById(this.partido.idArbitro).then(
       res => {this.arbitro = res,
         console.log(this.arbitro)},
-      err => console.log(err)
+      err => this.manejadorErrores.manejarError(err)
     );
   }
   //Para conocer si un jugador está sancionado.
@@ -447,6 +452,32 @@ export class MatchPage {
     confirm.present();
   }
 
+  //Carga de un segundo de envío de acta.
+  presentLoadingActa() {
+    let loader = this.loadingCtrl.create({
+      content: "Enviando acta...",
+      duration: 1000
+    });
+    loader.present().then(()=>{
+      this.alertaActaEnviada();
+      });
+  }
+
+  //Aviso cuando un acta se ha enviado
+  alertaActaEnviada() {
+    let alertaActa = this.alerta.create({
+      title: 'Acta enviada',
+      subTitle: 'El acta se ha enviado correctamente.',
+    });
+    alertaActa.present();
+    setTimeout(() => alertaActa.dismiss(), 2000);
+  }
+
+  //Cambio a la página principal
+  cambiaAHomePage(){
+    this.navCtrl.setRoot(this.homePage, { usuario: this.arbitro.nombreUsuario });
+  }
+
   //Se crea el nuevo acta y se guarda en la BBDD.
   enviarActa() {
     this.acta.id = null;
@@ -465,8 +496,9 @@ export class MatchPage {
     //this.partido.estado="Arbitrado";
     console.log(this.acta);
       this.userService.createActa(this.acta).then(
-        res => "Acta generada",
-        err => console.log(err)
+        res => {this.presentLoadingActa();
+        this.cambiaAHomePage()},
+        err => this.manejadorErrores.manejarError(err)
     );
     console.log(this.observaciones);
   }
