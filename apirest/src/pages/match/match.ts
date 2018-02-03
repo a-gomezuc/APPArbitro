@@ -47,7 +47,8 @@ export class MatchPage {
     public alerta: AlertController,
     public loadingCtrl: LoadingController,
     public menu: MenuController,
-    public storage: Storage, public googleMaps: GoogleMaps) {
+    public storage: Storage,
+    public googleMaps: GoogleMaps) {
     this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
@@ -60,17 +61,17 @@ export class MatchPage {
     this.acta = {};
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad MatchPage');
+  ionViewDidLoad(){
     this.loadMap();
   }
+
   //Carga el mapa del estadio.
   loadMap() {
     let mapOptions: GoogleMapOptions = {
       camera: {
         target: {
-          lat: 43.0741904, // default location
-          lng: -89.3809802 // default location
+          lat: 33.5,//this.partido.estadio.latitud,
+          lng: -7.11,//this.partido.estadio.longitud 
         },
         zoom: 18,
         tilt: 30
@@ -89,6 +90,7 @@ export class MatchPage {
         console.log(res);
         this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
         this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
+        this.loadMap();
         console.log(res);
       },
       error => this.manejadorErrores.manejarError(error));
@@ -96,8 +98,10 @@ export class MatchPage {
 
   obtenerArbitro() {
     this.userService.getArbitroById(this.partido.idArbitro).then(
-      res => {this.arbitro = res,
-        console.log(this.arbitro)},
+      res => {
+      this.arbitro = res,
+        console.log(this.arbitro)
+      },
       err => this.manejadorErrores.manejarError(err)
     );
   }
@@ -458,9 +462,9 @@ export class MatchPage {
       content: "Enviando acta...",
       duration: 1000
     });
-    loader.present().then(()=>{
+    loader.present().then(() => {
       this.alertaActaEnviada();
-      });
+    });
   }
 
   //Aviso cuando un acta se ha enviado
@@ -474,7 +478,7 @@ export class MatchPage {
   }
 
   //Cambio a la página principal
-  cambiaAHomePage(){
+  cambiaAHomePage() {
     this.navCtrl.setRoot(this.homePage, { usuario: this.arbitro.nombreUsuario });
   }
 
@@ -495,10 +499,12 @@ export class MatchPage {
     this.acta.observaciones = this.observaciones;
     //this.partido.estado="Arbitrado";
     console.log(this.acta);
-      this.userService.createActa(this.acta).then(
-        res => {this.presentLoadingActa();
-        this.cambiaAHomePage()},
-        err => this.manejadorErrores.manejarError(err)
+    this.userService.createActa(this.acta).then(
+      res => {
+        this.presentLoadingActa();
+        this.cambiaAHomePage()
+      },
+      err => this.manejadorErrores.manejarError(err)
     );
     console.log(this.observaciones);
   }

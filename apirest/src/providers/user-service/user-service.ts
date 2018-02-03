@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Http, Headers, RequestOptions } from '@angular/http';
+import { Http, Headers } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/toPromise';
@@ -17,13 +17,14 @@ import 'rxjs/add/operator/catch';
 export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
-  private userLogged: string;//Usuario logueado actuamente en el sistema
-  public url: String = "http://localhost:8080"
+  public url: String = "http://192.168.1.101:8080"
   constructor(
     public http: Http,
   ) { }
 
-  getUsers() {
+  //JUGADORES
+
+  getPlayers() {
     return this.http
       .get(this.url + '/jugadores')
       .map(res => res.json(),
@@ -43,9 +44,10 @@ export class UserServiceProvider {
       )
       .toPromise();
   }
-  getRefrees() {
+
+  deletePlayer(nombre: String, apellidos: String) {
     return this.http
-      .get(this.url + '/arbitros')
+      .delete(this.url + '/jugadores/' + nombre + '/' + apellidos)
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -53,6 +55,37 @@ export class UserServiceProvider {
       )
       .toPromise();
   }
+
+  getPlayerId(id: String) {
+    return this.http
+      .get(this.url + '/jugadores/id/' + id)
+      .map(res => res.json(),
+      err => {
+        console.log(err);
+      }
+      )
+      .toPromise();
+  }
+  getPlayer(nombre: String, apellidos: String) {
+    return this.http
+      .get(this.url + '/jugadores/' + nombre + '/' + apellidos)
+      .map(res => res.json(),
+      err => {
+        console.log(err);
+      }
+      )
+      .toPromise();
+  }
+
+  //EQUIPOS
+  getEquipoByID(id: String) {
+    return this.http.get(this.url + '/equipos/id/' + id).map(res => res.json(),
+      error => console.log(error)).toPromise();
+  }
+
+
+
+  //PARTIDOS
   getMatches() {
     return this.http
       .get(this.url + '/partidos')
@@ -83,9 +116,18 @@ export class UserServiceProvider {
       )
       .toPromise();
   }
-  getEquipoByID(id: String) {
-    return this.http.get(this.url + '/equipos/id/' + id).map(res => res.json(),
-      error => console.log(error)).toPromise();
+
+
+  //ÁRBITROS
+  getRefrees() {
+    return this.http
+      .get(this.url + '/arbitros')
+      .map(res => res.json(),
+      err => {
+        console.log(err);
+      }
+      )
+      .toPromise();
   }
   getArbitroByUserName(username: String) {
     return this.http.get(this.url + "/arbitros/nombreUsuario/" + username)
@@ -95,37 +137,8 @@ export class UserServiceProvider {
     return this.http.get(this.url + "/arbitros/" + id)
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
-  getPlayerId(id: String) {
-    return this.http
-      .get(this.url + '/jugadores/id/' + id)
-      .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
-      )
-      .toPromise();
-  }
-  getUser(nombre: String, apellidos: String) {
-    return this.http
-      .get(this.url + '/jugadores/' + nombre + '/' + apellidos)
-      .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
-      )
-      .toPromise();
-  }
-  deleteUser(nombre: String, apellidos: String) {
-    return this.http
-      .delete(this.url + '/jugadores/' + nombre + '/' + apellidos)
-      .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
-      )
-      .toPromise();
-  }
 
+  //ACTA
   createActa(acta) {
     return this.http
       .post(this.url + '/actas', acta)
@@ -134,6 +147,8 @@ export class UserServiceProvider {
       err => console.log(err)
       ).toPromise();
   }
+
+  //SESION
   login(username: String, password: String) {
     if (username !== "") {
       let headers = new Headers();//Creación de la cabecera que le tenemos que pasar al método para que nos loguee correctamente.

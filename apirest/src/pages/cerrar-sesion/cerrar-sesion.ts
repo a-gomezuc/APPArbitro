@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { IonicPage, MenuController, AlertController,NavController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
+import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { InicioPage } from '../inicio/inicio';
 
 /**
@@ -18,6 +19,7 @@ import { InicioPage } from '../inicio/inicio';
 export class CerrarSesionPage {
 
     inicioPage=InicioPage;
+    public manejadorErrores = new ManejadorErroresComponent(this.alerta);
   constructor(public navCtrl: NavController, public alerta: AlertController, public navParams: NavParams,public menu: MenuController,public userService: UserServiceProvider) {
     this.menu.enable(true);
   }
@@ -28,10 +30,10 @@ export class CerrarSesionPage {
 
   cerrarSesion(){
     this.userService.logout().then(
-      res => 
+      res =>{
         console.log(res),
-      error => console.log(error));
-    this.navCtrl.setRoot(this.inicioPage);
+        this.navCtrl.setRoot(this.inicioPage)},
+      error => this.manejadorErrores.manejarError(error));
   }
   alertaCerrarSesion(nombre: String, apellidos: String) {
     let confirm = this.alerta.create({
