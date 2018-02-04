@@ -15,16 +15,14 @@ import { GoogleMaps } from '@ionic-native/google-maps';
 
 import {HttpModule} from '@angular/http'
 import { UserServiceProvider } from '../providers/user-service/user-service';
+import { ManejadorErroresComponent } from '../components/manejador-errores/manejador-errores';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    PlayerPage,
-    InicioPage,
-    MatchPage,
-    CerrarSesionPage,
-    TimerComponent
+    TimerComponent,
+    ManejadorErroresComponent
   ],
   imports: [
     BrowserModule,
@@ -41,7 +39,8 @@ import { UserServiceProvider } from '../providers/user-service/user-service';
     InicioPage,
     MatchPage,
     CerrarSesionPage,
-    TimerComponent
+    TimerComponent,
+    ManejadorErroresComponent
   ],
   providers: [
     StatusBar,

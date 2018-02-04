@@ -1,12 +1,22 @@
 import { Component } from '@angular/core';
 import { AlertController, MenuController, IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
-import { GoogleMaps, GoogleMapOptions } from '@ionic-native/google-maps';
+import {
+  GoogleMaps,
+  GoogleMap,
+  GoogleMapsEvent,
+  GoogleMapOptions,
+  CameraPosition,
+  MarkerOptions,
+  LatLng,
+  Marker
+} from '@ionic-native/google-maps';
 import { PlayerPage } from '../player/player'
 import { HomePage } from '../home/home'
 import { TimerComponent } from '../../components/timer/timer'
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
+import { Platform } from 'ionic-angular/platform/platform';
 
 
 
@@ -30,7 +40,7 @@ export class MatchPage {
   homePage = HomePage;
   partido: any;
   arbitro: any;
-  map: any;
+  map: GoogleMap;
   convocadosPartidoLocal: any[];
   convocadosPartidoVisitante: any[];
   arbitrando: Boolean;
@@ -48,7 +58,8 @@ export class MatchPage {
     public loadingCtrl: LoadingController,
     public menu: MenuController,
     public storage: Storage,
-    public googleMaps: GoogleMaps) {
+    public googleMaps: GoogleMaps, 
+    public plt: Platform) {
     this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
@@ -61,24 +72,62 @@ export class MatchPage {
     this.acta = {};
   }
 
-  ionViewDidLoad(){
-    this.loadMap();
-  }
 
-  //Carga el mapa del estadio.
   loadMap() {
-    let mapOptions: GoogleMapOptions = {
-      camera: {
-        target: {
-          lat: 33.5,//this.partido.estadio.latitud,
-          lng: -7.11,//this.partido.estadio.longitud 
-        },
-        zoom: 18,
-        tilt: 30
-      }
-    };
+    // let location = new LatLng(40.291570,-3.826438);
+    // let mapOptions: GoogleMapOptions = {
+    //   camera: {
+    //     target:{
+    //       lat: 40.291570,
+    //       lng: -3.826438
+    //     },
+    //     zoom: 18,
+    //     tilt: 30
+    //   }
+    // };
 
-    this.map = GoogleMaps.create('map_canvas', mapOptions);
+    this.map = GoogleMaps.create(document.getElementById('map_canvas')/*, mapOptions*/);
+
+    // Wait the MAP_READY before using any methods.
+    this.map.one(GoogleMapsEvent.MAP_READY)
+      .then((data:any) => {
+        //this.alertaPrueba();
+        let coordinates: LatLng = new LatLng(this.partido.estadio.longitud, this.partido.estadio.latitud);
+        let position = {
+          target: coordinates,
+          zoom: 17
+        };
+        this.map.animateCamera(position);
+        let markerOptions: MarkerOptions = {
+          position: coordinates,
+          title: this.partido.estadio.nombre
+        };
+        const marker = this.map.addMarker(markerOptions)
+        .then((marker: Marker) => {
+          marker.showInfoWindow();
+      })
+        // Now you can use all methods safely.
+        // this.map.addMarker({
+        //   title: 'My Position',
+        //   icon: 'blue',
+        //   animation: 'DROP',
+        //   position: {
+        //     lat: 40.291570,
+        //     lng: -3.826438
+        //   }
+        // }).then((marker:Marker)=>
+        // marker.showInfoWindow());
+        // this.map.moveCamera({
+        //   target: {
+        //     lat: 40.291570,
+        //     lng: -3.826438
+        //   }
+        // });
+      });
+
+  }
+  getPosition(): void {
+
   }
 
   //Obtiene el partido
@@ -99,8 +148,8 @@ export class MatchPage {
   obtenerArbitro() {
     this.userService.getArbitroById(this.partido.idArbitro).then(
       res => {
-      this.arbitro = res,
-        console.log(this.arbitro)
+        this.arbitro = res,
+          console.log(this.arbitro)
       },
       err => this.manejadorErrores.manejarError(err)
     );
@@ -472,6 +521,15 @@ export class MatchPage {
     let alertaActa = this.alerta.create({
       title: 'Acta enviada',
       subTitle: 'El acta se ha enviado correctamente.',
+    });
+    alertaActa.present();
+    setTimeout(() => alertaActa.dismiss(), 2000);
+  }
+
+  alertaPrueba() {
+    let alertaActa = this.alerta.create({
+      title: 'Prueba',
+      subTitle: 'Llega aquí',
     });
     alertaActa.present();
     setTimeout(() => alertaActa.dismiss(), 2000);

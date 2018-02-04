@@ -13,14 +13,14 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content>
   <div *ngIf="!this.rellenaActa">
     <div *ngIf="!this.arbitrando">
       <h1 class="liga">Liga {{partido?.liga}}. Jornada {{partido?.jornada}}</h1>
       <h1 class="liga">Día: {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
       <h1 class="liga">{{partido?.estadio?.nombre}}</h1>
       <p class="liga">{{partido?.estadio?.poblacion}} ({{partido?.estadio?.provincia}})</p>
-      <div id="map_canvas"></div>
+      <div class="mapa" id="map_canvas"></div>
     </div>
     <ion-grid *ngIf="this.arbitrando">
       <ion-row justify-content-center>
@@ -153,13 +153,13 @@
       <button *ngIf="!this.arbitrando" class="arbitrar" (click)="this.alertaArbitrar()">Arbitrar partido</button>
     </div>
     <div text-center>
-        <button class="finalizarPartido" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()">Finalizar partido</button>
-      </div>
+      <button class="finalizarPartido" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()">Finalizar partido</button>
+    </div>
   </div>
   <div *ngIf="this.rellenaActa">
-  <h1 text-center>Observaciones del partido</h1>
-  <ion-textarea placeholder="Introduzca las observaciones del partido" [(ngModel)]="observaciones"></ion-textarea>
-  <div text-center>
+    <h1 text-center>Observaciones del partido</h1>
+    <ion-textarea placeholder="Introduzca las observaciones del partido" [(ngModel)]="observaciones"></ion-textarea>
+    <div text-center>
       <button class="btnEnviarActa" ion-button (click)="this.enviarActa()">Enviar acta</button>
     </div>
   </div>
