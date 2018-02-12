@@ -13,14 +13,14 @@
 </ion-header>
 
 
-<ion-content>
+<ion-content padding>
   <div *ngIf="!this.rellenaActa">
-    <div *ngIf="!this.arbitrando">
+    <div class="ligaDiv" text-center *ngIf="!this.arbitrando">
       <h1 class="liga">Liga {{partido?.liga}}. Jornada {{partido?.jornada}}</h1>
       <h1 class="liga">Día: {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
       <h1 class="liga">{{partido?.estadio?.nombre}}</h1>
       <p class="liga">{{partido?.estadio?.poblacion}} ({{partido?.estadio?.provincia}})</p>
-      <div class="mapa" id="map_canvas"></div>
+      <button class="btnVerMapa" ion-button (click)="this.cambiaAMapaPage(this.partido.estadio)">Ver en mapa</button>
     </div>
     <ion-grid *ngIf="this.arbitrando">
       <ion-row justify-content-center>
