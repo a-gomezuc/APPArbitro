@@ -26,11 +26,16 @@ export class PlayerPage {
     public userService: UserServiceProvider,
     public storage: Storage,
     public alerta: AlertController) {
-    this.obtenerJugadorId();
+    this.obtenerDatos();
   }
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad PlayerPage');
+  }
+
+  obtenerDatos(){
+    this.player = this.navParams.get("jugador");
+    this.player.equipo = this.navParams.get("nombreEquipo");
   }
   obtenerJugadorId() {
     this.userService.getPlayerId(this.navParams.get("id")).then(res => {
@@ -48,11 +53,19 @@ export class PlayerPage {
   }
 
   isSancionado(jugador) {
-    if (jugador == undefined || jugador.fechaSancion == undefined || jugador.fechaSancion == "" || jugador.fechaSancion == null) {
-      return false
+    if (jugador==undefined || jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
+      return false;
     }
     else {
-      return true;
+      if (jugador.sanciones.length > 0) {
+        if (jugador.sanciones[0].enVigor == false) {
+          return false
+        }
+        else {
+          return true;
+        }
+      }
+      return false;
     }
   }
 }

@@ -88,11 +88,19 @@ export class MatchPage {
   }
   //Para conocer si un jugador está sancionado.
   isSancionado(jugador) {
-    if (jugador.fechaSancion == undefined || jugador.fechaSancion == "" || jugador.fechaSancion == null) {
-      return false
+    if (jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
+      return false;
     }
     else {
-      return true;
+      if (jugador.sanciones.length > 0) {
+        if (jugador.sanciones[0].enVigor == false) {
+          return false
+        }
+        else {
+          return true;
+        }
+      }
+      return false;
     }
   }
 
@@ -180,8 +188,8 @@ export class MatchPage {
   }
 
   //Método que cambia a la página de jugador.
-  cambiaAPlayerPage(id: String) {
-    this.navCtrl.push(this.playerPage, { id });
+  cambiaAPlayerPage(nombreEquipo: String, jugador:any) {
+    this.navCtrl.push(this.playerPage, { nombreEquipo, jugador});
   }
   //Método que cambia a la página del mapa.
   cambiaAMapaPage(estadio: any) {

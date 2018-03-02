@@ -15,14 +15,13 @@
       </ion-avatar>
     <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete">
     <h1 *ngIf="this.isSancionado(player)" class="sancionado">Este jugador está sancionado actualmente.</h1>
-    <h1 *ngIf="this.isSancionado(player)" class="sancionado"><span class="">Fecha fin de sanción: </span>{{player?.fechaSancion}}</h1>
-    <h1><span class="valorJugador">Equipo: </span>{{player?.equipo?.nombre}}</h1>
+    <h1 *ngIf="this.isSancionado(player)" class="sancionado"><span class="">Partidos restantes: </span>{{player?.sanciones[0].partidosRestantes}}</h1>
+    <h1><span class="valorJugador">Equipo: </span>{{player?.equipo}}</h1>
     <h1><span class="valorJugador">Nombre: </span>{{player?.nombre}}</h1>
     <h1><span class="valorJugador">Apellidos: </span>{{player?.apellidos}}</h1>
     <h1><span class="valorJugador">DNI: </span>{{player?.dni}}</h1>
     <h1><span class="valorJugador">Dorsal: </span>{{player?.dorsal}}</h1>
     <h1><span class="valorJugador">Fecha de nacimiento: </span>{{player?.fechaNacimiento}}</h1>
-    <h1><span class="valorJugador">Edad: </span>{{player?.edad}}</h1>
     <h1><span class="valorJugador">Lugar de nacimiento: </span>{{player?.lugarNacimiento}}</h1>
     <h1><span class="valorJugador">Nacionalidad: </span>{{player?.nacionalidad}}</h1>
 </ion-content>

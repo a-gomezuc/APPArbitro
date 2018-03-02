@@ -17,6 +17,7 @@ import 'rxjs/add/operator/catch';
 export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
+  private headers:any;
   public url: String = "http://192.168.1.101:8080"
   constructor(
     public http: Http,
@@ -26,7 +27,7 @@ export class UserServiceProvider {
 
   getPlayers() {
     return this.http
-      .get(this.url + '/jugadores')
+      .get(this.url + '/jugadores',{ headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -36,7 +37,7 @@ export class UserServiceProvider {
   }
   modifyPlayer(id, jugador) {
     return this.http
-      .put((this.url + '/jugadores/' + id), jugador)
+      .put((this.url + '/jugadores/' + id), jugador, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -47,7 +48,7 @@ export class UserServiceProvider {
 
   deletePlayer(nombre: String, apellidos: String) {
     return this.http
-      .delete(this.url + '/jugadores/' + nombre + '/' + apellidos)
+      .delete(this.url + '/jugadores/' + nombre + '/' + apellidos, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -58,7 +59,7 @@ export class UserServiceProvider {
 
   getPlayerId(id: String) {
     return this.http
-      .get(this.url + '/jugadores/id/' + id)
+      .get(this.url + '/jugadores/id/' + id, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -68,7 +69,7 @@ export class UserServiceProvider {
   }
   getPlayer(nombre: String, apellidos: String) {
     return this.http
-      .get(this.url + '/jugadores/' + nombre + '/' + apellidos)
+      .get(this.url + '/jugadores/' + nombre + '/' + apellidos, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -79,7 +80,7 @@ export class UserServiceProvider {
 
   //EQUIPOS
   getEquipoByID(id: String) {
-    return this.http.get(this.url + '/equipos/id/' + id).map(res => res.json(),
+    return this.http.get(this.url + '/equipos/id/' + id, { headers: this.headers }).map(res => res.json(),
       error => console.log(error)).toPromise();
   }
 
@@ -88,7 +89,7 @@ export class UserServiceProvider {
   //PARTIDOS
   getMatches() {
     return this.http
-      .get(this.url + '/partidos')
+      .get(this.url + '/partidos', { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -98,7 +99,7 @@ export class UserServiceProvider {
   }
   getMatchesByRefree(refree: String) {
     return this.http
-      .get(this.url + '/partidos/arbitro/' + refree)
+      .get(this.url + '/partidos/arbitro/' + refree, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -108,7 +109,7 @@ export class UserServiceProvider {
   }
   getMatchById(id: String) {
     return this.http
-      .get(this.url + '/partidos/' + id)
+      .get(this.url + '/partidos/' + id, { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -121,7 +122,7 @@ export class UserServiceProvider {
   //ÁRBITROS
   getRefrees() {
     return this.http
-      .get(this.url + '/arbitros')
+      .get(this.url + '/arbitros', { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
@@ -130,7 +131,7 @@ export class UserServiceProvider {
       .toPromise();
   }
   getArbitroByUserName(username: String) {
-    return this.http.get(this.url + "/arbitros/nombreUsuario/" + username)
+    return this.http.get(this.url + "/arbitros/nombreUsuario/" + username, { headers: this.headers })
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
   getArbitroById(id: String) {
@@ -140,8 +141,9 @@ export class UserServiceProvider {
 
   //ACTA
   createActa(acta) {
+
     return this.http
-      .post(this.url + '/actas', acta)
+      .post(this.url + '/actas', acta,{ headers: this.headers })
       .map(
       res => res.json(),
       err => console.log(err)
@@ -151,10 +153,10 @@ export class UserServiceProvider {
   //SESION
   login(username: String, password: String) {
     if (username !== "") {
-      let headers = new Headers();//Creación de la cabecera que le tenemos que pasar al método para que nos loguee correctamente.
+      this.headers = new Headers();//Creación de la cabecera que le tenemos que pasar al método para que nos loguee correctamente.
       this.credentials = btoa(username + ':' + password);//Encriptación de las credenciales del usuario.
-      headers.append('Authorization', 'Basic ' + this.credentials);//Añadimos  a la cabecera las credenciales.
-      return this.http.get(this.url + "/iniciarSesion/ROLE_ARBITRO", { headers: headers })
+      this.headers.append('Authorization', 'Basic ' + this.credentials);//Añadimos  a la cabecera las credenciales.
+      return this.http.get(this.url + "/iniciarSesion/ROLE_ARBITRO", { headers: this.headers })
         .map(response => {
           this.handleLogIn(response);
           //localStorage.setItem("user", response.json());
@@ -168,7 +170,7 @@ export class UserServiceProvider {
   }
   logout() {
     return this.http
-      .get(this.url + '/cerrarSesion')
+      .get(this.url + '/cerrarSesion', { headers: this.headers })
       .map(res => res.json(),
       err => {
         console.log(err);
