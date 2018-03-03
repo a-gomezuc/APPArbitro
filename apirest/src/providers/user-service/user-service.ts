@@ -18,7 +18,7 @@ export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers:any;
-  public url: String = "http://192.168.1.101:8080"
+  public url: String = "https://localhost:8443"
   constructor(
     public http: Http,
   ) { }
@@ -135,7 +135,7 @@ export class UserServiceProvider {
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
   getArbitroById(id: String) {
-    return this.http.get(this.url + "/arbitros/" + id)
+    return this.http.get(this.url + "/arbitros/" + id, { headers: this.headers })
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
 

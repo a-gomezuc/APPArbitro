@@ -22,11 +22,11 @@ import { MapaPage } from '../pages/mapa/mapa';
   declarations: [
     MyApp,
     HomePage,
-    // PlayerPage,
-    // InicioPage,
-    // MatchPage,
-    // CerrarSesionPage,
-    // MapaPage,
+    PlayerPage,
+    InicioPage,
+    MatchPage,
+    CerrarSesionPage,
+    MapaPage,
     TimerComponent,
     ManejadorErroresComponent
   ],
