@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, AlertController, MenuController, NavParams } from 'ionic-angular';
+import { NavController, AlertController, LoadingController, MenuController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { MatchPage } from '../match/match'
@@ -26,6 +26,7 @@ export class HomePage {
   goles: Array<{ goleador: String, minuto: String }> = [];
 
   constructor(
+    public loadingCtrl : LoadingController,
     public navCtrl: NavController,
     public userService: UserServiceProvider,
     public alerta: AlertController,
@@ -60,17 +61,26 @@ export class HomePage {
 
   }
   obtenerArbitroYCargarPartidos() {
+    let loader = this.loadingCtrl.create({
+      content:"Cargando partidos"
+    });
+    loader.present();
     if(this.navParams.get('usuario')!=undefined){
     this.userService.getArbitroByUserName(this.navParams.get('usuario')).then(
       res => {
         this.connectedUser = res;
         //Guardamos en memoria local para tener al usuario logueado
         this.storage.set('UsuarioConectado', JSON.stringify(res)).then(() => this.cargarPartidosArbitro())
+        loader.dismiss();
       },
-      err => { this.manejadorErrores.manejarError(err) });
+      err => { 
+        this.manejadorErrores.manejarError(err);
+        loader.dismiss();
+      });
     }
     else{
       this.cargarPartidosArbitro();
+      loader.dismiss();
     }
   }
 

@@ -65,6 +65,10 @@ export class MatchPage {
 
   //Obtiene el partido
   obtenerPartidoyArbitro() {
+    let loader = this.loadingCtrl.create({
+      content:"Cargando partido"
+    });
+    loader.present();
     this.userService.getMatchById(this.navParams.get("idPartido")).then(
       res => {
         this.partido = res;
@@ -73,8 +77,14 @@ export class MatchPage {
         this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
         this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
         console.log(res);
+        loader.dismiss();
       },
-      error => this.manejadorErrores.manejarError(error));
+      error => {
+        this.manejadorErrores.manejarError(error);
+        loader.dismiss();
+      }
+    )
+
   }
 
   obtenerArbitro() {
@@ -449,35 +459,6 @@ export class MatchPage {
     confirm.present();
   }
 
-  //Carga de un segundo de envío de acta.
-  presentLoadingActa() {
-    let loader = this.loadingCtrl.create({
-      content: "Enviando acta...",
-      duration: 1000
-    });
-    loader.present().then(() => {
-      this.alertaActaEnviada();
-    });
-  }
-
-  //Aviso cuando un acta se ha enviado
-  alertaActaEnviada() {
-    let alertaActa = this.alerta.create({
-      title: 'Acta enviada',
-      subTitle: 'El acta se ha enviado correctamente.',
-    });
-    alertaActa.present();
-    setTimeout(() => alertaActa.dismiss(), 2000);
-  }
-
-  alertaPrueba() {
-    let alertaActa = this.alerta.create({
-      title: 'Prueba',
-      subTitle: 'Llega aquí',
-    });
-    alertaActa.present();
-    setTimeout(() => alertaActa.dismiss(), 2000);
-  }
 
   //Cambio a la página principal
   cambiaAHomePage() {
@@ -486,6 +467,14 @@ export class MatchPage {
 
   //Se crea el nuevo acta y se guarda en la BBDD.
   enviarActa() {
+    let loader = this.loadingCtrl.create({
+      content:"Enviando acta..."
+    });
+    loader.present();
+    let alertaActa = this.alerta.create({
+      title: 'Acta enviada',
+      subTitle: 'El acta se ha enviado correctamente.',
+    });
     this.acta.id = null;
     this.acta.idPartido = this.partido.id;
     this.acta.fecha = this.partido.fechaPartido;
@@ -503,10 +492,13 @@ export class MatchPage {
     console.log(this.acta);
     this.userService.createActa(this.acta).then(
       res => {
-        this.presentLoadingActa();
         this.cambiaAHomePage()
+        loader.dismiss();
+        alertaActa.present();
       },
-      err => this.manejadorErrores.manejarError(err)
+      err => {
+        this.manejadorErrores.manejarError(err)
+      loader.dismiss();}
     );
     console.log(this.observaciones);
   }

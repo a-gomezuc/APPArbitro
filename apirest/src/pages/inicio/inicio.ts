@@ -34,13 +34,12 @@ export class InicioPage {
     console.log(this.user);
     console.log(this.pass);
     this.userService.login(this.user, this.pass).then(res => {
-      this.presentLoading();
       this.navCtrl.setRoot(this.homePage, { usuario: this.user });
     },
       error => {
         this.alertaAviso();
         console.log(error);
-      });
+      })
   }
 
   alertaAviso() {
@@ -52,14 +51,9 @@ export class InicioPage {
     alertaAviso.present();
 
   }
-  presentLoading() {
-    let loader = this.loadingCtrl.create({
-      content: "Espere, por favor...",
-      duration: 1000
-    });
-    loader.present();
+  presentLoading(){
+    
   }
-
 
   ionViewDidLoad() {
     console.log('ionViewDidLoad InicioPage');

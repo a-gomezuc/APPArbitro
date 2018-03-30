@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
@@ -25,7 +25,8 @@ export class PlayerPage {
     public navParams: NavParams,
     public userService: UserServiceProvider,
     public storage: Storage,
-    public alerta: AlertController) {
+    public alerta: AlertController,
+    public loadingCtrl: LoadingController) {
     this.obtenerDatos();
   }
 
@@ -34,8 +35,13 @@ export class PlayerPage {
   }
 
   obtenerDatos(){
+    let loader = this.loadingCtrl.create({
+      content:"Cargando jugador"
+    });
+    loader.present();
     this.player = this.navParams.get("jugador");
     this.player.equipo = this.navParams.get("nombreEquipo");
+    loader.dismiss();
   }
   obtenerJugadorId() {
     this.userService.getPlayerId(this.navParams.get("id")).then(res => {
