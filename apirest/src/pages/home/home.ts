@@ -60,6 +60,15 @@ export class HomePage {
       });
 
   }
+  isPartidosVacio(){
+    if(this.partidos == undefined){
+      return true;
+    }
+    else{
+    return (this.partidos.length==0)
+  }
+  }
+  
   obtenerArbitroYCargarPartidos() {
     let loader = this.loadingCtrl.create({
       content:"Cargando partidos"
@@ -87,6 +96,15 @@ export class HomePage {
 
   cambiaAMatchPage(idPartido: String) {
     this.navCtrl.push(this.matchPage, { idPartido })
+  }
+
+  obtenerPartido(idPartido:String){
+    this.userService.getMatchById(idPartido).then(
+      res=> {return res;},
+      err=>{
+        this.manejadorErrores.manejarError(err);
+      }
+    )
   }
 
 }

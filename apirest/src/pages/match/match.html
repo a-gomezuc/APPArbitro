@@ -59,7 +59,7 @@
     <ion-list>
       <ion-item class="equipoLocal">
         <ion-avatar item-start>
-          <img class="local" src="https://upload.wikimedia.org/wikipedia/an/4/4d/Atletico_Madrid.png">
+          <img class="local" src="https://localhost:8443/images/{{partido?.equipoLocal?.imagenEquipo}}">
           <ion-label>{{partido?.equipoLocal?.nombre}}
             <span class="goles">{{partido?.golesLocal}}</span>
           </ion-label>
@@ -67,8 +67,8 @@
         </ion-avatar>
       </ion-item>
       <ion-item class="equipoVisitante">
-        <ion-avatar class="visitanteAvatar" item-start>
-          <img class="visitante" src="https://upload.wikimedia.org/wikipedia/an/4/4d/Atletico_Madrid.png">
+      <ion-avatar class="visitanteAvatar" item-start>
+          <img class="visitante" src="https://localhost:8443/images/{{partido?.equipoVisitante?.imagenEquipo}}">
           <ion-label>{{partido?.equipoVisitante?.nombre}}
             <span class="goles">{{partido?.golesVisitante}}</span>
           </ion-label>
@@ -80,9 +80,9 @@
       <h1 class="liga">Jugadores equipo local ({{partido?.equipoLocal?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoLocal.length}})</h1>
       <div *ngIf="!this.arbitrando">
-        <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.equipoLocal.plantillaEquipo">
+        <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.equipoLocal?.plantillaEquipo">
           <ion-avatar>
-            <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+            <img src="https://localhost:8443/images/{{jugadorLocal.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorLocal?.nombre }} {{ jugadorLocal?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorLocal?.dorsal }}</p>
@@ -99,7 +99,7 @@
       <div *ngIf="this.arbitrando">
         <ion-item class="jugadorLocal" *ngFor="let jugadorLocalConvocado of this.convocadosPartidoLocal">
           <ion-avatar>
-            <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+            <img src="https://localhost:8443/images/{{jugadorLocalConvocado.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorLocalConvocado?.nombre }} {{ jugadorLocalConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorLocalConvocado?.dorsal }}</p>
@@ -116,9 +116,9 @@
       <h1 class="liga">Jugadores equipo visitante ({{partido?.equipoVisitante?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoVisitante.length}})</h1>
       <div *ngIf="!this.arbitrando">
-        <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitante of this.partido?.equipoVisitante.plantillaEquipo">
+        <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitante of this.partido?.equipoVisitante?.plantillaEquipo">
           <ion-avatar>
-            <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+            <img src="https://localhost:8443/images/{{jugadorVisitante.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitante?.nombre }} {{ jugadorVisitante?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitante?.dorsal }}</p>
@@ -137,7 +137,7 @@
       <div *ngIf="this.arbitrando">
         <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitanteConvocado of this.convocadosPartidoVisitante">
           <ion-avatar>
-            <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+            <img src="https://localhost:8443/images/{{jugadorVisitanteConvocado.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitanteConvocado?.nombre }} {{ jugadorVisitanteConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitanteConvocado?.dorsal }}</p>

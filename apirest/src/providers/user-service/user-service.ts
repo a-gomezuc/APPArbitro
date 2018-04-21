@@ -17,7 +17,7 @@ import 'rxjs/add/operator/catch';
 export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
-  private headers:any;
+  private headers: any;
   public url: String = "https://localhost:8443"
   constructor(
     public http: Http,
@@ -27,11 +27,11 @@ export class UserServiceProvider {
 
   getPlayers() {
     return this.http
-      .get(this.url + '/jugadores',{ headers: this.headers })
+      .get(this.url + '/jugadores', { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -39,9 +39,9 @@ export class UserServiceProvider {
     return this.http
       .put((this.url + '/jugadores/' + id), jugador, { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -50,9 +50,9 @@ export class UserServiceProvider {
     return this.http
       .delete(this.url + '/jugadores/' + nombre + '/' + apellidos, { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -61,9 +61,9 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/jugadores/id/' + id, { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -71,9 +71,9 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/jugadores/' + nombre + '/' + apellidos, { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -91,19 +91,19 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/partidos', { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
   getMatchesByRefree(refree: String) {
     return this.http
-      .get(this.url + '/partidos/arbitro/' + refree, { headers: this.headers })
+      .get(this.url + '/partidos/arbitro/' + refree + '/estado/Pendiente', { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -111,9 +111,20 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/partidos/' + id, { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
+      )
+      .toPromise();
+  }
+
+  modifyMatch(id, partido) {
+    return this.http
+      .put((this.url + '/partidos/' + id), partido, { headers: this.headers })
+      .map(res => res.json(),
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -124,9 +135,9 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/arbitros', { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }
@@ -138,15 +149,20 @@ export class UserServiceProvider {
     return this.http.get(this.url + "/arbitros/" + id, { headers: this.headers })
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
+  modifyRefree(id: String, arbitro: any) {
+    return this.http.put(this.url + "/arbitros/" + id, arbitro, { headers: this.headers }).map
+      (res => res.json(),
+      error => { console.log(error) }).toPromise();
+  }
 
   //ACTA
   createActa(acta) {
 
     return this.http
-      .post(this.url + '/actas', acta,{ headers: this.headers })
+      .post(this.url + '/actas', acta, { headers: this.headers })
       .map(
-      res => res.json(),
-      err => console.log(err)
+        res => res.json(),
+        err => console.log(err)
       ).toPromise();
   }
 
@@ -162,7 +178,7 @@ export class UserServiceProvider {
           //localStorage.setItem("user", response.json());
           return response.json();
         },
-        error => this.handleError(error)
+          error => this.handleError(error)
         ).toPromise();
     } else {
       //return Observable.throw("Server error (401): Introduzca correctamente sus datos de usuario.");
@@ -172,9 +188,9 @@ export class UserServiceProvider {
     return this.http
       .get(this.url + '/cerrarSesion', { headers: this.headers })
       .map(res => res.json(),
-      err => {
-        console.log(err);
-      }
+        err => {
+          console.log(err);
+        }
       )
       .toPromise();
   }

@@ -1,0 +1,33 @@
+<!--
+  Generated template for the CambiarContraseñaPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Cambiar contraseña</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content padding>
+  <ion-item>
+    <ion-label color="primary" stacked>Nueva contraseña</ion-label>
+    <ion-input class="entradaTexto" type="password" clearInput="true" [(ngModel)]="nuevaContrasenia" placeholder="Escriba su nueva contraseña"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label color="primary" stacked>Repetir contraseña</ion-label>
+    <ion-input class="entradaTexto" type="password" clearInput="true" [(ngModel)]="nuevaContraseniaRepetida" placeholder="Repita su nueva contraseña"></ion-input>
+  </ion-item>
+  <ion-row justify-content-center>
+    <ion-col col-3>
+      <button ion-button full (click)="this.cambiaContrasenia()">Enviar</button>
+    </ion-col>
+  </ion-row>
+</ion-content>

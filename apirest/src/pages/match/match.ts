@@ -72,10 +72,10 @@ export class MatchPage {
     this.userService.getMatchById(this.navParams.get("idPartido")).then(
       res => {
         this.partido = res;
+        this.obtenerEquipoLocal();
+        this.obtenerEquipoVisitante();
         this.obtenerArbitro();
         console.log(res);
-        this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
-        this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
         console.log(res);
         loader.dismiss();
       },
@@ -96,6 +96,59 @@ export class MatchPage {
       err => this.manejadorErrores.manejarError(err)
     );
   }
+  obtenerEquipoLocal(){
+    this.userService.getEquipoByID(this.partido.equipoLocalId).then(
+      res=> {
+        this.partido.equipoLocal=res;
+        this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
+      },
+      err=>{
+        this.manejadorErrores.manejarError(err);
+      }
+    )
+  }
+  obtenerEquipoVisitante(){
+    this.userService.getEquipoByID(this.partido.equipoVisitanteId).then(
+      res=> {
+        this.partido.equipoVisitante=res;
+        this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
+      },
+      err=>{
+        this.manejadorErrores.manejarError(err);
+      }
+    )
+  }
+
+  modificarPartidoYCrearActa(acta){
+    let loader = this.loadingCtrl.create({
+      content:"Enviando acta..."
+    });
+    loader.present();
+    let alertaActa = this.alerta.create({
+      title: 'Acta enviada',
+      subTitle: 'El acta se ha enviado correctamente.',
+    });
+    this.partido.estado= "Partido disputado con acta pendiente de aprobación"
+    this.userService.modifyMatch(this.partido.id, this.partido).then(
+      res=>{
+        this.partido=res;
+        this.userService.createActa(this.acta).then(
+          res => {
+            this.cambiaAHomePage()
+            loader.dismiss();
+            alertaActa.present();
+          },
+          err => {
+            this.manejadorErrores.manejarError(err)
+          loader.dismiss();}
+        );
+      },
+      err=>{
+        this.manejadorErrores.manejarError(err);
+      }
+    );
+  }
+
   //Para conocer si un jugador está sancionado.
   isSancionado(jugador) {
     if (jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
@@ -467,39 +520,25 @@ export class MatchPage {
 
   //Se crea el nuevo acta y se guarda en la BBDD.
   enviarActa() {
-    let loader = this.loadingCtrl.create({
-      content:"Enviando acta..."
-    });
-    loader.present();
-    let alertaActa = this.alerta.create({
-      title: 'Acta enviada',
-      subTitle: 'El acta se ha enviado correctamente.',
-    });
     this.acta.id = null;
     this.acta.idPartido = this.partido.id;
     this.acta.fecha = this.partido.fechaPartido;
     this.acta.hora = this.partido.horaPartido;
-    this.acta.equipoLocal = this.partido.equipoLocal;
-    this.acta.equipoVisitante = this.partido.equipoVisitante;
-    this.acta.arbitro = this.arbitro;
+    this.acta.nombreEquipoLocal = this.partido.equipoLocal.nombre;
+    this.acta.idEquipoLocal = this.partido.equipoLocal.id;
+    this.acta.escudoEquipoLocal = this.partido.equipoLocal.imagenEquipo;
+    this.acta.nombreEquipoVisitante = this.partido.equipoVisitante.nombre;
+    this.acta.idEquipoVisitante = this.partido.equipoVisitante.id;
+    this.acta.escudoEquipoVisitante = this.partido.equipoVisitante.imagenEquipo;
+    this.acta.idArbitro = this.arbitro.id;
+    this.acta.nombreArbitro = this.arbitro.nombre;
     this.acta.convocadosLocal = this.convocadosPartidoLocal;
     this.acta.convocadosVisitante = this.convocadosPartidoVisitante;
     this.acta.golesLocal = this.partido.golesLocal;
     this.acta.golesVisitante = this.partido.golesVisitante;
     this.acta.incidencias = this.incidenciasPartido;
     this.acta.observaciones = this.observaciones;
-    //this.partido.estado="Arbitrado";
-    console.log(this.acta);
-    this.userService.createActa(this.acta).then(
-      res => {
-        this.cambiaAHomePage()
-        loader.dismiss();
-        alertaActa.present();
-      },
-      err => {
-        this.manejadorErrores.manejarError(err)
-      loader.dismiss();}
-    );
+    this.modificarPartidoYCrearActa(this.acta);
     console.log(this.observaciones);
   }
 }

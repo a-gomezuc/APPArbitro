@@ -11,7 +11,7 @@
 
 <ion-content padding class="item-background2">
     <ion-avatar class="avatarJugador"  item-center> 
-        <img src="https://img-estaticos.atleticodemadrid.com/system/fotos/1474/destacado_460x460/costa-retina_2.png?1374662417">
+        <img src="https://localhost:8443/images/{{player?.fotoJugador}}">
       </ion-avatar>
     <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete">
     <h1 *ngIf="this.isSancionado(player)" class="sancionado">Este jugador está sancionado actualmente.</h1>

@@ -10,12 +10,12 @@
 
 <ion-content padding class="item-background3">
     <ion-item class="inicio"> 
-        <ion-label class="etiqueta">Usuario</ion-label>
-        <ion-input class="entradaTexto" type="text"  [(ngModel)]="user" placeholder="Escriba su usuario"></ion-input>   
+        <ion-label color="primary" class="etiqueta" stacked>Usuario</ion-label>
+        <ion-input class="entradaTexto" clearInput="true" type="text"  [(ngModel)]="user" placeholder="Escriba su usuario"></ion-input>   
     </ion-item>
   <ion-item class="inicio">  
-    <ion-label  >Contraseña</ion-label>
-    <ion-input [(ngModel)]="pass" type="password" placeholder="Escriba su contraseña"></ion-input>
+    <ion-label color="primary" stacked >Contraseña</ion-label>
+    <ion-input [(ngModel)]="pass" clearInput="true" type="password" placeholder="Escriba su contraseña"></ion-input>
   </ion-item>
   <ion-row justify-content-center>
     <ion-col col-3>
