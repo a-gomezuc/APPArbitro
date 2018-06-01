@@ -151,10 +151,10 @@
       </div>
     </ion-list>
     <div text-center>
-      <button *ngIf="!this.arbitrando" class="arbitrar" (click)="this.alertaArbitrar()">Arbitrar partido</button>
+      <button ion-button large color="secondary" class="arbitrar" *ngIf="!this.arbitrando" (click)="this.alertaArbitrar()">Arbitrar partido</button>
     </div>
     <div text-center>
-      <button class="finalizarPartido" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()">Finalizar partido</button>
+      <button ion-button color="danger" class="arbitrar" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()">Finalizar partido</button>
     </div>
   </div>
   <div *ngIf="this.rellenaActa">

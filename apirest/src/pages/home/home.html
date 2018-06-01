@@ -7,7 +7,7 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Mis partidos</ion-title>
+    <ion-title>Mis partidos pendientes</ion-title>
   </ion-navbar>
 </ion-header>
 
@@ -17,11 +17,11 @@
   <ion-list>
     <ion-item class="partido" *ngFor="let partido of partidos">
       <ion-avatar>
-        <!-- <img src="https://localhost:8443/images/{{partido?.equipoLocal.imagenEquipo}}">{{partido?.equipoLocal.nombre}} -->
+        <img src="https://localhost:8443/images/{{partido?.equipoLocalEscudo}}">{{partido?.equipoLocalNombre}}
         <span class="nGoles"> {{partido?.golesLocal}} </span>
       </ion-avatar>
       <ion-avatar>
-        <!-- <img src="https://localhost:8443/images/{{partido?.equipoVisitante.imagenEquipo}}">{{partido?.equipoVisitante.nombre}} -->
+        <img src="https://localhost:8443/images/{{partido?.equipoVisitanteEscudo}}">{{partido?.equipoVisitanteNombre}}
         <span class="nGoles"> {{partido?.golesVisitante}} </span>
       </ion-avatar>
       <p class="subtituloPartido">{{partido?.liga}} Jornada {{partido.jornada}}</p>

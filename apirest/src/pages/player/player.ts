@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController} from 'ionic-angular';
+import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
@@ -34,9 +34,9 @@ export class PlayerPage {
     console.log('ionViewDidLoad PlayerPage');
   }
 
-  obtenerDatos(){
+  obtenerDatos() {
     let loader = this.loadingCtrl.create({
-      content:"Cargando jugador"
+      content: "Cargando jugador"
     });
     loader.present();
     this.player = this.navParams.get("jugador");
@@ -58,20 +58,30 @@ export class PlayerPage {
       error => { this.manejadorErrores.manejarError(error); });
   }
 
+  partidosSancion(jugador){
+    var partidosTotales= 0;
+    for(var i = 0 ; i<jugador.sanciones.length; i++){
+      if(jugador.sanciones[i].enVigor){
+        partidosTotales = partidosTotales + jugador.sanciones[i].partidosRestantes;
+      }
+    }
+    return partidosTotales;
+  }
+
   isSancionado(jugador) {
-    if (jugador==undefined || jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
-      return false;
+    var sancionado = false;
+    if (jugador == undefined || jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
+      sancionado = false;
     }
     else {
       if (jugador.sanciones.length > 0) {
-        if (jugador.sanciones[0].enVigor == false) {
-          return false
-        }
-        else {
-          return true;
+        for (var i = 0; i < jugador.sanciones.length; i++) {
+          if (jugador.sanciones[i].enVigor == true) {
+            sancionado = true;
+          }
         }
       }
-      return false;
+      }
+    return sancionado;
     }
   }
-}

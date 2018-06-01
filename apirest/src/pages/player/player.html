@@ -13,9 +13,9 @@
     <ion-avatar class="avatarJugador"  item-center> 
         <img src="https://localhost:8443/images/{{player?.fotoJugador}}">
       </ion-avatar>
-    <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete">
+    <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete"> 
     <h1 *ngIf="this.isSancionado(player)" class="sancionado">Este jugador está sancionado actualmente.</h1>
-    <h1 *ngIf="this.isSancionado(player)" class="sancionado"><span class="">Partidos restantes: </span>{{player?.sanciones[0].partidosRestantes}}</h1>
+    <h1 *ngIf="this.isSancionado(player)" class="sancionado"><span class="">Partidos restantes: </span>{{partidosSancion(player)}}</h1>
     <h1><span class="valorJugador">Equipo: </span>{{player?.equipo}}</h1>
     <h1><span class="valorJugador">Nombre: </span>{{player?.nombre}}</h1>
     <h1><span class="valorJugador">Apellidos: </span>{{player?.apellidos}}</h1>
