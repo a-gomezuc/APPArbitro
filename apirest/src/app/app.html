@@ -1,19 +1,31 @@
-	<ion-menu [content]="content">
-        <ion-header>
-          <ion-toolbar>
-            <ion-title>Menu</ion-title>
-          </ion-toolbar>
-        </ion-header>
-       
-        <ion-content>
-                <ion-list>
-                    <ion-item *ngFor="let p of pages">
-                  <button class="menuButton" menuClose (click)="openPage(p)">
-                        <ion-icon name={{p.icon}} ><p class="mostrarPagina">{{p.title}}</p></ion-icon>
-                  </button>
-                </ion-item>
-                </ion-list>
-              </ion-content>
-       
- </ion-menu>
+<div *ngIf="showSplash" class="splash">
+  <div class="sk-folding-cube">
+    <div class="sk-cube1 sk-cube"></div>
+    <div class="sk-cube2 sk-cube"></div>
+    <div class="sk-cube4 sk-cube"></div>
+    <div class="sk-cube3 sk-cube"></div>
+  </div>
+</div>
+
+
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <ion-item *ngFor="let p of pages">
+        <button class="menuButton" menuClose (click)="openPage(p)">
+          <ion-icon name={{p.icon}}>
+            <p class="mostrarPagina">{{p.title}}</p>
+          </ion-icon>
+        </button>
+      </ion-item>
+    </ion-list>
+  </ion-content>
+
+</ion-menu>
 <ion-nav [root]="rootPage" #content swipeBackEnabled="false"></ion-nav>

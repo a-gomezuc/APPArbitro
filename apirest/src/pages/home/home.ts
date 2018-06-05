@@ -49,7 +49,7 @@ export class HomePage {
       res => {
         usuario = JSON.parse(res);
         console.log(JSON.parse(res));
-        this.userService.getMatchesByRefree(usuario.id).then(
+        this.userService.getMatchesByReferee(usuario.id).then(
           res => {
             this.partidos = res;
           },

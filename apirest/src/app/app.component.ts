@@ -5,35 +5,34 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 
 import { HomePage } from '../pages/home/home';
 import { InicioPage } from '../pages/inicio/inicio';
-import { CerrarSesionPage } from '../pages/cerrar-sesion/cerrar-sesion';
 import { CambiarContraseñaPage } from '../pages/cambiar-contraseña/cambiar-contraseña';
-import { IonicPage, MenuController, AlertController, NavController, NavParams } from 'ionic-angular';
+import { AlertController} from 'ionic-angular';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../components/manejador-errores/manejador-errores';
+import { timer } from 'rxjs/observable/timer';
 @Component({
   templateUrl: 'app.html'
 })
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
+  showSplash = true;
   rootPage: any = InicioPage;
   inicioPage: any = InicioPage;
   pages: Array<{ title: string, icon: string, component: any }>;
   private manejadorErrores = new ManejadorErroresComponent(this.alerta);
-  private navParams: NavParams;
-  private navCtrl: NavController;
 
 
   constructor(platform: Platform,
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     private alerta: AlertController,
-    private menu: MenuController,
     private userService: UserServiceProvider) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      timer(3000).subscribe(()=>this.showSplash=false);
     });
 
     this.pages = [

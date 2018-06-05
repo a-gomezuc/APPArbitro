@@ -10,7 +10,6 @@ import { PlayerPage} from '../pages/player/player';
 import { InicioPage} from '../pages/inicio/inicio';
 import { MatchPage} from '../pages/match/match';
 import { CambiarContraseñaPage } from '../pages/cambiar-contraseña/cambiar-contraseña';
-import { CerrarSesionPage} from '../pages/cerrar-sesion/cerrar-sesion';
 import { TimerComponent} from '../components/timer/timer';
 import { GoogleMaps } from '@ionic-native/google-maps';
 
@@ -26,7 +25,6 @@ import { MapaPage } from '../pages/mapa/mapa';
     PlayerPage,
     InicioPage,
     MatchPage,
-    CerrarSesionPage,
     MapaPage,
     CambiarContraseñaPage,
     TimerComponent,
@@ -46,7 +44,6 @@ import { MapaPage } from '../pages/mapa/mapa';
     PlayerPage,
     InicioPage,
     MatchPage,
-    CerrarSesionPage,
     MapaPage,
     CambiarContraseñaPage,
     TimerComponent,

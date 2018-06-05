@@ -18,7 +18,6 @@ import {
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-mapa',
   templateUrl: 'mapa.html',

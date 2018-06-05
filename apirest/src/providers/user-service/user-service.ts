@@ -18,7 +18,7 @@ export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers: any;
-  public url: String = "https://localhost:8443"
+  public url: String = "https://192.168.1.100:8443"
   constructor(
     public http: Http,
   ) { }
@@ -97,9 +97,9 @@ export class UserServiceProvider {
       )
       .toPromise();
   }
-  getMatchesByRefree(refree: String) {
+  getMatchesByReferee(referee: String) {
     return this.http
-      .get(this.url + '/partidos/arbitro/' + refree + '/estado/Pendiente', { headers: this.headers })
+      .get(this.url + '/partidos/arbitro/' + referee + '/estado/Pendiente', { headers: this.headers })
       .map(res => res.json(),
         err => {
           console.log(err);
@@ -131,7 +131,7 @@ export class UserServiceProvider {
 
 
   //ÁRBITROS
-  getRefrees() {
+  getReferees() {
     return this.http
       .get(this.url + '/arbitros', { headers: this.headers })
       .map(res => res.json(),
@@ -149,7 +149,7 @@ export class UserServiceProvider {
     return this.http.get(this.url + "/arbitros/" + id, { headers: this.headers })
       .map(res => res.json(), error => { console.log(error) }).toPromise();
   }
-  modifyRefree(id: String, arbitro: any) {
+  modifyReferee(id: String, arbitro: any) {
     return this.http.put(this.url + "/arbitros/" + id, arbitro, { headers: this.headers }).map
       (res => res.json(),
       error => { console.log(error) }).toPromise();

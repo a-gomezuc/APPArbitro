@@ -10,7 +10,7 @@ import { Storage } from '@ionic/storage';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-player',
   templateUrl: 'player.html',
@@ -58,10 +58,10 @@ export class PlayerPage {
       error => { this.manejadorErrores.manejarError(error); });
   }
 
-  partidosSancion(jugador){
-    var partidosTotales= 0;
-    for(var i = 0 ; i<jugador.sanciones.length; i++){
-      if(jugador.sanciones[i].enVigor){
+  partidosSancion(jugador) {
+    var partidosTotales = 0;
+    for (var i = 0; i < jugador.sanciones.length; i++) {
+      if (jugador.sanciones[i].enVigor) {
         partidosTotales = partidosTotales + jugador.sanciones[i].partidosRestantes;
       }
     }
@@ -70,10 +70,6 @@ export class PlayerPage {
 
   isSancionado(jugador) {
     var sancionado = false;
-    if (jugador == undefined || jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
-      sancionado = false;
-    }
-    else {
       if (jugador.sanciones.length > 0) {
         for (var i = 0; i < jugador.sanciones.length; i++) {
           if (jugador.sanciones[i].enVigor == true) {
@@ -81,7 +77,6 @@ export class PlayerPage {
           }
         }
       }
-      }
     return sancionado;
-    }
   }
+}

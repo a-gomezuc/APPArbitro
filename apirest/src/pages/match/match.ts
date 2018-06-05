@@ -18,7 +18,7 @@ import { MapaPage } from '../mapa/mapa';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
+
 @Component({
   selector: 'page-match',
   templateUrl: 'match.html',
@@ -151,20 +151,15 @@ export class MatchPage {
 
   //Para conocer si un jugador está sancionado.
   isSancionado(jugador) {
-    if (jugador.sanciones == undefined || jugador.sanciones.length <= 0 || jugador.sanciones == null) {
-      return false;
-    }
-    else {
+    var sancionado = false;
       if (jugador.sanciones.length > 0) {
-        if (jugador.sanciones[0].enVigor == false) {
-          return false
-        }
-        else {
-          return true;
+        for (var i = 0; i < jugador.sanciones.length; i++) {
+          if (jugador.sanciones[i].enVigor == true) {
+            sancionado = true;
+          }
         }
       }
-      return false;
-    }
+    return sancionado;
   }
 
   //Añade al array de convocadosPartidoLocal un jugador.
@@ -232,7 +227,7 @@ export class MatchPage {
   alertaArbitrar() {
     let confirm = this.alerta.create({
       title: '¡Atención!',
-      message: 'Una vez pulse sí no podrá realizar cambios. Compruebe los jugadores convocados.\n Ha convocado ' + this.convocadosPartidoLocal.length + ' jugadores locales y ' + this.convocadosPartidoVisitante.length + ' jugadores visitantes.',
+      message: '<p>Una vez pulse sí no podrá realizar cambios. Compruebe los jugadores convocados.</p><p> Ha convocado ' + this.convocadosPartidoLocal.length + ' jugadores locales y ' + this.convocadosPartidoVisitante.length + ' jugadores visitantes.</p>',
       buttons: [
         {
           text: 'No',

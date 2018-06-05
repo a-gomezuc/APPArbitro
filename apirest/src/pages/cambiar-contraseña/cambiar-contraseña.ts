@@ -12,7 +12,6 @@ import { Storage } from '@ionic/storage';
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-cambiar-contraseña',
   templateUrl: 'cambiar-contraseña.html',
@@ -43,7 +42,7 @@ export class CambiarContraseñaPage {
         res => {
         this.arbitro = JSON.parse(res);
           this.arbitro.clave = this.nuevaContrasenia;
-          this.userService.modifyRefree(this.arbitro.id, this.arbitro).then(
+          this.userService.modifyReferee(this.arbitro.id, this.arbitro).then(
             res => {
               this.alertaAvisoCoinciden();
               this.navCtrl.setRoot(InicioPage);
