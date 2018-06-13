@@ -18,7 +18,7 @@ export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers: any;
-  public url: String = "https://192.168.1.100:8443"
+  public url: String = "http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com"
   constructor(
     public http: Http,
   ) { }
@@ -117,6 +117,17 @@ export class UserServiceProvider {
       )
       .toPromise();
   }
+
+  sendNewPassword(email: String){
+    return this.http
+    .get(this.url + 'arbitros/clave/' + email, { headers: this.headers })
+    .map(res => res.json(),
+      err => {
+        console.log(err);
+      }
+    )
+    .toPromise();
+}
 
   modifyMatch(id, partido) {
     return this.http

@@ -11,7 +11,7 @@
 
 <ion-content padding class="item-background2">
     <ion-avatar class="avatarJugador"  item-center> 
-        <img src="https://localhost:8443/images/{{player?.fotoJugador}}">
+        <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{player?.fotoJugador}}">
       </ion-avatar>
     <img *ngIf="player?.capitan" src="https://upload.wikimedia.org/wikipedia/commons/c/c6/1_capitan.png" class="brazalete"> 
     <h1 *ngIf="this.isSancionado(player)" class="sancionado">Este jugador está sancionado actualmente.</h1>

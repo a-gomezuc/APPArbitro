@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
+import { NavController, NavParams, LoadingController, AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';

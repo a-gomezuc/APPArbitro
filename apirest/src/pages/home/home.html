@@ -17,11 +17,11 @@
   <ion-list>
     <ion-item class="partido" *ngFor="let partido of partidos">
       <ion-avatar>
-        <img src="https://localhost:8443/images/{{partido?.equipoLocalEscudo}}">{{partido?.equipoLocalNombre}}
+        <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{partido?.equipoLocalEscudo}}">{{partido?.equipoLocalNombre}}
         <span class="nGoles"> {{partido?.golesLocal}} </span>
       </ion-avatar>
       <ion-avatar>
-        <img src="https://localhost:8443/images/{{partido?.equipoVisitanteEscudo}}">{{partido?.equipoVisitanteNombre}}
+        <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{partido?.equipoVisitanteEscudo}}">{{partido?.equipoVisitanteNombre}}
         <span class="nGoles"> {{partido?.golesVisitante}} </span>
       </ion-avatar>
       <p class="subtituloPartido">{{partido?.liga}} Jornada {{partido.jornada}}</p>

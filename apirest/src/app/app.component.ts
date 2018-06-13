@@ -6,10 +6,13 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { InicioPage } from '../pages/inicio/inicio';
 import { CambiarContraseñaPage } from '../pages/cambiar-contraseña/cambiar-contraseña';
-import { AlertController} from 'ionic-angular';
+import { RecordarContraseñaPage } from '../pages/recordar-contraseña/recordar-contraseña';
+import { AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../components/manejador-errores/manejador-errores';
 import { timer } from 'rxjs/observable/timer';
+import { BackgroundMode } from '@ionic-native/background-mode';
+
 @Component({
   templateUrl: 'app.html'
 })
@@ -26,18 +29,21 @@ export class MyApp {
     statusBar: StatusBar,
     splashScreen: SplashScreen,
     private alerta: AlertController,
-    private userService: UserServiceProvider) {
+    private userService: UserServiceProvider,
+    private backgroundMode: BackgroundMode) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      timer(3000).subscribe(()=>this.showSplash=false);
+      backgroundMode.enable();
+      timer(3000).subscribe(() => this.showSplash = false);
     });
 
     this.pages = [
       { title: "Mis Partidos pendientes", icon: "home", component: HomePage },
       { title: "Cambiar contraseña", icon: "create", component: CambiarContraseñaPage },
+      { title: "Recordar contraseña", icon: "send", component: RecordarContraseñaPage },
       { title: "Cerrar Sesión", icon: "log-out", component: "" }
     ];
   }

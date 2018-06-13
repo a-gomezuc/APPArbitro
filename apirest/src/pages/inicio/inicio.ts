@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
+import { NavController, NavParams, AlertController, LoadingController, MenuController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { HomePage } from '../home/home'
@@ -29,7 +29,7 @@ export class InicioPage {
     this.menu.enable(false);
   }
 
-  cambiaAHomePage(usuario: String) {
+  cambiaAHomePage() {
     console.log(this.user);
     console.log(this.pass);
     this.userService.login(this.user, this.pass).then(res => {

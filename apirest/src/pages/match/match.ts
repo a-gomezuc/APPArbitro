@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, MenuController, IonicPage, NavController, LoadingController, NavParams } from 'ionic-angular';
+import { AlertController, MenuController, NavController, LoadingController, NavParams } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { HomePage } from '../home/home'
@@ -41,6 +41,8 @@ export class MatchPage {
   jugadoresConTarjetaRoja: any[];
   observaciones: String;
   acta: any;
+  reanudar :boolean;
+  mostrarComienzo :boolean;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -60,6 +62,8 @@ export class MatchPage {
     this.jugadoresConTarjetaRoja = [];
     this.observaciones = '';
     this.acta = {};
+    this.reanudar=false;
+    this.mostrarComienzo=true;
   }
 
 
@@ -535,5 +539,25 @@ export class MatchPage {
     this.acta.observaciones = this.observaciones;
     this.modificarPartidoYCrearActa(this.acta);
     console.log(this.observaciones);
+  }
+
+  //Parar el cronómetro.
+  pararCrono(){
+    this.timer.stop();
+    this.mostrarComienzo=true;
+    this.reanudar=true;
+  }
+
+  //Reanudar el cronómetro.
+  reiniciarCrono(){
+    this.timer.reinicia();
+    this.mostrarComienzo=true;
+    this.reanudar=false;
+  }
+
+  //Comenzar cronómetro.
+  comenzarCrono(){
+    this.timer.start();
+    this.mostrarComienzo=false;
   }
 }

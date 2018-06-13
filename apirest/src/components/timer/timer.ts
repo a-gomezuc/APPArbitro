@@ -31,6 +31,7 @@ export class TimerComponent {
   }
 
   stop(){
+
     clearInterval(this.contador);
     this.hora = this.hora;
     this.minuto= this.minuto;

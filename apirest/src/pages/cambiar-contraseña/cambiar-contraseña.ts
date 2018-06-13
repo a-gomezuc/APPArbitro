@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController } from 'ionic-angular';
+import { NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { InicioPage } from '../inicio/inicio'
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores'
