@@ -3,6 +3,7 @@ import { NavController, NavParams, AlertController, LoadingController, MenuContr
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { HomePage } from '../home/home'
+import { RecordarContraseñaPage } from '../recordar-contrase\u00F1a/recordar-contrase\u00F1a';
 
 /**
  * Generated class for the InicioPage page.
@@ -39,6 +40,10 @@ export class InicioPage {
         this.alertaAviso();
         console.log(error);
       })
+  }
+
+  cambiaARecordarContraseniaPage(){
+    this.navCtrl.push(RecordarContraseñaPage);
   }
 
   alertaAviso() {

@@ -1,4 +1,3 @@
-
 <ion-header>
   <ion-navbar>
     <button ion-button menuToggle>
@@ -9,17 +8,20 @@
 </ion-header>
 
 <ion-content padding class="item-background3">
-    <ion-item class="inicio"> 
-        <ion-label color="primary" class="etiqueta" stacked>Usuario</ion-label>
-        <ion-input class="entradaTexto" clearInput="true" type="text"  [(ngModel)]="user" placeholder="Escriba su usuario"></ion-input>   
-    </ion-item>
-  <ion-item class="inicio">  
-    <ion-label color="primary" stacked >Contraseña</ion-label>
+  <ion-item class="inicio">
+    <ion-label color="primary" class="etiqueta" stacked>Usuario</ion-label>
+    <ion-input class="entradaTexto" clearInput="true" type="text" [(ngModel)]="user" placeholder="Escriba su usuario"></ion-input>
+  </ion-item>
+  <ion-item class="inicio">
+    <ion-label color="primary" stacked>Contraseña</ion-label>
     <ion-input [(ngModel)]="pass" clearInput="true" type="password" placeholder="Escriba su contraseña"></ion-input>
   </ion-item>
   <ion-row justify-content-center>
+      <p style="cursor:pointer" (click)="this.cambiaARecordarContraseniaPage()">¿Ha olvidado su contraseña?</p>
+  </ion-row>
+  <ion-row justify-content-center>
     <ion-col col-3>
-  <button ion-button full (click) = "this.cambiaAHomePage()">Enviar</button>
-      </ion-col>
-</ion-row>
+      <button ion-button full (click)="this.cambiaAHomePage()">Enviar</button>
+    </ion-col>
+  </ion-row>
 </ion-content>

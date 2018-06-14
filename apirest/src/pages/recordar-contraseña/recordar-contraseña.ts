@@ -9,7 +9,6 @@ import { InicioPage } from '../inicio/inicio'
  * Ionic pages and navigation.
  */
 
-@IonicPage()
 @Component({
   selector: 'page-recordar-contraseña',
   templateUrl: 'recordar-contraseña.html',
@@ -18,7 +17,7 @@ export class RecordarContraseñaPage {
   private email : String;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public alertaController:AlertController, public userService:UserServiceProvider, public menu: MenuController) {
-    this.menu.enable(true);
+    this.menu.enable(false);
   }
 
   ionViewDidLoad() {

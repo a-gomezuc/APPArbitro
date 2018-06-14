@@ -43,7 +43,6 @@ export class MyApp {
     this.pages = [
       { title: "Mis Partidos pendientes", icon: "home", component: HomePage },
       { title: "Cambiar contraseña", icon: "create", component: CambiarContraseñaPage },
-      { title: "Recordar contraseña", icon: "send", component: RecordarContraseñaPage },
       { title: "Cerrar Sesión", icon: "log-out", component: "" }
     ];
   }

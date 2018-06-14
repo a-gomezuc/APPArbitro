@@ -62,7 +62,7 @@
     <ion-list>
       <ion-item class="equipoLocal">
         <ion-avatar item-start>
-          <img class="local" src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{partido?.equipoLocal?.imagenEquipo}}">
+          <img class="local" src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{partido?.equipoLocal?.imagenEquipo}}">
           <ion-label>{{partido?.equipoLocal?.nombre}}
             <span class="goles">{{partido?.golesLocal}}</span>
           </ion-label>
@@ -71,7 +71,7 @@
       </ion-item>
       <ion-item class="equipoVisitante">
       <ion-avatar class="visitanteAvatar" item-start>
-          <img class="visitante" src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{partido?.equipoVisitante?.imagenEquipo}}">
+          <img class="visitante" src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{partido?.equipoVisitante?.imagenEquipo}}">
           <ion-label>{{partido?.equipoVisitante?.nombre}}
             <span class="goles">{{partido?.golesVisitante}}</span>
           </ion-label>
@@ -85,7 +85,7 @@
       <div *ngIf="!this.arbitrando">
         <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.equipoLocal?.plantillaEquipo">
           <ion-avatar>
-            <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{jugadorLocal.fotoJugador}}">
+            <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorLocal.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorLocal?.nombre }} {{ jugadorLocal?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorLocal?.dorsal }}</p>
@@ -102,7 +102,7 @@
       <div *ngIf="this.arbitrando">
         <ion-item class="jugadorLocal" *ngFor="let jugadorLocalConvocado of this.convocadosPartidoLocal">
           <ion-avatar>
-            <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{jugadorLocalConvocado.fotoJugador}}">
+            <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorLocalConvocado.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorLocalConvocado?.nombre }} {{ jugadorLocalConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorLocalConvocado?.dorsal }}</p>
@@ -121,7 +121,7 @@
       <div *ngIf="!this.arbitrando">
         <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitante of this.partido?.equipoVisitante?.plantillaEquipo">
           <ion-avatar>
-            <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{jugadorVisitante.fotoJugador}}">
+            <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorVisitante.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitante?.nombre }} {{ jugadorVisitante?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitante?.dorsal }}</p>
@@ -140,7 +140,7 @@
       <div *ngIf="this.arbitrando">
         <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitanteConvocado of this.convocadosPartidoVisitante">
           <ion-avatar>
-            <img src="http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com/images/{{jugadorVisitanteConvocado.fotoJugador}}">
+            <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorVisitanteConvocado.fotoJugador}}">
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitanteConvocado?.nombre }} {{ jugadorVisitanteConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitanteConvocado?.dorsal }}</p>
