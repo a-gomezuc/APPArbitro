@@ -18,7 +18,7 @@ export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers: any;
-  public url: String = "http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com"
+  public url: String = "http://localhost:8080"
   constructor(
     public http: Http,
   ) { }

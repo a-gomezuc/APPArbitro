@@ -24,12 +24,12 @@ import { SplashScreen } from '@ionic-native/splash-screen';
   declarations: [
     MyApp,
     HomePage,
-    // PlayerPage,
-    // InicioPage,
-    // MatchPage,
-    // MapaPage,
-    // CambiarContraseñaPage,
-    // RecordarContraseñaPage,
+    PlayerPage,
+    InicioPage,
+    MatchPage,
+    MapaPage,
+    CambiarContraseñaPage,
+    RecordarContraseñaPage,
     TimerComponent,
     ManejadorErroresComponent
   ],

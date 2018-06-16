@@ -26,8 +26,10 @@
     <ion-input class="entradaTexto" type="password" clearInput="true" [(ngModel)]="nuevaContraseniaRepetida" placeholder="Repita su nueva contraseña"></ion-input>
   </ion-item>
   <ion-row justify-content-center>
-    <ion-col col-3>
-      <button ion-button full (click)="this.cambiaContrasenia()">Enviar</button>
+    <ion-col>
+      <div align="center">
+      <button ion-button class="cambiar" (click)="this.cambiaContrasenia()" icon-end>Cambiar <ion-icon name="sync"></ion-icon></button>
+      </div>
     </ion-col>
   </ion-row>
 </ion-content>

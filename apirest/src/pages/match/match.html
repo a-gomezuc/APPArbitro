@@ -20,7 +20,8 @@
       <h1 class="liga">Día: {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
       <h1 class="liga">{{partido?.estadio?.nombre}}</h1>
       <p class="liga">{{partido?.estadio?.poblacion}} ({{partido?.estadio?.provincia}})</p>
-      <button class="btnVerMapa" ion-button (click)="this.cambiaAMapaPage(this.partido.estadio)">Ver en mapa</button>
+      <button class="btnVerMapa" ion-button (click)="this.cambiaAMapaPage(this.partido.estadio)" icon-end>Mapa<ion-icon name="map"></ion-icon></button>
+
     </div>
     <ion-grid class="cronoCaja" *ngIf="this.arbitrando">
       <ion-row justify-content-center>
@@ -39,10 +40,10 @@
         </ion-row>
         <ion-row justify-content-center>
           <ion-col>
-            <button *ngIf="!this.reanudar && this.mostrarComienzo"class="btnCrono" ion-button color="secondary" (click)="this.comenzarCrono()">Comenzar &nbsp;
+            <button *ngIf="!this.reanudar && this.mostrarComienzo" class="btnCrono" ion-button color="secondary" (click)="this.comenzarCrono()">Comenzar &nbsp;
               <!-- <ion-icon name="play"></ion-icon> -->
             </button>
-            <button *ngIf="this.reanudar && this.mostrarComienzo"class="btnCrono" ion-button color="secondary" (click)="this.comenzarCrono()">Reanudar &nbsp;
+            <button *ngIf="this.reanudar && this.mostrarComienzo" class="btnCrono" ion-button color="secondary" (click)="this.comenzarCrono()">Reanudar &nbsp;
               <!-- <ion-icon name="play"></ion-icon> -->
             </button>
           </ion-col>
@@ -70,7 +71,7 @@
         </ion-avatar>
       </ion-item>
       <ion-item class="equipoVisitante">
-      <ion-avatar class="visitanteAvatar" item-start>
+        <ion-avatar class="visitanteAvatar" item-start>
           <img class="visitante" src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{partido?.equipoVisitante?.imagenEquipo}}">
           <ion-label>{{partido?.equipoVisitante?.nombre}}
             <span class="goles">{{partido?.golesVisitante}}</span>
@@ -83,21 +84,55 @@
       <h1 class="liga">Jugadores equipo local ({{partido?.equipoLocal?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoLocal.length}})</h1>
       <div *ngIf="!this.arbitrando">
-        <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.equipoLocal?.plantillaEquipo">
-          <ion-avatar>
-            <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorLocal.fotoJugador}}">
-          </ion-avatar>
-          <h1 class="nombreYApellidos">{{jugadorLocal?.nombre }} {{ jugadorLocal?.apellidos }}</h1>
-          <p class="dorsal">Dorsal {{ jugadorLocal?.dorsal }}</p>
-          <p class="capitan"*ngIf="jugadorLocal.capitan">Capitán</p>
-          <button ion-button (click)="this.cambiaAPlayerPage(this.partido.equipoLocal.nombre, jugadorLocal)">Ver</button>
-          <button class="convocar" *ngIf="this.isNotConvocado(jugadorLocal) && !this.isSancionado(jugadorLocal)" ion-button (click)="convocarLocal(jugadorLocal)">Convocar</button>
-          <p class="convocado" *ngIf="!this.isNotConvocado(jugadorLocal)">Convocado</p>
-          <button class="desconvocar" *ngIf="!this.isSancionado(jugadorLocal) && !this.isNotConvocado(jugadorLocal)" ion-button (click)="desconvocarLocal(jugadorLocal)">Desconvocar</button>
-          <h1>
-            <span class="sancionado" *ngIf="this.isSancionado(jugadorLocal)">Sancionado</span>
-          </h1>
-        </ion-item>
+        <ion-grid>
+          <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.partido?.equipoLocal?.plantillaEquipo">
+            <ion-row>
+              <ion-col>
+                <div align="center">
+                  <ion-avatar>
+                    <img src="https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{jugadorLocal.fotoJugador}}">
+                  </ion-avatar>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div align="center">
+                  <h1 class="nombreYApellidos">{{jugadorLocal?.nombre }} {{ jugadorLocal?.apellidos }}</h1>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div align="center">
+                  <p class="dorsal">Dorsal {{ jugadorLocal?.dorsal }}</p>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div align="center">
+                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocal.nombre, jugadorLocal)" icon-end round>Ver <ion-icon name="eye"></ion-icon></button>
+                  <button class="convocar" *ngIf="this.isNotConvocado(jugadorLocal) && !this.isSancionado(jugadorLocal)" ion-button (click)="convocarLocal(jugadorLocal)"
+                    icon-end round>Convocar <ion-icon name="clipboard"></ion-icon></button>
+                  <button class="desconvocar" *ngIf="!this.isSancionado(jugadorLocal) && !this.isNotConvocado(jugadorLocal)" ion-button (click)="desconvocarLocal(jugadorLocal)"
+                    icon-end round>Desconvocar <ion-icon name="clipboard"></ion-icon></button>
+                </div>
+              </ion-col>
+            </ion-row>
+            <ion-row>
+              <ion-col>
+                <div align="center">
+                  <p class="convocado" *ngIf="!this.isNotConvocado(jugadorLocal)">Convocado</p>
+                  <p class="capitan" *ngIf="jugadorLocal.capitan">Capitán</p>
+                  <h1>
+                    <span class="sancionado" *ngIf="this.isSancionado(jugadorLocal)"><ion-icon name="warning"></ion-icon> Sancionado</span>
+                  </h1>
+                </div>
+              </ion-col>
+            </ion-row>
+          </ion-item>
+        </ion-grid>
       </div>
       <div *ngIf="this.arbitrando">
         <ion-item class="jugadorLocal" *ngFor="let jugadorLocalConvocado of this.convocadosPartidoLocal">
@@ -106,7 +141,7 @@
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorLocalConvocado?.nombre }} {{ jugadorLocalConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorLocalConvocado?.dorsal }}</p>
-          <p class="capitan"*ngIf="jugadorLocalConvocado.capitan">Capitán</p>
+          <p class="capitan" *ngIf="jugadorLocalConvocado.capitan">Capitán</p>
           <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorLocalConvocado) && !this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador con tarjeta amarilla</p>
           <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador expulsado</p>
           <button class="btnGol" *ngIf="!this.tieneTarjetaRoja(jugadorLocalConvocado)" ion-button (click)="this.alertaGolLocal(jugadorLocalConvocado,this.partido.id,this.timer.minuto, this.partido.equipoLocal)">Gol</button>
@@ -125,7 +160,7 @@
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitante?.nombre }} {{ jugadorVisitante?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitante?.dorsal }}</p>
-          <p class="capitan"*ngIf="jugadorVisitante.capitan">Capitán</p>
+          <p class="capitan" *ngIf="jugadorVisitante.capitan">Capitán</p>
           <button ion-button (click)="this.cambiaAPlayerPage(this.partido.equipoVisitante.nombre, jugadorVisitante)">Ver</button>
           <button class="convocar" *ngIf="this.isNotConvocado(jugadorVisitante) && !this.isSancionado(jugadorVisitante)" ion-button
             (click)="convocarVisitante(jugadorVisitante)">Convocar</button>
@@ -144,7 +179,7 @@
           </ion-avatar>
           <h1 class="nombreYApellidos">{{jugadorVisitanteConvocado?.nombre }} {{ jugadorVisitanteConvocado?.apellidos }}</h1>
           <p class="dorsal">Dorsal {{ jugadorVisitanteConvocado?.dorsal }}</p>
-          <p class="capitan"*ngIf="jugadorVisitanteConvocado.capitan">Capitán</p>
+          <p class="capitan" *ngIf="jugadorVisitanteConvocado.capitan">Capitán</p>
           <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorVisitanteConvocado) && !this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador con tarjeta amarilla</p>
           <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador expulsado</p>
           <button class="btnGol" *ngIf="!this.tieneTarjetaRoja(jugadorVisitanteConvocado)" ion-button (click)="this.alertaGolVisitante(jugadorVisitanteConvocado,this.partido.id,this.timer.minuto,this.partido.equipoVisitante)">Gol</button>
@@ -154,17 +189,18 @@
       </div>
     </ion-list>
     <div text-center>
-      <button ion-button large color="secondary" class="arbitrar" *ngIf="!this.arbitrando" (click)="this.alertaArbitrar()">Arbitrar partido</button>
+      <button ion-button large class="arbitrar" *ngIf="!this.arbitrando" (click)="this.alertaArbitrar()" icon-end round>Arbitrar
+          <ion-icon name="football"></ion-icon></button>
     </div>
     <div text-center>
-      <button ion-button color="danger" class="arbitrar" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()">Finalizar partido</button>
+      <button ion-button class="arbitrar" *ngIf="this.arbitrando" (click)="this.rellenarObservaciones()" icon-end round>Finalizar<ion-icon name="football"></ion-icon></button>
     </div>
   </div>
   <div *ngIf="this.rellenaActa">
     <h1 text-center>Observaciones del partido</h1>
     <ion-textarea placeholder="Introduzca las observaciones del partido" [(ngModel)]="observaciones"></ion-textarea>
     <div text-center>
-      <button class="btnEnviarActa" ion-button (click)="this.enviarActa()">Enviar acta</button>
+      <button class="btnEnviarActa" ion-button (click)="this.enviarActa()" icon-end round>Enviar acta <ion-icon name="send"></ion-icon></button>
     </div>
   </div>
 </ion-content>

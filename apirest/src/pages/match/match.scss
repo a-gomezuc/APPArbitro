@@ -35,7 +35,9 @@ p.jugadorTarjetaRoja{
 }
 .arbitrar{
     width:12em;
-    font-size: 10px;
+    font-size: 14px;
+    background: black;
+    color:white;
 }
 button.finalizarPartido{
     background: rgb(172, 2, 2);
@@ -85,6 +87,7 @@ background-color: transparent !important;
     background: rgba(45, 230, 21, 0.137);
 }
 p.dorsal{
+    font-size: 20px;
     color:grey;
 }
 p.capitan{
@@ -110,6 +113,7 @@ h1.nombreYApellidos{
 .btnEnviarActa{
     background: rgb(55, 132, 248);
     color:white;
+    font-size: 12px;
 }
 h1.datosCrono{
     font-size: 10px;
@@ -121,4 +125,13 @@ div.crono{
     border-width: 4px;
     border-style: solid;
     border-color: rgba(78, 76, 76, 0.089);
+}
+.desconvocar{
+    font-size: 11px;
+}
+.ver{
+    font-size: 12px;
+}
+.convocar{
+    font-size: 12px;
 }

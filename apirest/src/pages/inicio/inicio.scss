@@ -2,9 +2,12 @@ page-inicio {
 
 }
 .item-background3{
-    //background-image:url(http://www.quo.es/var/quo/storage/images/ser-humano/que-pais-invento-el-futbol/906526-1-esl-ES/que-pais-invento-el-futbol_ampliacion.jpg);
-    //color: white;
-    //background-size: 300%;
+    // background-image:url("http://www.saninazio-sd.es/wp-content/uploads/2016/04/textura-verde-cesped-campo-futbol.jpg");
+    // //color: white;
+    // //background-size: 300%;
+    // background-size:cover; 
+    // background-repeat:no-repeat;
+    // background-position:center center;
     background-color:white;
 }
 .inicio{
@@ -18,7 +21,4 @@ page-inicio {
 }
 input::-webkit-input-placeholder{
         color:black;
-}
-.recordar{
-    width:100%;
 }
