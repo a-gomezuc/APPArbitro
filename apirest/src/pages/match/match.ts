@@ -8,6 +8,7 @@ import { ManejadorErroresComponent } from '../../components/manejador-errores/ma
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular/platform/platform';
 import { MapaPage } from '../mapa/mapa';
+import { Vibration } from '@ionic-native/vibration';
 
 
 
@@ -24,7 +25,6 @@ import { MapaPage } from '../mapa/mapa';
   templateUrl: 'match.html',
 })
 export class MatchPage {
-
   timer = new TimerComponent();
   manejadorErrores = new ManejadorErroresComponent(this.alerta);
   playerPage = PlayerPage;
@@ -32,17 +32,26 @@ export class MatchPage {
   mapaPage = MapaPage;
   partido: any;
   arbitro: any;
+  busquedaJugadoresLocales: any;
+  busquedaJugadoresVisitantes : any;
+  busquedaJugadoresLocalesConvocados: any;
+  busquedaJugadoresVisitantesConvocados: any;
   convocadosPartidoLocal: any[];
   convocadosPartidoVisitante: any[];
   arbitrando: Boolean;
+  modificando: Boolean;
   rellenaActa: Boolean;
   incidenciasPartido: any[];
   jugadoresConTarjetaAmarilla: any[];
   jugadoresConTarjetaRoja: any[];
   observaciones: String;
   acta: any;
-  reanudar :boolean;
-  mostrarComienzo :boolean;
+  reanudar: Boolean;
+  mostrarComienzo: Boolean;
+  activarVibrar: Boolean;
+  minutoVibrar: Number;
+  valorBuscado: String;
+  valorBuscadoConvocados: String;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -51,26 +60,27 @@ export class MatchPage {
     public loadingCtrl: LoadingController,
     public menu: MenuController,
     public storage: Storage,
-    public plt: Platform) {
+    public plt: Platform,) {
     this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
     this.arbitrando = false;
+    this.modificando = false;
     this.rellenaActa = false;
     this.incidenciasPartido = [];
     this.jugadoresConTarjetaAmarilla = [];
     this.jugadoresConTarjetaRoja = [];
     this.observaciones = '';
     this.acta = {};
-    this.reanudar=false;
-    this.mostrarComienzo=true;
+    this.reanudar = false;
+    this.mostrarComienzo = true;
   }
 
 
   //Obtiene el partido
   obtenerPartidoyArbitro() {
     let loader = this.loadingCtrl.create({
-      content:"Cargando partido"
+      content: "Cargando partido"
     });
     loader.present();
     this.userService.getMatchById(this.navParams.get("idPartido")).then(
@@ -100,42 +110,44 @@ export class MatchPage {
       err => this.manejadorErrores.manejarError(err)
     );
   }
-  obtenerEquipoLocal(){
+  obtenerEquipoLocal() {
     this.userService.getEquipoByID(this.partido.equipoLocalId).then(
-      res=> {
-        this.partido.equipoLocal=res;
+      res => {
+        this.partido.equipoLocal = res;
         this.partido.equipoLocal.plantillaEquipo.sort(this.compararPorDorsal);
+        this.busquedaJugadoresLocales = this.partido.equipoLocal.plantillaEquipo;
       },
-      err=>{
+      err => {
         this.manejadorErrores.manejarError(err);
       }
     )
   }
-  obtenerEquipoVisitante(){
+  obtenerEquipoVisitante() {
     this.userService.getEquipoByID(this.partido.equipoVisitanteId).then(
-      res=> {
-        this.partido.equipoVisitante=res;
+      res => {
+        this.partido.equipoVisitante = res;
         this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
+        this.busquedaJugadoresVisitantes= this.partido.equipoVisitante.plantillaEquipo;
       },
-      err=>{
+      err => {
         this.manejadorErrores.manejarError(err);
       }
     )
   }
 
-  modificarPartidoYCrearActa(acta){
+  modificarPartidoYCrearActa(acta) {
     let loader = this.loadingCtrl.create({
-      content:"Enviando acta..."
+      content: "Enviando acta..."
     });
     loader.present();
     let alertaActa = this.alerta.create({
       title: 'Acta enviada',
       subTitle: 'El acta se ha enviado correctamente.',
     });
-    this.partido.estado= "Partido disputado con acta pendiente de aprobación"
+    this.partido.estado = "Partido disputado con acta pendiente de aprobación"
     this.userService.modifyMatch(this.partido.id, this.partido).then(
-      res=>{
-        this.partido=res;
+      res => {
+        this.partido = res;
         this.userService.createActa(this.acta).then(
           res => {
             this.cambiaAHomePage()
@@ -144,10 +156,11 @@ export class MatchPage {
           },
           err => {
             this.manejadorErrores.manejarError(err)
-          loader.dismiss();}
+            loader.dismiss();
+          }
         );
       },
-      err=>{
+      err => {
         this.manejadorErrores.manejarError(err);
       }
     );
@@ -156,13 +169,13 @@ export class MatchPage {
   //Para conocer si un jugador está sancionado.
   isSancionado(jugador) {
     var sancionado = false;
-      if (jugador.sanciones.length > 0) {
-        for (var i = 0; i < jugador.sanciones.length; i++) {
-          if (jugador.sanciones[i].enVigor == true) {
-            sancionado = true;
-          }
+    if (jugador.sanciones.length > 0) {
+      for (var i = 0; i < jugador.sanciones.length; i++) {
+        if (jugador.sanciones[i].enVigor == true) {
+          sancionado = true;
         }
       }
+    }
     return sancionado;
   }
 
@@ -226,12 +239,14 @@ export class MatchPage {
   //Método que activa el arbitraje en el partido.
   arbitrar() {
     this.arbitrando = true;
+    this.busquedaJugadoresLocalesConvocados = this.convocadosPartidoLocal;
+    this.busquedaJugadoresVisitantesConvocados = this.convocadosPartidoVisitante;
   }
   //Método que da paso al arbitraje de un partido.
   alertaArbitrar() {
     let confirm = this.alerta.create({
       title: '¡Atención!',
-      message: '<p>Una vez pulse sí no podrá realizar cambios. Compruebe los jugadores convocados.</p><p> Ha convocado ' + this.convocadosPartidoLocal.length + ' jugadores locales y ' + this.convocadosPartidoVisitante.length + ' jugadores visitantes.</p>',
+      message: '<p>Compruebe los jugadores convocados.</p><p> Ha convocado ' + this.convocadosPartidoLocal.length + ' jugadores locales y ' + this.convocadosPartidoVisitante.length + ' jugadores visitantes.</p>',
       buttons: [
         {
           text: 'No',
@@ -250,8 +265,8 @@ export class MatchPage {
   }
 
   //Método que cambia a la página de jugador.
-  cambiaAPlayerPage(nombreEquipo: String, jugador:any) {
-    this.navCtrl.push(this.playerPage, { nombreEquipo, jugador});
+  cambiaAPlayerPage(nombreEquipo: String, jugador: any) {
+    this.navCtrl.push(this.playerPage, { nombreEquipo, jugador });
   }
   //Método que cambia a la página del mapa.
   cambiaAMapaPage(estadio: any) {
@@ -542,22 +557,100 @@ export class MatchPage {
   }
 
   //Parar el cronómetro.
-  pararCrono(){
+  pararCrono() {
     this.timer.stop();
-    this.mostrarComienzo=true;
-    this.reanudar=true;
+    this.mostrarComienzo = true;
+    this.reanudar = true;
   }
 
   //Reanudar el cronómetro.
-  reiniciarCrono(){
+  reiniciarCrono() {
     this.timer.reinicia();
-    this.mostrarComienzo=true;
-    this.reanudar=false;
+    this.mostrarComienzo = true;
+    this.reanudar = false;
   }
 
   //Comenzar cronómetro.
-  comenzarCrono(){
+  comenzarCrono() {
     this.timer.start();
-    this.mostrarComienzo=false;
+    this.mostrarComienzo = false;
+  }
+  //Habilita la modificación durante el arbitraje.
+  modificar() {
+    this.pararCrono();
+    this.modificando = true;
+  }
+  //Guarda los cambios realizados en la modificación.
+  guardar() {
+    this.modificando = false;
+    this.pararCrono();
+    this.busquedaJugadoresLocalesConvocados = this.convocadosPartidoLocal;
+    this.busquedaJugadoresVisitantesConvocados = this.convocadosPartidoVisitante;
+  }
+  //Notifica si se activa la vibración
+  vibrar() {
+    this.timer.setActivarVibrar(this.activarVibrar);
+    if (this.activarVibrar) {
+      console.log("Vibra")
+    }
+  }
+  //Cambia el minuto de vibración
+  cambiaMinuto() {
+    this.timer.setMinutoVibrar(this.minutoVibrar);
+    console.log(this.minutoVibrar);
+  }
+
+  cambiaBusquedaSinConvocados() {
+    this.busquedaJugadoresLocales = this.busquedaLocales();
+    this.busquedaJugadoresVisitantes= this.busquedaVisitantes();
+  }
+  cambiaBusquedaConvocados() {
+    this.busquedaJugadoresLocalesConvocados = this.busquedaLocalesConvocados();
+    this.busquedaJugadoresVisitantesConvocados= this.busquedaVisitantesConvocados();
+  }
+
+  //Obtiene los jugadores locales por dorsal.
+  busquedaLocales() {
+    return this.partido.equipoLocal.plantillaEquipo.filter((item) => {
+      if (this.valorBuscado.length == 0) {
+        return true;
+      }
+      else {
+        return item.dorsal == this.valorBuscado;
+      }
+    });
+  }
+  //Obtiene los jugadores visitantes por dorsal.
+  busquedaVisitantes() {
+    return this.partido.equipoVisitante.plantillaEquipo.filter((item) => {
+      if (this.valorBuscado.length == 0) {
+        return true;
+      }
+      else {
+        return item.dorsal == this.valorBuscado;
+      }
+    });
+  }
+//Obtiene los jugadores locales convocados por dorsal.
+  busquedaLocalesConvocados() {
+    return this.convocadosPartidoLocal.filter((item) => {
+      if (this.valorBuscadoConvocados.length == 0) {
+        return true;
+      }
+      else {
+        return item.dorsal == this.valorBuscadoConvocados;
+      }
+    });
+  }
+  //Obtiene los jugadores visitantes convocados por dorsal.
+  busquedaVisitantesConvocados() {
+    return this.convocadosPartidoVisitante.filter((item) => {
+      if (this.valorBuscadoConvocados.length == 0) {
+        return true;
+      }
+      else {
+        return item.dorsal == this.valorBuscadoConvocados;
+      }
+    });
   }
 }

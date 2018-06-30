@@ -19,17 +19,18 @@ import { ManejadorErroresComponent } from '../components/manejador-errores/manej
 import { MapaPage } from '../pages/mapa/mapa';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { SplashScreen } from '@ionic-native/splash-screen';
+import { Vibration } from '@ionic-native/vibration';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    PlayerPage,
-    InicioPage,
-    MatchPage,
-    MapaPage,
-    CambiarContraseñaPage,
-    RecordarContraseñaPage,
+    // PlayerPage,
+    // InicioPage,
+    // MatchPage,
+    // MapaPage,
+    // CambiarContraseñaPage,
+    // RecordarContraseñaPage,
     TimerComponent,
     ManejadorErroresComponent
   ],
@@ -60,7 +61,8 @@ import { SplashScreen } from '@ionic-native/splash-screen';
     { provide: ErrorHandler, useClass: IonicErrorHandler },
     UserServiceProvider,
     ManejadorErroresComponent,
-    BackgroundMode
+    BackgroundMode,
+    Vibration
   ]
 })
 export class AppModule { }

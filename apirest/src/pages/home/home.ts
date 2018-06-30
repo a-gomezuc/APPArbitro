@@ -3,7 +3,6 @@ import { NavController, AlertController, LoadingController, MenuController, NavP
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { PlayerPage } from '../player/player'
 import { MatchPage } from '../match/match'
-import { TimerComponent } from '../../components/timer/timer'
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores';
 import { Storage } from '@ionic/storage';
 @Component({
@@ -21,7 +20,6 @@ export class HomePage {
   arbitros: any[];
   partidos: any[]
   playerEliminado: any;
-  timer = new TimerComponent();
   manejadorErrores = new ManejadorErroresComponent(this.alerta);
   goles: Array<{ goleador: String, minuto: String }> = [];
 

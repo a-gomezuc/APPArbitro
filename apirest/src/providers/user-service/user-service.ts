@@ -18,7 +18,7 @@ export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers: any;
-  public url: String = "http://localhost:8080"
+  public url: String = "http://192.168.1.102:8080"
   constructor(
     public http: Http,
   ) { }

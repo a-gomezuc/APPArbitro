@@ -36,6 +36,10 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
+      backgroundMode.setDefaults({
+        title:"Arbitrando..." ,
+        text: "Referee App realizando tareas en segundo plano."
+    });
       backgroundMode.enable();
       timer(3000).subscribe(() => this.showSplash = false);
     });
