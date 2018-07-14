@@ -9,9 +9,11 @@
   <ion-navbar>
     <ion-title>{{partido?.liga}}</ion-title>
   </ion-navbar>
-  <ion-searchbar type="number" *ngIf="!this.arbitrando || this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscado" (ionInput)="cambiaBusquedaSinConvocados()"></ion-searchbar>
-  <ion-searchbar type="number" *ngIf="this.arbitrando && !this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscadoConvocados" (ionInput)="cambiaBusquedaConvocados()"></ion-searchbar>
- 
+  <ion-searchbar type="number" *ngIf="!this.arbitrando || this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscado"
+    (ionInput)="cambiaBusquedaSinConvocados()"></ion-searchbar>
+  <ion-searchbar type="number" *ngIf="this.arbitrando && !this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscadoConvocados"
+    (ionInput)="cambiaBusquedaConvocados()"></ion-searchbar>
+
 </ion-header>
 
 
@@ -68,7 +70,8 @@
     <ion-item *ngIf="this.arbitrando && !this.modificando">
       <ion-label>Vibrar en el minuto: </ion-label>
       <ion-checkbox [(ngModel)]="activarVibrar" (ionChange)="vibrar()"></ion-checkbox>
-     <ion-input class="minutoInput" type="number" [(ngModel)]="minutoVibrar" (ionChange)="cambiaMinuto()" placeholder="Minuto de vibración" max="100" min="0"></ion-input>
+      <ion-input class="minutoInput" type="number" [(ngModel)]="minutoVibrar" (ionChange)="cambiaMinuto()" placeholder="Minuto de vibración"
+        max="100" min="0"></ion-input>
     </ion-item>
     <ion-list>
       <ion-item class="equipoLocal">
@@ -103,6 +106,18 @@
     <ion-list>
       <h1 class="liga">Jugadores equipo local ({{partido?.equipoLocal?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoLocal.length}})</h1>
+      <ion-item *ngIf="!this.arbitrando || this.modificando">
+        <ion-label>Capitán Local</ion-label>
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanLocal">
+          <ion-option *ngFor="let jugadorLocalPosibleCapitan of this.partido?.equipoLocal?.plantillaEquipo" [value]="jugadorLocalPosibleCapitan.id">{{jugadorLocalPosibleCapitan.dorsal}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="!this.arbitrando || this.modificando">
+        <ion-label>Portero Local</ion-label>
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idPorteroLocal">
+          <ion-option *ngFor="let jugadorLocalPosiblePortero of this.partido?.equipoLocal?.plantillaEquipo" [value]="jugadorLocalPosiblePortero.id">{{jugadorLocalPosiblePortero.dorsal}}</ion-option>
+        </ion-select>
+      </ion-item>
       <div *ngIf="!this.arbitrando || this.modificando">
         <ion-grid>
           <ion-item class="jugadorLocal" *ngFor="let jugadorLocal of this.busquedaJugadoresLocales">
@@ -149,8 +164,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <p class="convocado" *ngIf="!this.isNotConvocado(jugadorLocal)">Convocado</p>
-                  <p class="capitan" *ngIf="jugadorLocal.capitan">Capitán</p>
+                  <p class="portero" *ngIf="this.esPorteroLocalPartido(jugadorLocal)">Portero</p>
+                  <p class="capitan" *ngIf="this.esCapitanLocalPartido(jugadorLocal)">Capitán</p>
                   <h1>
                     <span class="sancionado" *ngIf="this.isSancionado(jugadorLocal)">
                       <ion-icon name="warning"></ion-icon> Sancionado</span>
@@ -193,6 +208,10 @@
                   <button class="btnGol" *ngIf="!this.tieneTarjetaRoja(jugadorLocalConvocado)" ion-button (click)="this.alertaGolLocal(jugadorLocalConvocado,this.partido.id,this.timer.minuto,this.partido.equipoVisitante)"
                     small round>Gol
                   </button>
+                </div>
+              </ion-col>
+              <ion-col>
+                <div align="center">
                   <button class="btnTAmarilla" *ngIf="!this.tieneTarjetaRoja(jugadorLocalConvocado)" ion-button (click)="this.alertaTarjetaAmarilla(jugadorLocalConvocado,this.partido.id,this.timer.minuto)"
                     small round>T.Amarilla
                   </button>
@@ -205,7 +224,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <p class="capitan" *ngIf="jugadorLocalConvocado.capitan">Capitán</p>
+                  <p class="portero" *ngIf="this.esPorteroLocalPartido(jugadorLocalConvocado)">Portero</p>
+                  <p class="capitan" *ngIf="this.esCapitanLocalPartido(jugadorLocalConvocado)">Capitán</p>
                   <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorLocalConvocado) && !this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador con tarjeta amarilla</p>
                   <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador expulsado</p>
                 </div>
@@ -218,6 +238,18 @@
     <ion-list>
       <h1 class="liga">Jugadores equipo visitante ({{partido?.equipoVisitante?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoVisitante.length}})</h1>
+      <ion-item *ngIf="!this.arbitrando || this.modificando">
+        <ion-label>Capitán Visitante</ion-label>
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanVisitante">
+          <ion-option *ngFor="let jugadorVisitantePosibleCapitan of this.partido?.equipoVisitante?.plantillaEquipo" [value]="jugadorVisitantePosibleCapitan.id">{{jugadorVisitantePosibleCapitan.dorsal}}</ion-option>
+        </ion-select>
+      </ion-item>
+      <ion-item *ngIf="!this.arbitrando || this.modificando">
+        <ion-label>Portero Visitante</ion-label>
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idPorteroVisitante">
+          <ion-option *ngFor="let jugadorVisitantePosiblePortero of this.partido?.equipoVisitante?.plantillaEquipo" [value]="jugadorVisitantePosiblePortero.id">{{jugadorVisitantePosiblePortero.dorsal}}</ion-option>
+        </ion-select>
+      </ion-item>
       <div *ngIf="!this.arbitrando || this.modificando">
         <ion-grid>
           <ion-item class="jugadorVisitante" *ngFor="let jugadorVisitante of this.busquedaJugadoresVisitantes">
@@ -265,8 +297,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <p class="convocado" *ngIf="!this.isNotConvocado(jugadorVisitante)">Convocado</p>
-                  <p class="capitan" *ngIf="jugadorVisitante.capitan">Capitán</p>
+                  <p class="portero" *ngIf="this.esPorteroVisitantePartido(jugadorVisitante)">Portero</p>
+                  <p class="capitan" *ngIf="this.esCapitanVisitantePartido(jugadorVisitante)">Capitán</p>
                   <h1>
                     <span class="sancionado" *ngIf="this.isSancionado(jugadorVisitante)">
                       <ion-icon name="warning"></ion-icon> Sancionado</span>
@@ -309,6 +341,10 @@
                   <button class="btnGol" *ngIf="!this.tieneTarjetaRoja(jugadorVisitanteConvocado)" ion-button (click)="this.alertaGolVisitante(jugadorVisitanteConvocado,this.partido.id,this.timer.minuto,this.partido.equipoVisitante)"
                     small round>Gol
                   </button>
+                </div>
+              </ion-col>
+              <ion-col>
+                <div align="center">
                   <button class="btnTAmarilla" *ngIf="!this.tieneTarjetaRoja(jugadorVisitanteConvocado)" ion-button (click)="this.alertaTarjetaAmarilla(jugadorVisitanteConvocado,this.partido.id,this.timer.minuto)"
                     small round>T.Amarilla
                   </button>
@@ -321,7 +357,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <p class="capitan" *ngIf="jugadorVisitanteConvocado.capitan">Capitán</p>
+                  <p class="portero" *ngIf="this.esPorteroVisitantePartido(jugadorVisitanteConvocado)">Portero</p>
+                  <p class="capitan" *ngIf="this.esCapitanVisitantePartido(jugadorVisitanteConvocado)">Capitán</p>
                   <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorVisitanteConvocado) && !this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador con tarjeta amarilla</p>
                   <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador expulsado</p>
                 </div>

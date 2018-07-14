@@ -33,7 +33,7 @@ export class MatchPage {
   partido: any;
   arbitro: any;
   busquedaJugadoresLocales: any;
-  busquedaJugadoresVisitantes : any;
+  busquedaJugadoresVisitantes: any;
   busquedaJugadoresLocalesConvocados: any;
   busquedaJugadoresVisitantesConvocados: any;
   convocadosPartidoLocal: any[];
@@ -52,6 +52,10 @@ export class MatchPage {
   minutoVibrar: Number;
   valorBuscado: String;
   valorBuscadoConvocados: String;
+  idCapitanLocal: String;
+  idPorteroLocal: String;
+  idCapitanVisitante: String;
+  idPorteroVisitante: String;
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -60,7 +64,7 @@ export class MatchPage {
     public loadingCtrl: LoadingController,
     public menu: MenuController,
     public storage: Storage,
-    public plt: Platform,) {
+    public plt: Platform, ) {
     this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
@@ -127,7 +131,7 @@ export class MatchPage {
       res => {
         this.partido.equipoVisitante = res;
         this.partido.equipoVisitante.plantillaEquipo.sort(this.compararPorDorsal);
-        this.busquedaJugadoresVisitantes= this.partido.equipoVisitante.plantillaEquipo;
+        this.busquedaJugadoresVisitantes = this.partido.equipoVisitante.plantillaEquipo;
       },
       err => {
         this.manejadorErrores.manejarError(err);
@@ -602,11 +606,11 @@ export class MatchPage {
 
   cambiaBusquedaSinConvocados() {
     this.busquedaJugadoresLocales = this.busquedaLocales();
-    this.busquedaJugadoresVisitantes= this.busquedaVisitantes();
+    this.busquedaJugadoresVisitantes = this.busquedaVisitantes();
   }
   cambiaBusquedaConvocados() {
     this.busquedaJugadoresLocalesConvocados = this.busquedaLocalesConvocados();
-    this.busquedaJugadoresVisitantesConvocados= this.busquedaVisitantesConvocados();
+    this.busquedaJugadoresVisitantesConvocados = this.busquedaVisitantesConvocados();
   }
 
   //Obtiene los jugadores locales por dorsal.
@@ -631,7 +635,7 @@ export class MatchPage {
       }
     });
   }
-//Obtiene los jugadores locales convocados por dorsal.
+  //Obtiene los jugadores locales convocados por dorsal.
   busquedaLocalesConvocados() {
     return this.convocadosPartidoLocal.filter((item) => {
       if (this.valorBuscadoConvocados.length == 0) {
@@ -652,5 +656,34 @@ export class MatchPage {
         return item.dorsal == this.valorBuscadoConvocados;
       }
     });
+  }
+  //Imprime el valor del capitan por pantall
+  imprimirValor() {
+    console.log(this.idCapitanLocal);
+    console.log(this.idCapitanVisitante);
+  }
+  esCapitanLocalPartido(jugadorLocal: any) {
+    if (jugadorLocal != undefined) {
+      return (jugadorLocal.id == this.idCapitanLocal);
+    }
+    else return false;
+  }
+  esCapitanVisitantePartido(jugadorVisitante: any) {
+    if (jugadorVisitante != undefined) {
+      return (jugadorVisitante.id == this.idCapitanVisitante)
+    }
+    else return false;
+  }
+  esPorteroLocalPartido(jugadorLocal: any) {
+    if (jugadorLocal != undefined) {
+      return (jugadorLocal.id == this.idPorteroLocal);
+    }
+    else return false;
+  }
+  esPorteroVisitantePartido(jugadorVisitante: any) {
+    if (jugadorVisitante != undefined) {
+      return (jugadorVisitante.id == this.idPorteroVisitante)
+    }
+    else return false;
   }
 }

@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
 import { Vibration } from '@ionic-native/vibration';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
 
 /**
  * Generated class for the TimerComponent component.
@@ -19,8 +21,10 @@ export class TimerComponent {
   public activarVibrarTimer: Boolean;
   public minutoVibrarTimer: Number;
   public vibration : Vibration;
+  public localNotifications : LocalNotifications;
   constructor( ) {
     this.vibration =  new Vibration();
+    this.localNotifications = new LocalNotifications();
   }
 
   start() {
@@ -33,12 +37,15 @@ export class TimerComponent {
           if (this.activarVibrarTimer) {
             if (this.minuto == this.minutoVibrarTimer) {
               this.vibration.vibrate(3000);
-              console.log("Vibrando desde el cronómetro");
+              this.localNotifications.schedule({
+                id: 1,
+                title: "Referee App",
+                text: 'Se ha alcanzado el tiempo fijado.',
+                vibrate: true
+              })
             }
           }
         }
-
-
       }, 1000)
     }
   }

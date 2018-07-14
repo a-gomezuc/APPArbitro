@@ -20,17 +20,19 @@ import { MapaPage } from '../pages/mapa/mapa';
 import { BackgroundMode } from '@ionic-native/background-mode';
 import { SplashScreen } from '@ionic-native/splash-screen';
 import { Vibration } from '@ionic-native/vibration';
+import { LocalNotifications } from '@ionic-native/local-notifications';
+
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    // PlayerPage,
-    // InicioPage,
-    // MatchPage,
-    // MapaPage,
-    // CambiarContraseñaPage,
-    // RecordarContraseñaPage,
+    PlayerPage,
+    InicioPage,
+    MatchPage,
+    MapaPage,
+    CambiarContraseñaPage,
+    RecordarContraseñaPage,
     TimerComponent,
     ManejadorErroresComponent
   ],
@@ -62,7 +64,8 @@ import { Vibration } from '@ionic-native/vibration';
     UserServiceProvider,
     ManejadorErroresComponent,
     BackgroundMode,
-    Vibration
+    Vibration,
+    LocalNotifications
   ]
 })
 export class AppModule { }
