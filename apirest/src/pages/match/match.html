@@ -9,9 +9,9 @@
   <ion-navbar>
     <ion-title>{{partido?.liga}}</ion-title>
   </ion-navbar>
-  <ion-searchbar type="number" *ngIf="!this.arbitrando || this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscado"
+  <ion-searchbar type="number" *ngIf="(!this.arbitrando || this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscado"
     (ionInput)="cambiaBusquedaSinConvocados()"></ion-searchbar>
-  <ion-searchbar type="number" *ngIf="this.arbitrando && !this.modificando" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscadoConvocados"
+  <ion-searchbar type="number" *ngIf="(this.arbitrando && !this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscadoConvocados"
     (ionInput)="cambiaBusquedaConvocados()"></ion-searchbar>
 
 </ion-header>
@@ -114,7 +114,7 @@
       </ion-item>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Portero Local</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idPorteroLocal">
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosLocal" multiple="true">
           <ion-option *ngFor="let jugadorLocalPosiblePortero of this.partido?.equipoLocal?.plantillaEquipo" [value]="jugadorLocalPosiblePortero.id">{{jugadorLocalPosiblePortero.dorsal}}</ion-option>
         </ion-select>
       </ion-item>
@@ -246,7 +246,7 @@
       </ion-item>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Portero Visitante</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idPorteroVisitante">
+        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosVisitante" multiple="true">
           <ion-option *ngFor="let jugadorVisitantePosiblePortero of this.partido?.equipoVisitante?.plantillaEquipo" [value]="jugadorVisitantePosiblePortero.id">{{jugadorVisitantePosiblePortero.dorsal}}</ion-option>
         </ion-select>
       </ion-item>

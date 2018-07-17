@@ -53,9 +53,9 @@ export class MatchPage {
   valorBuscado: String;
   valorBuscadoConvocados: String;
   idCapitanLocal: String;
-  idPorteroLocal: String;
+  idsPorterosLocal: String[];
   idCapitanVisitante: String;
-  idPorteroVisitante: String;
+  idsPorterosVisitante: String[];
 
   constructor(public navCtrl: NavController,
     public navParams: NavParams,
@@ -74,6 +74,8 @@ export class MatchPage {
     this.incidenciasPartido = [];
     this.jugadoresConTarjetaAmarilla = [];
     this.jugadoresConTarjetaRoja = [];
+    this.idsPorterosLocal = [];
+    this.idsPorterosVisitante = [];
     this.observaciones = '';
     this.acta = {};
     this.reanudar = false;
@@ -549,6 +551,10 @@ export class MatchPage {
     this.acta.idEquipoVisitante = this.partido.equipoVisitante.id;
     this.acta.escudoEquipoVisitante = this.partido.equipoVisitante.imagenEquipo;
     this.acta.idArbitro = this.arbitro.id;
+    this.acta.idsPorterosLocal = this.idsPorterosLocal;
+    this.acta.idsPorterosVisitante = this.idsPorterosVisitante;
+    this.acta.idCapitanLocal = this.idCapitanLocal;
+    this.acta.idCapitanVisitante = this.idCapitanVisitante;
     this.acta.nombreArbitro = this.arbitro.nombre;
     this.acta.convocadosLocal = this.convocadosPartidoLocal;
     this.acta.convocadosVisitante = this.convocadosPartidoVisitante;
@@ -660,7 +666,9 @@ export class MatchPage {
   //Imprime el valor del capitan por pantall
   imprimirValor() {
     console.log(this.idCapitanLocal);
+    console.log(this.idsPorterosLocal)
     console.log(this.idCapitanVisitante);
+    console.log(this.idsPorterosVisitante);
   }
   esCapitanLocalPartido(jugadorLocal: any) {
     if (jugadorLocal != undefined) {
@@ -676,13 +684,13 @@ export class MatchPage {
   }
   esPorteroLocalPartido(jugadorLocal: any) {
     if (jugadorLocal != undefined) {
-      return (jugadorLocal.id == this.idPorteroLocal);
+      return (this.idsPorterosLocal.indexOf(jugadorLocal.id)>-1);
     }
     else return false;
   }
   esPorteroVisitantePartido(jugadorVisitante: any) {
     if (jugadorVisitante != undefined) {
-      return (jugadorVisitante.id == this.idPorteroVisitante)
+      return (this.idsPorterosVisitante.indexOf(jugadorVisitante.id)>-1)
     }
     else return false;
   }
