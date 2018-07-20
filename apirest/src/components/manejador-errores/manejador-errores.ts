@@ -24,6 +24,8 @@ export class ManejadorErroresComponent {
         this.alertaErrorNoAceptable();
       case 404:
         this.alertaErrorInesperado();
+      default:
+        this.alertaErrorInesperado();
     }
   }
   public alertaErrorInesperado() {
@@ -37,7 +39,7 @@ export class ManejadorErroresComponent {
   public alertaErrorNoAceptable() {
     let alertaError = this.alerta.create({
       title: 'ERROR',
-      subTitle: 'No puede realizar esa acción.',
+      subTitle: 'No tiene permisos para realizar esa acción.',
       buttons: ['Aceptar']
     });
     alertaError.present();

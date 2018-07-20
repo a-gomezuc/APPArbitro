@@ -248,6 +248,31 @@ export class MatchPage {
     this.busquedaJugadoresLocalesConvocados = this.convocadosPartidoLocal;
     this.busquedaJugadoresVisitantesConvocados = this.convocadosPartidoVisitante;
   }
+  
+  //Método para aplazar un partido
+  aplazar(){
+    let loader = this.loadingCtrl.create({
+      content: "Aplazando partido..."
+    });
+    loader.present();
+    let alertaAplazar = this.alerta.create({
+      title: 'Partido aplazado',
+      subTitle: 'El partido se ha aplazado correctamente.',
+    });
+    this.partido.estado = "Aplazado"
+    this.userService.modifyMatch(this.partido.id, this.partido).then(
+      res => {
+        this.cambiaAHomePage()
+        loader.dismiss();
+        alertaAplazar.present();
+        this.partido = res;
+      },
+      err => {
+        loader.dismiss();
+        this.manejadorErrores.manejarError(err);
+      }
+    );
+  }
   //Método que da paso al arbitraje de un partido.
   alertaArbitrar() {
     let confirm = this.alerta.create({
@@ -269,10 +294,31 @@ export class MatchPage {
     });
     confirm.present();
   }
+    //Método que da paso a aplazar un partido.
+    alertaAplazar() {
+      let confirm = this.alerta.create({
+        title: '¿Desea aplazar el partido',
+        message: 'El partido no estará disponible para arbitrar hasta que el comité fije una nueva fecha.',
+        buttons: [
+          {
+            text: 'No',
+            handler: () => {
+            }
+          },
+          {
+            text: 'Sí',
+            handler: () => {
+              this.aplazar();
+            }
+          }
+        ]
+      });
+      confirm.present();
+    }
 
   //Método que cambia a la página de jugador.
-  cambiaAPlayerPage(nombreEquipo: String, jugador: any) {
-    this.navCtrl.push(this.playerPage, { nombreEquipo, jugador });
+  cambiaAPlayerPage(imagenEquipo:String, nombreEquipo: String, jugador: any) {
+    this.navCtrl.push(this.playerPage, { imagenEquipo, nombreEquipo, jugador });
   }
   //Método que cambia a la página del mapa.
   cambiaAMapaPage(estadio: any) {
@@ -670,24 +716,28 @@ export class MatchPage {
     console.log(this.idCapitanVisitante);
     console.log(this.idsPorterosVisitante);
   }
+  //Devuelve si un jugador es capitán.
   esCapitanLocalPartido(jugadorLocal: any) {
     if (jugadorLocal != undefined) {
       return (jugadorLocal.id == this.idCapitanLocal);
     }
     else return false;
   }
+  //Devuelve si un jugador es capitán.
   esCapitanVisitantePartido(jugadorVisitante: any) {
     if (jugadorVisitante != undefined) {
       return (jugadorVisitante.id == this.idCapitanVisitante)
     }
     else return false;
   }
+  //Devuelve si un jugador es portero.
   esPorteroLocalPartido(jugadorLocal: any) {
     if (jugadorLocal != undefined) {
       return (this.idsPorterosLocal.indexOf(jugadorLocal.id)>-1);
     }
     else return false;
   }
+  //Devuelve si un jugador es portero.
   esPorteroVisitantePartido(jugadorVisitante: any) {
     if (jugadorVisitante != undefined) {
       return (this.idsPorterosVisitante.indexOf(jugadorVisitante.id)>-1)

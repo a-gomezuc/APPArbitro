@@ -1,8 +1,19 @@
 page-player{}
 
 .item-background2{
-   // background-image: url("https://s3.eu-west-2.amazonaws.com/footballleaguemanagmentimages/{{this.player?.equipo?.imagenEquipo}}");
     color:black;
+}
+.background-div{
+        display: block;
+        position: absolute;
+        margin-left: -15px;
+        width: 100%;
+        height: 100%;
+        opacity: 0.1;
+        z-index: -1;
+        background-size: cover;               
+        background-repeat: no-repeat;
+        background-position: center center;
 }
 img.Prueba{
     max-width: 400px;

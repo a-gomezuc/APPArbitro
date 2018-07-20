@@ -17,6 +17,7 @@ import { Storage } from '@ionic/storage';
 })
 export class PlayerPage {
   player: any;
+  imagenEquipo = "shield.png";
   jugadores: any;
   manejadorErrores = new ManejadorErroresComponent(this.alerta);
 
@@ -27,6 +28,7 @@ export class PlayerPage {
     public storage: Storage,
     public alerta: AlertController,
     public loadingCtrl: LoadingController) {
+    this.imagenEquipo = "shield.png"
     this.obtenerDatos();
   }
 
@@ -41,6 +43,7 @@ export class PlayerPage {
     loader.present();
     this.player = this.navParams.get("jugador");
     this.player.equipo = this.navParams.get("nombreEquipo");
+    this.imagenEquipo = this.navParams.get("imagenEquipo");
     loader.dismiss();
   }
   obtenerJugadorId() {

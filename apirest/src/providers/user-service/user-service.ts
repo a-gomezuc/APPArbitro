@@ -120,8 +120,8 @@ export class UserServiceProvider {
 
   sendNewPassword(email: String){
     return this.http
-    .get(this.url + 'arbitros/clave/' + email, { headers: this.headers })
-    .map(res => res.json(),
+    .get(this.url + '/arbitros/clave/' + email, { headers: this.headers })
+    .map(res => {console.log(res.json())},
       err => {
         console.log(err);
       }

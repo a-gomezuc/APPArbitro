@@ -147,7 +147,7 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocal.nombre, jugadorLocal)" icon-end round>Ver
+                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocalEscudo, this.partido.equipoLocal.nombre, jugadorLocal)" icon-end round>Ver
                     <ion-icon name="eye"></ion-icon>
                   </button>
                   <button class="convocar" *ngIf="this.isNotConvocado(jugadorLocal) && !this.isSancionado(jugadorLocal)" ion-button (click)="convocarLocal(jugadorLocal)"
@@ -279,7 +279,7 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocal.nombre, jugadorVisitante)" icon-end
+                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoVisitanteEscudo, this.partido.equipoVisitante.nombre, jugadorVisitante)" icon-end
                     round>Ver
                     <ion-icon name="eye"></ion-icon>
                   </button>
@@ -371,6 +371,9 @@
     <div text-center>
       <button ion-button color="primary" class="arbitrar" *ngIf="!this.arbitrando" (click)="this.alertaArbitrar()" icon-end>Arbitrar
         <ion-icon name="checkmark-circle"></ion-icon>
+      </button>
+      <button ion-button class="aplazar" *ngIf="!this.arbitrando" (click)="this.alertaAplazar()" icon-end>Aplazar
+        <ion-icon name="clock"></ion-icon>
       </button>
     </div>
     <div text-center>

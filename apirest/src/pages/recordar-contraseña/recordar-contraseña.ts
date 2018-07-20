@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
+import { IonicPage, LoadingController, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { InicioPage } from '../inicio/inicio'
 /**
@@ -16,7 +16,7 @@ import { InicioPage } from '../inicio/inicio'
 export class RecordarContraseñaPage {
   private email : String;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertaController:AlertController, public userService:UserServiceProvider, public menu: MenuController) {
+  constructor(public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public alertaController:AlertController, public userService:UserServiceProvider, public menu: MenuController) {
     this.menu.enable(false);
   }
 
@@ -24,11 +24,20 @@ export class RecordarContraseñaPage {
     console.log('ionViewDidLoad RecordarContraseñaPage');
   }
 
-  recordarContrasenia(){
+  recordarContrasenia(){    
+    let loader = this.loadingCtrl.create({
+      content: "Enviando nueva contraseña..."
+    });
+  loader.present();
     this.userService.sendNewPassword(this.email).then(
       res=>{this.alertaAvisoOk();
-        this.navCtrl.setRoot(InicioPage)},
-      err=>this.alertaAvisoError()
+        this.navCtrl.setRoot(InicioPage);
+        console.log(res);
+      loader.dismiss()},
+      err=>{loader.dismiss();
+        this.alertaAvisoError()
+        console.log(err);
+      }
     )
   }
 

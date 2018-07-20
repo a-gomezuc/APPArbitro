@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, NavParams, AlertController } from 'ionic-angular';
+import { LoadingController, NavController, NavParams, AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { InicioPage } from '../inicio/inicio'
 import { ManejadorErroresComponent } from '../../components/manejador-errores/manejador-errores'
@@ -21,7 +21,7 @@ export class CambiarContraseñaPage {
   private nuevaContraseniaRepetida;
   private arbitro;
 
-  constructor(public navCtrl: NavController, public navParams: NavParams, public alertaController: AlertController, public userService: UserServiceProvider, public manejadorErrores: ManejadorErroresComponent, public storage: Storage) {
+  constructor(public loadingCtrl: LoadingController, public navCtrl: NavController, public navParams: NavParams, public alertaController: AlertController, public userService: UserServiceProvider, public manejadorErrores: ManejadorErroresComponent, public storage: Storage) {
   }
 
   ionViewDidLoad() {
@@ -38,21 +38,29 @@ export class CambiarContraseñaPage {
   }
   cambiaContrasenia() {
     if (this.comprobarContrasenias()) {
+      let loader = this.loadingCtrl.create({
+        content: "Cambiando contraseña..."
+      });
+      loader.present();
       this.storage.get('UsuarioConectado').then(
         res => {
         this.arbitro = JSON.parse(res);
           this.arbitro.clave = this.nuevaContrasenia;
           this.userService.modifyReferee(this.arbitro.id, this.arbitro).then(
             res => {
+              loader.dismiss();
               this.alertaAvisoCoinciden();
               this.navCtrl.setRoot(InicioPage);
             },
             err => {
+              loader.dismiss();
               this.manejadorErrores.manejarError(err);
             }
           );
         },
-        err => { this.manejadorErrores.manejarError(err) }
+        err => { 
+          loader.dismiss();
+          this.manejadorErrores.manejarError(err) }
       );
     }
     else {
