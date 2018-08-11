@@ -315,6 +315,26 @@ export class MatchPage {
       });
       confirm.present();
     }
+    //Método que da paso a crear un acta cuando uno de los equipos no se presenta.
+    alertaNoPresenta(){    let confirm = this.alerta.create({
+      title: 'Seleccione el equipo no presentado',
+      message: 'Se generará un acta con tres goles en contra para el equipo no presentado.',
+      buttons: [
+        {
+          text: 'Local',
+          handler: () => {
+            this.localNoPresentado();
+          }
+        },
+        {
+          text: 'Visitante',
+          handler: () => {
+            this.visitanteNoPresentado();
+          }
+        }
+      ]
+    });
+    confirm.present();}
 
   //Método que cambia a la página de jugador.
   cambiaAPlayerPage(imagenEquipo:String, nombreEquipo: String, jugador: any) {
@@ -618,6 +638,26 @@ export class MatchPage {
     this.mostrarComienzo = true;
     this.reanudar = true;
   }
+  alertaReiniciar() {
+    let reiniciar = this.alerta.create({
+      title: '¡Atención!',
+      message: '¿Desea reiniciar el cronómetro? Los contadores comenzarán de 0.',
+      buttons: [
+        {
+          text: 'No',
+          handler: () => {
+          }
+        },
+        {
+          text: 'Sí',
+          handler: () => {
+            this.reiniciarCrono();
+          }
+        }
+      ]
+    });
+    reiniciar.present();
+  }
 
   //Reanudar el cronómetro.
   reiniciarCrono() {
@@ -639,7 +679,7 @@ export class MatchPage {
   //Guarda los cambios realizados en la modificación.
   guardar() {
     this.modificando = false;
-    this.pararCrono();
+    this.comenzarCrono();
     this.busquedaJugadoresLocalesConvocados = this.convocadosPartidoLocal;
     this.busquedaJugadoresVisitantesConvocados = this.convocadosPartidoVisitante;
   }
@@ -743,5 +783,42 @@ export class MatchPage {
       return (this.idsPorterosVisitante.indexOf(jugadorVisitante.id)>-1)
     }
     else return false;
+  }
+
+  //Envía un acta con el equipo local no presentado.
+  localNoPresentado(){
+    var i;
+    for (i=0; i<=2;i++){
+    var incidencia: any = {};
+    incidencia.id = null;
+    incidencia.tipo = "GOL";
+    incidencia.idJugador = "000";
+    incidencia.idPartido = this.partido.idPartido;
+    incidencia.minuto = "0";
+    incidencia.observaciones = "Gol por equipo local no presentado.";
+    this.incidenciasPartido.push(incidencia);
+    }
+    this.partido.golesVisitante = 3;
+    this.partido.golesLocal = 0;
+    this.observaciones= "No presentado equipo local."
+    this.enviarActa();
+  }
+  //Envía un acta con el equipo visitante no presentado.
+  visitanteNoPresentado(){
+    var i;
+    for (i=0; i<=2;i++){
+    var incidencia: any = {};
+    incidencia.id = null;
+    incidencia.tipo = "GOL";
+    incidencia.idJugador = "000";
+    incidencia.idPartido = this.partido.idPartido;
+    incidencia.minuto = "0";
+    incidencia.observaciones = "Gol por equipo visitante no presentado.";
+    this.incidenciasPartido.push(incidencia);
+    }
+    this.partido.golesVisitante = 0;
+    this.partido.golesLocal = 3;
+    this.observaciones= "No presentado equipo visitante."
+    this.enviarActa();
   }
 }

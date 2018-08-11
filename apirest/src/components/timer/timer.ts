@@ -2,7 +2,6 @@ import { Component } from '@angular/core';
 import { Vibration } from '@ionic-native/vibration';
 import { LocalNotifications } from '@ionic-native/local-notifications';
 
-
 /**
  * Generated class for the TimerComponent component.
  *
@@ -22,7 +21,7 @@ export class TimerComponent {
   public minutoVibrarTimer: Number;
   public vibration : Vibration;
   public localNotifications : LocalNotifications;
-  constructor( ) {
+  constructor() {
     this.vibration =  new Vibration();
     this.localNotifications = new LocalNotifications();
   }

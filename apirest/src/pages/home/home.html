@@ -54,7 +54,8 @@
         <ion-row>
           <ion-col>
             <div align="center">
-              <p class="subtituloPartido">Liga {{partido?.liga}}. Jornada {{partido.jornada}}.</p>
+              <p class="subtituloPartido">Liga {{partido?.liga}} {{partido?.temporada?.nombre}}. {{partido?.grupo?.nombre}}.</p>
+              <p class="subtituloPartido"> Jornada {{partido.jornada}}.</p>
               <p class="subtituloPartido">{{partido?.fechaPartido}} {{partido?.horaPartido}}</p>
             </div>
           </ion-col>

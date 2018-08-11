@@ -20,9 +20,10 @@
 <ion-content padding>
   <div *ngIf="!this.rellenaActa">
     <div class="ligaDiv" text-center *ngIf="!this.arbitrando">
-      <h1 class="liga">Liga {{partido?.liga}}. Jornada {{partido?.jornada}}</h1>
-      <h1 class="liga">Día: {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
-      <h1 class="liga">{{partido?.estadio?.nombre}}</h1>
+      <h1 class="ligaT1">Liga {{partido?.liga}} {{partido?.temporada?.nombre}}.</h1>
+      <h1 class="ligaT1"> {{partido?.grupo?.nombre}}. Jornada {{partido?.jornada}}.</h1>
+      <h1 class="ligaT2"><span class="liga">Día:</span> {{partido?.fechaPartido}}. Hora: {{partido?.horaPartido}}</h1>
+      <h1 class="ligaT2">{{partido?.estadio?.nombre}}</h1>
       <p class="liga">{{partido?.estadio?.poblacion}} ({{partido?.estadio?.provincia}})</p>
       <button class="btnVerMapa" ion-button (click)="this.cambiaAMapaPage(this.partido.estadio)" icon-end>Mapa
         <ion-icon name="map"></ion-icon>
@@ -55,7 +56,7 @@
             </button>
           </ion-col>
           <ion-col>
-            <button class="btnCrono" ion-button color="danger" (click)="this.reiniciarCrono()" ion-button icon-only>
+            <button class="btnCrono" ion-button color="danger" (click)="this.alertaReiniciar()" ion-button icon-only>
               <ion-icon name="square"></ion-icon>
             </button>
           </ion-col>
@@ -374,6 +375,9 @@
       </button>
       <button ion-button class="aplazar" *ngIf="!this.arbitrando" (click)="this.alertaAplazar()" icon-end>Aplazar
         <ion-icon name="clock"></ion-icon>
+      </button>
+      <button class="noPresentado" ion-button  *ngIf="!this.arbitrando" (click)="this.alertaNoPresenta()" icon-end>No presenta
+        <ion-icon name="close-circle"></ion-icon>
       </button>
     </div>
     <div text-center>

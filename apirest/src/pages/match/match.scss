@@ -10,10 +10,17 @@ page-match {
 ion-label.vs{
     margin-left:90px;
      }
-h1.liga{
+h1.ligaT1{
     position:relative;
     margin:auto;
     text-align: center;
+    font-size: 18px;
+}
+h1.ligaT2{
+    position:relative;
+    margin:auto;
+    text-align: center;
+    font-size: 16px;
 }
 p.liga{
     position:relative;
@@ -151,6 +158,10 @@ div.crono{
 }
 .minutoInput{
     width: 10%;
+}
+button.noPresentado{
+    font-size:10px;
+    background-color:coral;
 }
 .input-cover{
     display: none;
