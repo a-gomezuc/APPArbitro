@@ -9,10 +9,10 @@
   <ion-navbar>
     <ion-title>{{partido?.liga}}</ion-title>
   </ion-navbar>
-  <ion-searchbar type="number" *ngIf="(!this.arbitrando || this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscado"
-    (ionInput)="cambiaBusquedaSinConvocados()"></ion-searchbar>
-  <ion-searchbar type="number" *ngIf="(this.arbitrando && !this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal" [(ngModel)]="valorBuscadoConvocados"
-    (ionInput)="cambiaBusquedaConvocados()"></ion-searchbar>
+  <ion-searchbar type="number" *ngIf="(!this.arbitrando || this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal"
+    [(ngModel)]="valorBuscado" (ionInput)="cambiaBusquedaSinConvocados()"></ion-searchbar>
+  <ion-searchbar type="number" *ngIf="(this.arbitrando && !this.modificando) && !this.rellenaActa" placeholder="Búsqueda por dorsal"
+    [(ngModel)]="valorBuscadoConvocados" (ionInput)="cambiaBusquedaConvocados()"></ion-searchbar>
 
 </ion-header>
 
@@ -105,6 +105,9 @@
       </button>
     </div>
     <ion-list>
+      <ion-item *ngIf="(!this.arbitrando || this.modificando) && this.existeDelegadoLocal()">
+        <h1>Delegado local</h1><span>{{partido?.equipoLocal?.delegado}}</span>
+      </ion-item>
       <h1 class="liga">Jugadores equipo local ({{partido?.equipoLocal?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoLocal.length}})</h1>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
@@ -148,7 +151,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocalEscudo, this.partido.equipoLocal.nombre, jugadorLocal)" icon-end round>Ver
+                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoLocalEscudo, this.partido.equipoLocal.nombre, jugadorLocal)"
+                    icon-end round>Ver
                     <ion-icon name="eye"></ion-icon>
                   </button>
                   <button class="convocar" *ngIf="this.isNotConvocado(jugadorLocal) && !this.isSancionado(jugadorLocal)" ion-button (click)="convocarLocal(jugadorLocal)"
@@ -227,7 +231,8 @@
                 <div align="center">
                   <p class="portero" *ngIf="this.esPorteroLocalPartido(jugadorLocalConvocado)">Portero</p>
                   <p class="capitan" *ngIf="this.esCapitanLocalPartido(jugadorLocalConvocado)">Capitán</p>
-                  <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorLocalConvocado) && !this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador con tarjeta amarilla</p>
+                  <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorLocalConvocado) && !this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador
+                    con tarjeta amarilla</p>
                   <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorLocalConvocado)">Jugador expulsado</p>
                 </div>
               </ion-col>
@@ -237,6 +242,9 @@
       </div>
     </ion-list>
     <ion-list>
+      <ion-item *ngIf="(!this.arbitrando || this.modificando) && this.existeDelegadoVisitante()">
+        <h1>Delegado visitante</h1><span>{{this.partido?.equipoVisitante?.delegado}}</span>
+      </ion-item>
       <h1 class="liga">Jugadores equipo visitante ({{partido?.equipoVisitante?.nombre}})</h1>
       <h1 class="liga">Convocados({{this.convocadosPartidoVisitante.length}})</h1>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
@@ -280,8 +288,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoVisitanteEscudo, this.partido.equipoVisitante.nombre, jugadorVisitante)" icon-end
-                    round>Ver
+                  <button ion-button class="ver" (click)="this.cambiaAPlayerPage(this.partido.equipoVisitanteEscudo, this.partido.equipoVisitante.nombre, jugadorVisitante)"
+                    icon-end round>Ver
                     <ion-icon name="eye"></ion-icon>
                   </button>
                   <button class="convocar" *ngIf="this.isNotConvocado(jugadorVisitante) && !this.isSancionado(jugadorVisitante)" ion-button
@@ -325,7 +333,8 @@
             <ion-row>
               <ion-col>
                 <div align="center">
-                  <h1 class="nombreYApellidos">{{jugadorVisitanteConvocado?.nombre }} {{ jugadorVisitanteConvocado?.apellidos }}</h1>
+                  <h1 class="nombreYApellidos">{{jugadorVisitanteConvocado?.nombre }} {{ jugadorVisitanteConvocado?.apellidos
+                    }}</h1>
                 </div>
               </ion-col>
             </ion-row>
@@ -360,7 +369,8 @@
                 <div align="center">
                   <p class="portero" *ngIf="this.esPorteroVisitantePartido(jugadorVisitanteConvocado)">Portero</p>
                   <p class="capitan" *ngIf="this.esCapitanVisitantePartido(jugadorVisitanteConvocado)">Capitán</p>
-                  <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorVisitanteConvocado) && !this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador con tarjeta amarilla</p>
+                  <p class="jugadorTarjetaAmarilla" *ngIf="this.tieneTarjetaAmarilla(jugadorVisitanteConvocado) && !this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador
+                    con tarjeta amarilla</p>
                   <p class="jugadorTarjetaRoja" *ngIf="this.tieneTarjetaRoja(jugadorVisitanteConvocado)">Jugador expulsado</p>
                 </div>
               </ion-col>
@@ -376,7 +386,7 @@
       <button ion-button class="aplazar" *ngIf="!this.arbitrando" (click)="this.alertaAplazar()" icon-end>Aplazar
         <ion-icon name="clock"></ion-icon>
       </button>
-      <button class="noPresentado" ion-button  *ngIf="!this.arbitrando" (click)="this.alertaNoPresenta()" icon-end>No presenta
+      <button ion-button class="noPresentado" *ngIf="!this.arbitrando" (click)="this.alertaNoPresenta()" icon-end>No presenta
         <ion-icon name="close-circle"></ion-icon>
       </button>
     </div>

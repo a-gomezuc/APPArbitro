@@ -150,7 +150,7 @@ export class MatchPage {
       title: 'Acta enviada',
       subTitle: 'El acta se ha enviado correctamente.',
     });
-    this.partido.estado = "Partido disputado con acta pendiente de aprobación"
+    this.partido.estado = "Pendiente acta"
     this.userService.modifyMatch(this.partido.id, this.partido).then(
       res => {
         this.partido = res;
@@ -362,11 +362,14 @@ export class MatchPage {
   //Método que añade un gol al equipo local
   nuevoGolLocal(jugador, idPartido, minuto) {
     var incidencia: any = {};
+    incidencia.jugador = {};
     incidencia.id = null;
     incidencia.tipo = "GOL";
     incidencia.idJugador = jugador.id;
     incidencia.idPartido = idPartido;
     incidencia.minuto = minuto;
+    incidencia.jugador.dorsal = jugador.dorsal;
+    incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
     this.partido.golesLocal = this.partido.golesLocal + 1;
@@ -375,11 +378,14 @@ export class MatchPage {
   //Método que añade un gol al equipo visitante
   nuevoGolVisitante(jugador, idPartido, minuto) {
     var incidencia: any = {};
+    incidencia.jugador = {};
     incidencia.id = null;
     incidencia.tipo = "GOL";
     incidencia.idJugador = jugador.id;
     incidencia.idPartido = idPartido;
     incidencia.minuto = minuto;
+    incidencia.jugador.dorsal = jugador.dorsal;
+    incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
     this.partido.golesVisitante = this.partido.golesVisitante + 1;
@@ -389,6 +395,7 @@ export class MatchPage {
   mostrarTarjetaAmarilla(jugador, idPartido, minuto) {
     let posicion = this.jugadoresConTarjetaAmarilla.indexOf(jugador)
     var incidencia: any = {};
+    incidencia.jugador = {};
     if (posicion <= -1) {
       this.jugadoresConTarjetaAmarilla.push(jugador);
       incidencia.id = null;
@@ -396,6 +403,8 @@ export class MatchPage {
       incidencia.idJugador = jugador.id;
       incidencia.idPartido = idPartido;
       incidencia.minuto = minuto;
+      incidencia.jugador.dorsal = jugador.dorsal;
+      incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
       incidencia.observaciones = "";
       this.incidenciasPartido.push(incidencia);
       console.log(this.jugadoresConTarjetaAmarilla);
@@ -407,6 +416,8 @@ export class MatchPage {
       incidencia.idJugador = jugador.id;
       incidencia.idPartido = idPartido;
       incidencia.minuto = minuto;
+      incidencia.jugador.dorsal = jugador.dorsal;
+      incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
       incidencia.observaciones = "Segunda tarjeta amarilla";
       this.incidenciasPartido.push(incidencia);
       this.mostrarTarjetaRoja(jugador, idPartido, minuto);
@@ -416,11 +427,14 @@ export class MatchPage {
   mostrarTarjetaRoja(jugador, idPartido, minuto) {
     this.jugadoresConTarjetaRoja.push(jugador);
     var incidencia: any = {};
+    incidencia.jugador = {};
     incidencia.id = null;
     incidencia.tipo = "ROJA";
     incidencia.idJugador = jugador.id;
     incidencia.idPartido = idPartido;
     incidencia.minuto = minuto;
+    incidencia.jugador.dorsal = jugador.dorsal;
+    incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
     console.log(this.jugadoresConTarjetaAmarilla);
@@ -607,6 +621,7 @@ export class MatchPage {
   //Se crea el nuevo acta y se guarda en la BBDD.
   enviarActa() {
     this.acta.id = null;
+    this.acta.grupo = this.partido.grupo;
     this.acta.idPartido = this.partido.id;
     this.acta.fecha = this.partido.fechaPartido;
     this.acta.hora = this.partido.horaPartido;
@@ -628,6 +643,7 @@ export class MatchPage {
     this.acta.golesVisitante = this.partido.golesVisitante;
     this.acta.incidencias = this.incidenciasPartido;
     this.acta.observaciones = this.observaciones;
+    this.acta.jornada = this.partido.jornada;
     this.modificarPartidoYCrearActa(this.acta);
     console.log(this.observaciones);
   }
@@ -679,7 +695,6 @@ export class MatchPage {
   //Guarda los cambios realizados en la modificación.
   guardar() {
     this.modificando = false;
-    this.comenzarCrono();
     this.busquedaJugadoresLocalesConvocados = this.convocadosPartidoLocal;
     this.busquedaJugadoresVisitantesConvocados = this.convocadosPartidoVisitante;
   }
@@ -793,7 +808,7 @@ export class MatchPage {
     incidencia.id = null;
     incidencia.tipo = "GOL";
     incidencia.idJugador = "000";
-    incidencia.idPartido = this.partido.idPartido;
+    incidencia.idPartido = this.partido.id;
     incidencia.minuto = "0";
     incidencia.observaciones = "Gol por equipo local no presentado.";
     this.incidenciasPartido.push(incidencia);
@@ -811,7 +826,7 @@ export class MatchPage {
     incidencia.id = null;
     incidencia.tipo = "GOL";
     incidencia.idJugador = "000";
-    incidencia.idPartido = this.partido.idPartido;
+    incidencia.idPartido = this.partido.id;
     incidencia.minuto = "0";
     incidencia.observaciones = "Gol por equipo visitante no presentado.";
     this.incidenciasPartido.push(incidencia);
@@ -820,5 +835,25 @@ export class MatchPage {
     this.partido.golesLocal = 3;
     this.observaciones= "No presentado equipo visitante."
     this.enviarActa();
+  }
+
+  //Indica si el equipo local tiene delegado.
+  existeDelegadoLocal(){
+    if(this.partido!= undefined && this.partido.equipoLocal !=undefined){
+    return !(this.partido.equipoLocal.delegado == undefined || this.partido.equipoLocal.delegado == null || this.partido.equipoLocal.delegado == '');
+    }
+    else{
+      return false;
+    }
+  }
+
+    //Indica si el equipo visitante tiene delegado.
+  existeDelegadoVisitante(){
+    if(this.partido!=undefined && this.partido.equipoVisitante !=undefined){
+    return !(this.partido.equipoVisitante.delegado == undefined || this.partido.equipoVisitante.delegado == null || this.partido.equipoVisitante.delegado == '');
+    }
+    else{
+      return false;
+    }
   }
 }
