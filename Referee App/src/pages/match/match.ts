@@ -8,7 +8,7 @@ import { ManejadorErroresComponent } from '../../components/manejador-errores/ma
 import { Storage } from '@ionic/storage';
 import { Platform } from 'ionic-angular/platform/platform';
 import { MapaPage } from '../mapa/mapa';
-import { Vibration } from '@ionic-native/vibration';
+import { BackgroundMode } from '@ionic-native/background-mode';
 
 
 
@@ -64,7 +64,8 @@ export class MatchPage {
     public loadingCtrl: LoadingController,
     public menu: MenuController,
     public storage: Storage,
-    public plt: Platform, ) {
+    public plt: Platform,
+    public backGroundMode : BackgroundMode ) {
     this.obtenerPartidoyArbitro();
     this.convocadosPartidoLocal = [];
     this.convocadosPartidoVisitante = [];
@@ -80,10 +81,15 @@ export class MatchPage {
     this.acta = {};
     this.reanudar = false;
     this.mostrarComienzo = true;
+    this.backGroundMode.setDefaults({
+      title:"Arbitrando..." ,
+      text: "Referee App realizando tareas en segundo plano."
+  });
+    this.backGroundMode.enable();
   }
 
 
-  //Obtiene el partido
+  //Obtiene el partido y el árbitro.
   obtenerPartidoyArbitro() {
     let loader = this.loadingCtrl.create({
       content: "Cargando partido"
@@ -95,8 +101,6 @@ export class MatchPage {
         this.obtenerEquipoLocal();
         this.obtenerEquipoVisitante();
         this.obtenerArbitro();
-        console.log(res);
-        console.log(res);
         loader.dismiss();
       },
       error => {
@@ -107,15 +111,17 @@ export class MatchPage {
 
   }
 
+  //Obtiene los datos del árbitro.
   obtenerArbitro() {
     this.userService.getArbitroById(this.partido.idArbitro).then(
       res => {
-        this.arbitro = res,
-          console.log(this.arbitro)
+        this.arbitro = res;
       },
       err => this.manejadorErrores.manejarError(err)
     );
   }
+
+  //Obtiene los datos del equipo local.
   obtenerEquipoLocal() {
     this.userService.getEquipoByID(this.partido.equipoLocalId).then(
       res => {
@@ -128,6 +134,8 @@ export class MatchPage {
       }
     )
   }
+
+  //Obtiene los datos del equipo visitante.
   obtenerEquipoVisitante() {
     this.userService.getEquipoByID(this.partido.equipoVisitanteId).then(
       res => {
@@ -141,6 +149,7 @@ export class MatchPage {
     )
   }
 
+  //Modifica el estado del partido y genera el acta.
   modificarPartidoYCrearActa(acta) {
     let loader = this.loadingCtrl.create({
       content: "Enviando acta..."
@@ -168,6 +177,7 @@ export class MatchPage {
       },
       err => {
         this.manejadorErrores.manejarError(err);
+        loader.dismiss();
       }
     );
   }
@@ -373,7 +383,6 @@ export class MatchPage {
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
     this.partido.golesLocal = this.partido.golesLocal + 1;
-    console.log(this.incidenciasPartido);
   }
   //Método que añade un gol al equipo visitante
   nuevoGolVisitante(jugador, idPartido, minuto) {
@@ -389,7 +398,6 @@ export class MatchPage {
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
     this.partido.golesVisitante = this.partido.golesVisitante + 1;
-    console.log(this.incidenciasPartido);
   }
   //Muestra una tarjeta amarilla al jugador, si ya tiene una, le muestra una amarilla y una roja. Añade todo a incidencias.
   mostrarTarjetaAmarilla(jugador, idPartido, minuto) {
@@ -407,8 +415,6 @@ export class MatchPage {
       incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
       incidencia.observaciones = "";
       this.incidenciasPartido.push(incidencia);
-      console.log(this.jugadoresConTarjetaAmarilla);
-      console.log(this.incidenciasPartido);
     }
     if (posicion > -1) {
       incidencia.id = null;
@@ -437,8 +443,6 @@ export class MatchPage {
     incidencia.jugador.nombre = jugador.nombre +' '+ jugador.apellidos;
     incidencia.observaciones = "";
     this.incidenciasPartido.push(incidencia);
-    console.log(this.jugadoresConTarjetaAmarilla);
-    console.log(this.incidenciasPartido);
   }
 
   //Devuelve si un jugador tiene tarjeta amarilla.
@@ -645,7 +649,6 @@ export class MatchPage {
     this.acta.observaciones = this.observaciones;
     this.acta.jornada = this.partido.jornada;
     this.modificarPartidoYCrearActa(this.acta);
-    console.log(this.observaciones);
   }
 
   //Parar el cronómetro.
@@ -702,13 +705,11 @@ export class MatchPage {
   vibrar() {
     this.timer.setActivarVibrar(this.activarVibrar);
     if (this.activarVibrar) {
-      console.log("Vibra")
     }
   }
   //Cambia el minuto de vibración
   cambiaMinuto() {
     this.timer.setMinutoVibrar(this.minutoVibrar);
-    console.log(this.minutoVibrar);
   }
 
   cambiaBusquedaSinConvocados() {
@@ -763,13 +764,6 @@ export class MatchPage {
         return item.dorsal == this.valorBuscadoConvocados;
       }
     });
-  }
-  //Imprime el valor del capitan por pantall
-  imprimirValor() {
-    console.log(this.idCapitanLocal);
-    console.log(this.idsPorterosLocal)
-    console.log(this.idCapitanVisitante);
-    console.log(this.idsPorterosVisitante);
   }
   //Devuelve si un jugador es capitán.
   esCapitanLocalPartido(jugadorLocal: any) {

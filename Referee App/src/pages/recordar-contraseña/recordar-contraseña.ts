@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonicPage, LoadingController, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
+import { LoadingController, NavController, NavParams, AlertController, MenuController } from 'ionic-angular';
 import { UserServiceProvider } from '../../providers/user-service/user-service';
 import { InicioPage } from '../inicio/inicio'
 /**
@@ -21,9 +21,9 @@ export class RecordarContraseñaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad RecordarContraseñaPage');
   }
 
+  //Recuerda la contraseña.
   recordarContrasenia(){    
     let loader = this.loadingCtrl.create({
       content: "Enviando nueva contraseña..."
@@ -32,15 +32,14 @@ export class RecordarContraseñaPage {
     this.userService.sendNewPassword(this.email).then(
       res=>{this.alertaAvisoOk();
         this.navCtrl.setRoot(InicioPage);
-        console.log(res);
       loader.dismiss()},
       err=>{loader.dismiss();
         this.alertaAvisoError()
-        console.log(err);
       }
     )
   }
 
+  //Indica que los datos son correctos.
   alertaAvisoOk() {
     let alertaAviso = this.alertaController.create({
       title: 'Email enviado',
@@ -49,6 +48,8 @@ export class RecordarContraseñaPage {
     });
     alertaAviso.present();
   }
+
+  //Indica que los datos son erróneos.
   alertaAvisoError() {
     let alertaAviso = this.alertaController.create({
       title: 'Error',

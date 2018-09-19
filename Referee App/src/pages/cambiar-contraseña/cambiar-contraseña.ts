@@ -25,9 +25,8 @@ export class CambiarContraseñaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad CambiarContraseñaPage');
   }
-
+  //Devuelve si ambas contraseñas coinciden.
   comprobarContrasenias() {
     if ((this.nuevaContrasenia == undefined) || (this.nuevaContraseniaRepetida == undefined)) {
       return false;
@@ -36,6 +35,8 @@ export class CambiarContraseñaPage {
       return (this.nuevaContrasenia == this.nuevaContraseniaRepetida)
     }
   }
+
+  //Realiza el cambio de contraseña
   cambiaContrasenia() {
     if (this.comprobarContrasenias()) {
       let loader = this.loadingCtrl.create({
@@ -50,7 +51,7 @@ export class CambiarContraseñaPage {
             res => {
               loader.dismiss();
               this.alertaAvisoCoinciden();
-              this.navCtrl.setRoot(InicioPage);
+              this.cerrarSesion();
             },
             err => {
               loader.dismiss();
@@ -67,6 +68,8 @@ export class CambiarContraseñaPage {
       this.alertaAvisoNoCoinciden();
     }
   }
+
+  //Indica mediante una alerta que las contraseñas no coinciden.
   alertaAvisoNoCoinciden() {
     let alertaAviso = this.alertaController.create({
       title: 'Error',
@@ -75,6 +78,8 @@ export class CambiarContraseñaPage {
     });
     alertaAviso.present();
   }
+
+  //Indice mediante una alerta que las contraseñas han cambiado correctamente.
   alertaAvisoCoinciden() {
     let alertaAviso = this.alertaController.create({
       title: 'Cambio realizado',
@@ -82,6 +87,14 @@ export class CambiarContraseñaPage {
       buttons: ['Aceptar']
     });
     alertaAviso.present();
+  }
+
+  cerrarSesion() {
+    this.userService.logout().then(
+      res => {
+          this.navCtrl.setRoot(InicioPage);
+      },
+      error => this.manejadorErrores.manejarError(error));
   }
 
 }

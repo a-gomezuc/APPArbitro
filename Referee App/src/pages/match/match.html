@@ -112,13 +112,13 @@
       <h1 class="liga">Convocados({{this.convocadosPartidoLocal.length}})</h1>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Capitán Local</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanLocal">
+        <ion-select okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanLocal">
           <ion-option *ngFor="let jugadorLocalPosibleCapitan of this.partido?.equipoLocal?.plantillaEquipo" [value]="jugadorLocalPosibleCapitan.id">{{jugadorLocalPosibleCapitan.dorsal}}</ion-option>
         </ion-select>
       </ion-item>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Portero Local</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosLocal" multiple="true">
+        <ion-select okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosLocal" multiple="true">
           <ion-option *ngFor="let jugadorLocalPosiblePortero of this.partido?.equipoLocal?.plantillaEquipo" [value]="jugadorLocalPosiblePortero.id">{{jugadorLocalPosiblePortero.dorsal}}</ion-option>
         </ion-select>
       </ion-item>
@@ -249,13 +249,13 @@
       <h1 class="liga">Convocados({{this.convocadosPartidoVisitante.length}})</h1>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Capitán Visitante</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanVisitante">
+        <ion-select okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idCapitanVisitante">
           <ion-option *ngFor="let jugadorVisitantePosibleCapitan of this.partido?.equipoVisitante?.plantillaEquipo" [value]="jugadorVisitantePosibleCapitan.id">{{jugadorVisitantePosibleCapitan.dorsal}}</ion-option>
         </ion-select>
       </ion-item>
       <ion-item *ngIf="!this.arbitrando || this.modificando">
         <ion-label>Portero Visitante</ion-label>
-        <ion-select (ionChange)="imprimirValor()" okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosVisitante" multiple="true">
+        <ion-select okText="Confirmar" cancelText="Cancelar" [(ngModel)]="idsPorterosVisitante" multiple="true">
           <ion-option *ngFor="let jugadorVisitantePosiblePortero of this.partido?.equipoVisitante?.plantillaEquipo" [value]="jugadorVisitantePosiblePortero.id">{{jugadorVisitantePosiblePortero.dorsal}}</ion-option>
         </ion-select>
       </ion-item>

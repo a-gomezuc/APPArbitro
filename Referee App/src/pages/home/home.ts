@@ -36,28 +36,37 @@ export class HomePage {
     this.obtenerArbitroYCargarPartidos();
   }
 
+  //Modifica un jugador
   modificaJugador(id, jugador) {
     this.userService.modifyPlayer(id, jugador);
   }
 
+  //Obtiene los partidos del árbitro.
   cargarPartidosArbitro() {
     let usuario;
+    let loader = this.loadingCtrl.create({
+      content:"Cargando partidos"
+    });
+    loader.present();
     //Se busca en memoria interna para no depender de vistas.
     this.storage.get('UsuarioConectado').then(
       res => {
         usuario = JSON.parse(res);
-        console.log(JSON.parse(res));
         this.userService.getMatchesByReferee(usuario.id).then(
           res => {
             this.partidos = res;
+            loader.dismiss();
           },
           err => {
             this.manejadorErrores.manejarError(err);
+            loader.dismiss();
           }
         );
       });
 
   }
+
+  //Indica si el árbitro no tiene partidos.
   isPartidosVacio(){
     if(this.partidos == undefined){
       return true;
@@ -67,35 +76,30 @@ export class HomePage {
   }
   }
   
+  //Obtiene los datos del árbitro y carga sus partidos
   obtenerArbitroYCargarPartidos() {
-    let loader = this.loadingCtrl.create({
-      content:"Cargando partidos"
-    });
-    loader.present();
     if(this.navParams.get('usuario')!=undefined){
     this.userService.getArbitroByUserName(this.navParams.get('usuario')).then(
       res => {
         this.connectedUser = res;
         //Guardamos en memoria local para tener al usuario logueado
         this.storage.set('UsuarioConectado', JSON.stringify(res)).then(() => this.cargarPartidosArbitro())
-        loader.dismiss();
       },
       err => { 
         this.manejadorErrores.manejarError(err);
-        loader.dismiss();
       });
     }
     else{
       this.cargarPartidosArbitro();
-      loader.dismiss();
     }
   }
 
-
+  //Cambia la página a la página del partido.
   cambiaAMatchPage(idPartido: String) {
     this.navCtrl.push(this.matchPage, { idPartido })
   }
 
+  //Obtiene un partido por su id.
   obtenerPartido(idPartido:String){
     this.userService.getMatchById(idPartido).then(
       res=> {return res;},

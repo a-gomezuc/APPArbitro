@@ -14,11 +14,12 @@ import 'rxjs/add/operator/catch';
   and Angular DI.
 */
 @Injectable()
+//Clase que contiene todas las llamadas a la API.
 export class UserServiceProvider {
   private isLogged: boolean = false;//Variable con la cual sabremos si el uisuario esta logeuado o no el sistema.
   private credentials: string;//Credenciales del usuario (Encriptadas).
   private headers: any;
-  public url: String = "http://192.168.1.102:8080"
+  public url: String = "http://footballleaguemanagmentapi.us-west-2.elasticbeanstalk.com"
   constructor(
     public http: Http,
   ) { }

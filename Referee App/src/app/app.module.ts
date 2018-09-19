@@ -27,12 +27,12 @@ import { LocalNotifications } from '@ionic-native/local-notifications';
   declarations: [
     MyApp,
     HomePage,
-    PlayerPage,
-    InicioPage,
-    MatchPage,
-    MapaPage,
-    CambiarContraseñaPage,
-    RecordarContraseñaPage,
+    // PlayerPage,
+    // InicioPage,
+    // MatchPage,
+    // MapaPage,
+    // CambiarContraseñaPage,
+    // RecordarContraseñaPage,
     TimerComponent,
     ManejadorErroresComponent
   ],

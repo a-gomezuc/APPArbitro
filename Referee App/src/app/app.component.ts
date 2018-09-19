@@ -6,7 +6,6 @@ import { SplashScreen } from '@ionic-native/splash-screen';
 import { HomePage } from '../pages/home/home';
 import { InicioPage } from '../pages/inicio/inicio';
 import { CambiarContraseñaPage } from '../pages/cambiar-contraseña/cambiar-contraseña';
-import { RecordarContraseñaPage } from '../pages/recordar-contraseña/recordar-contraseña';
 import { AlertController } from 'ionic-angular';
 import { UserServiceProvider } from '../providers/user-service/user-service';
 import { ManejadorErroresComponent } from '../components/manejador-errores/manejador-errores';
@@ -36,11 +35,11 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       statusBar.styleDefault();
       splashScreen.hide();
-      backgroundMode.setDefaults({
+      this.backgroundMode.setDefaults({
         title:"Arbitrando..." ,
         text: "Referee App realizando tareas en segundo plano."
     });
-      backgroundMode.enable();
+      this.backgroundMode.enable();
       timer(3000).subscribe(() => this.showSplash = false);
     });
 
@@ -61,8 +60,7 @@ export class MyApp {
   cerrarSesion() {
     this.userService.logout().then(
       res => {
-        console.log(res),
-          this.nav.setRoot(this.inicioPage)
+          this.nav.setRoot(this.inicioPage);
       },
       error => this.manejadorErrores.manejarError(error));
   }

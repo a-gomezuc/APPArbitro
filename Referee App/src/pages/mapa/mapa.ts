@@ -29,21 +29,11 @@ export class MapaPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad MapaPage');
     this.loadMap();
   }
+
+  //Carga el mapa
   loadMap() {
-    // let location = new LatLng(40.291570,-3.826438);
-    // let mapOptions: GoogleMapOptions = {
-    //   camera: {
-    //     target:{
-    //       lat: 40.291570,
-    //       lng: -3.826438
-    //     },
-    //     zoom: 18,
-    //     tilt: 30
-    //   }
-    // };
 
     this.map = GoogleMaps.create(document.getElementById('map_canvas')/*, mapOptions*/);
 
@@ -61,7 +51,7 @@ export class MapaPage {
           position: coordinates,
           title: this.estadio.nombre
         };
-        const marker = this.map.addMarker(markerOptions)
+        this.map.addMarker(markerOptions)
         .then((marker: Marker) => {
           marker.showInfoWindow();
       })

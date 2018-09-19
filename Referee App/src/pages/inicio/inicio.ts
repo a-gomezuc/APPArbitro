@@ -30,22 +30,22 @@ export class InicioPage {
     this.menu.enable(false);
   }
 
+  //Cambia a la página home.
   cambiaAHomePage() {
-    console.log(this.user);
-    console.log(this.pass);
     this.userService.login(this.user, this.pass).then(res => {
       this.navCtrl.setRoot(this.homePage, { usuario: this.user });
     },
       error => {
         this.alertaAviso();
-        console.log(error);
       })
   }
 
+  //Cambia a la página de recordar contraseña.
   cambiaARecordarContraseniaPage(){
     this.navCtrl.push(RecordarContraseñaPage);
   }
 
+  //Indica que la contraseña es incorrecta.
   alertaAviso() {
     let alertaAviso = this.alerta.create({
       title: 'Contraseña incorrecta',
@@ -60,7 +60,6 @@ export class InicioPage {
   }
 
   ionViewDidLoad() {
-    console.log('ionViewDidLoad InicioPage');
   }
 
 }
